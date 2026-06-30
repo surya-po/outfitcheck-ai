@@ -1,0 +1,76 @@
+// OutfitCheck AI - Database Schema
+// Managed by Prisma. Do not edit the generated sections manually.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+// ============================================
+// USER & PROFILE
+// ============================================
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  profile       UserProfile?
+  analyses      BodyAnalysis[]
+
+  @@map("users")
+}
+
+model UserProfile {
+  id          String    @id @default(cuid())
+  userId      String    @unique
+  firstName   String?
+  lastName    String?
+  avatarUrl   String?
+  gender      String?
+  heightCm    Int?
+  weightKg    Int?
+  dateOfBirth DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_profiles")
+}
+
+// ============================================
+// BODY ANALYSIS
+// ============================================
+
+enum AnalysisStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+model BodyAnalysis {
+  id              String         @id @default(cuid())
+  userId          String
+  status          AnalysisStatus @default(PENDING)
+  bodyShape       String?
+  keypoints       Json?
+  proportions     Json?
+  measurements    Json?
+  confidenceScore Float?
+  snapshotUrl     String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("body_analyses")
+}
