@@ -41,7 +41,7 @@ export async function signUpWithEmail(data: {
   }
 
   // 2. If no user exists, proceed with normal registration
-  const { error } = await supabase.auth.signUp({
+  const { data: authData, error } = await supabase.auth.signUp({
     email: data.email,
     password: data.password,
     options: {
@@ -79,6 +79,23 @@ export async function signUpWithEmail(data: {
     return { error: error.message };
   }
 
+  // Force create in Prisma to avoid DB trigger delay/failure
+  if (authData?.user) {
+    try {
+      await prisma.user.upsert({
+        where: { id: authData.user.id },
+        update: {},
+        create: {
+          id: authData.user.id,
+          email: data.email,
+          role: "USER",
+        },
+      });
+    } catch (err) {
+      console.error("Failed to create Prisma user during register", err);
+    }
+  }
+
   return { success: true, message: "Account created successfully! Redirecting to login..." };
 }
 
@@ -106,6 +123,6 @@ export async function signUpWithGoogle() {
   }
 
   if (data.url) {
-    redirect(data.url);
+    return { url: data.url };
   }
 }

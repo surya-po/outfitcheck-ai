@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { TopNavbar } from "@/components/layout/TopNavbar";
@@ -16,15 +17,25 @@ export default async function DashboardLayout({
     redirect("/login");
   }
 
-  // Map Supabase user to our internal format for the Navbar
+  const profile = await prisma.userProfile.findUnique({
+    where: { userId: user.id }
+  });
+
+  const fullName = profile?.firstName || profile?.lastName 
+    ? `${profile.firstName || ""} ${profile.lastName || ""}`.trim() 
+    : user.user_metadata?.full_name || user.user_metadata?.display_name || "";
+
+  const avatarUrl = profile?.avatarUrl || user.user_metadata?.avatar_url || "";
+
+  // Map Supabase user and Prisma profile to our internal format for the Navbar
   const userData = {
     email: user.email || "",
-    fullName: user.user_metadata?.full_name || user.user_metadata?.display_name || "",
-    avatarUrl: user.user_metadata?.avatar_url || "",
+    fullName,
+    avatarUrl,
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#FFF7FB]">
+    <div className="flex h-screen overflow-hidden bg-background">
       {/* Sidebar (Desktop) */}
       <Sidebar />
 

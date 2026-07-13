@@ -25,6 +25,26 @@ export function parseGeminiResponse(rawText: string): GeminiVisionResponse {
       throw new Error("Invalid schema structure");
     }
 
+    // Ensure gender defaults to Unknown if missing or invalid
+    if (!["Female", "Male", "Unknown"].includes(data.gender)) {
+      data.gender = "Unknown";
+      data.genderConfidence = 0;
+    }
+
+    // Ensure genderConfidence is a number
+    if (typeof data.genderConfidence !== "number") {
+      data.genderConfidence = 50;
+    }
+
+    // Ensure fashionPersona defaults to Unknown if missing
+    const validPersonas = [
+      "Minimalist", "Elegant", "Casual", "Chic", "Feminine",
+      "Streetwear", "Smart Casual", "Relaxed", "Contemporary", "Classic", "Unknown"
+    ];
+    if (!validPersonas.includes(data.fashionPersona)) {
+      data.fashionPersona = "Unknown";
+    }
+
     return data as GeminiVisionResponse;
   } catch (error) {
     console.error("Gemini JSON Parsing Error:", error, rawText);

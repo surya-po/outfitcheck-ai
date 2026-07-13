@@ -2,27 +2,83 @@
 // Managed by Prisma. Do not edit the generated sections manually.
 
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider   = "prisma-client-js"
+  engineType = "library"
 }
 
 datasource db {
   provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ============================================
+// NOTIFICATIONS
+// ============================================
+
+enum NotificationType {
+  BODY_SCAN
+  AI_ANALYSIS
+  WARDROBE
+  PROFILE
+  SETTINGS
+  FASHION_ASSISTANT
+  PRODUCT
+  BOUTIQUE
+  PROMOTION
+}
+
+enum NotificationPriority {
+  LOW
+  NORMAL
+  HIGH
+}
+
+model Notification {
+  id        String               @id @default(cuid())
+  userId    String               @map("user_id")
+  title     String
+  message   String               @db.Text
+  type      NotificationType
+  priority  NotificationPriority @default(NORMAL)
+  isRead    Boolean              @default(false) @map("is_read")
+  metadata  Json?
+  
+  createdAt DateTime             @default(now()) @map("created_at")
+  updatedAt DateTime             @updatedAt @map("updated_at")
+
+  user      User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
+  @@map("notifications")
 }
 
 // ============================================
 // USER & PROFILE
 // ============================================
 
+enum UserRole {
+  USER
+  PARTNER
+}
+
 model User {
   id            String    @id @default(cuid())
   email         String    @unique
   emailVerified Boolean   @default(false)
+  role          UserRole  @default(USER)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
   profile       UserProfile?
   analyses      BodyAnalysis[]
+  scanHistories ScanHistory[]
+  savedOutfits  SavedOutfit[]
+  notifications Notification[]
+  boutiques               Boutique[]
+  productRecommendations  ProductRecommendation[]
+  assistantMessages       AssistantMessage[]
 
   @@map("users")
 }
@@ -73,4 +129,204 @@ model BodyAnalysis {
 
   @@index([userId])
   @@map("body_analyses")
+}
+
+// ============================================
+// SCAN HISTORY
+// ============================================
+
+model ScanHistory {
+  id                    String   @id @default(cuid())
+  userId                String   @map("user_id")
+  capturedImageUrl      String   @map("captured_image_url") @db.Text
+  measurementsJson      Json     @map("measurements_json")
+  fashionAnalysisJson   Json     @map("fashion_analysis_json")
+  geminiAnalysisJson    Json     @map("gemini_analysis_json")
+  recommendationJson    Json     @map("recommendation_json")
+  matchedProductsJson   Json     @map("matched_products_json")
+  
+  aiScore               Float?   @map("ai_score")
+  isFavorite            Boolean  @default(false) @map("is_favorite")
+  notes                 String?  @db.Text
+  tags                  Json?
+
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  user                   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productRecommendations ProductRecommendation[]
+
+  @@index([userId])
+  @@index([createdAt])
+  @@map("scan_history")
+}
+
+// ============================================
+// BOUTIQUE PARTNER
+// ============================================
+
+enum BoutiqueStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+  SUSPENDED
+}
+
+model Boutique {
+  id            String         @id @default(cuid())
+  ownerId       String         @map("owner_id")
+  name          String
+  description   String?        @db.Text
+  logo          String?        @db.Text
+  banner        String?        @db.Text
+  phone         String?
+  email         String?
+  instagram     String?
+  website       String?
+  mapsUrl       String?        @db.Text
+  openingHours  String?
+  address       String?        @db.Text
+  city          String?
+  province      String?
+  status        BoutiqueStatus @default(PENDING)
+  verified      Boolean        @default(false)
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+
+  user          User           @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  products      Product[]
+
+  @@index([ownerId])
+  @@map("boutiques")
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  slug      String    @unique
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  products  Product[]
+
+  @@map("categories")
+}
+
+// ============================================
+// DIGITAL WARDROBE & PRODUCT CATALOG
+// ============================================
+
+enum ProductStatus {
+  DRAFT
+  PUBLISHED
+  HIDDEN
+  SOLDOUT
+}
+
+
+model Product {
+  id                    String   @id @default(cuid())
+  boutiqueId            String?  @map("boutique_id")
+  categoryId            String?  @map("category_id")
+  name                  String
+  brand                 String?
+  category              String // Keep for backward compatibility
+  style                 String
+  fit                   String
+  material              String?
+  colors                String[]
+  sizes                 String[]
+  gender                String?
+  season                String?
+  description           String?  @db.Text
+  price                 Int
+  discountPrice         Int?     @map("discount_price")
+  image                 String   @db.Text // Keep for backward compatibility
+  thumbnail             String?  @db.Text
+  images                String[] @default([])
+  stock                 Int?
+  status                String   @default("available") // Keep for backward compatibility
+  productStatus         ProductStatus @default(DRAFT) @map("product_status")
+  storeInfo             Json?    @map("store_info") // Keep for backward compatibility
+  recommendedBodyShapes String[] @map("recommended_body_shapes")
+  recommendedSkinTones  String[] @map("recommended_skin_tones")
+  recommendedSeasons    String[] @map("recommended_seasons")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  boutique              Boutique? @relation(fields: [boutiqueId], references: [id], onDelete: Cascade)
+  categoryRel            Category? @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  savedOutfits           SavedOutfit[]
+  productRecommendations ProductRecommendation[]
+
+  @@index([boutiqueId])
+  @@index([categoryId])
+  @@map("products")
+}
+
+model SavedOutfit {
+  id                   String   @id @default(cuid())
+  userId               String   @map("user_id")
+  productId            String   @map("product_id")
+  compatibilityScore   Float?   @map("compatibility_score")
+  recommendationReason String?  @map("recommendation_reason") @db.Text
+  notes                String?  @db.Text
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@index([userId])
+  @@map("saved_outfits")
+}
+
+// ============================================
+// PRODUCT ANALYTICS
+// ============================================
+
+enum RecommendationSource {
+  BODY_SCAN
+  FASHION_ASSISTANT
+  MARKETPLACE
+}
+
+model ProductRecommendation {
+  id              String               @id @default(cuid())
+  userId          String               @map("user_id")
+  productId       String               @map("product_id")
+  scanHistoryId   String?              @map("scan_history_id")
+  source          RecommendationSource @default(BODY_SCAN)
+  score           Float?
+  reason          String?              @db.Text
+  createdAt       DateTime             @default(now()) @map("created_at")
+
+  user            User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product         Product              @relation(fields: [productId], references: [id], onDelete: Cascade)
+  scanHistory     ScanHistory?         @relation(fields: [scanHistoryId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([productId])
+  @@index([scanHistoryId])
+  @@index([createdAt])
+  @@map("product_recommendations")
+}
+
+// ============================================
+// CHAT HISTORY
+// ============================================
+
+model AssistantMessage {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  role      String   // "user" or "assistant"
+  content   String   @db.Text
+  timestamp DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([timestamp])
+  @@map("assistant_messages")
 }

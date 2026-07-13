@@ -48,6 +48,9 @@ export const CameraPreview = forwardRef<CameraPreviewHandle, CameraPreviewProps>
 
       if (stream) {
         video.srcObject = stream;
+        video.play().catch((err) => {
+          console.error("[CameraPreview] Failed to play video:", err);
+        });
       } else {
         video.srcObject = null;
       }

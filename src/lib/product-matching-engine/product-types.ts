@@ -8,6 +8,7 @@ export interface StoreInfo {
   mapsUrl?: string;
   openingHours?: string;
   rating?: number;
+  boutiqueId?: string;
 }
 
 export interface Product {
@@ -29,5 +30,6 @@ export interface Product {
   status: "available" | "coming_soon" | "out_of_stock";
   compatibilityScore: number;
   recommendationReason: string;
+  confidenceLevel?: string;
   storeInfo: StoreInfo;
 }

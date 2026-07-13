@@ -1,0 +1,38 @@
+require('dotenv').config({ path: '.env.local' });
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
+
+async function main() {
+  // Get first user
+  const user = await prisma.user.findFirst();
+  if (!user) {
+    console.log("No users found in DB.");
+    return;
+  }
+  
+  // Get first product
+  const product = await prisma.product.findFirst();
+  if (!product) {
+    console.log("No products found in DB.");
+    return;
+  }
+  
+  console.log(`Testing toggle for User ${user.id} and Product ${product.id}`);
+  
+  try {
+    const saved = await prisma.savedOutfit.create({
+      data: {
+        userId: user.id,
+        productId: product.id,
+        
+        compatibilityScore: 99,
+        recommendationReason: "Test"
+      }
+    });
+    console.log("Successfully created SavedOutfit:", saved);
+  } catch (e) {
+    console.error("Prisma error:", e);
+  }
+}
+
+main().finally(() => prisma.$disconnect());

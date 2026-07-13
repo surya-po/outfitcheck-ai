@@ -1,16 +1,64 @@
-import { EmptyState } from "@/components/ui/EmptyState";
-import { Settings } from "lucide-react";
+import { prisma } from "@/lib/prisma";
+import { createClient } from "@/lib/supabase/server";
+import { notFound } from "next/navigation";
+import { SettingsClient } from "./SettingsClient";
 
-export default function SettingsPage() {
+export const dynamic = "force-dynamic";
+
+export default async function SettingsPage() {
+  const supabase = await createClient();
+  const { data: { user: authUser } } = await supabase.auth.getUser();
+
+  if (!authUser) {
+    return notFound();
+  }
+
+  let user = await prisma.user.findUnique({
+    where: { id: authUser.id },
+    include: {
+      profile: true,
+      _count: {
+        select: {
+          scanHistories: true,
+          savedOutfits: true,
+        },
+      },
+    },
+  });
+
+  if (!user) {
+    user = await prisma.user.create({
+      data: {
+        id: authUser.id,
+        email: authUser.email || "",
+        profile: {
+          create: {}
+        }
+      },
+      include: {
+        profile: true,
+        _count: {
+          select: {
+            scanHistories: true,
+            savedOutfits: true,
+          },
+        },
+      },
+    });
+  }
+
+  const stats = {
+    scans: user._count.scanHistories,
+    outfits: user._count.savedOutfits,
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center h-[calc(100vh-10rem)] animate-in fade-in-50 duration-500">
-      <div className="w-full max-w-2xl">
-        <EmptyState
-          icon={Settings}
-          title="Account Settings"
-          description="Configure your account settings, preferences, and privacy options. This section is currently being built."
-        />
-      </div>
+    <div className="w-full">
+      <SettingsClient 
+        user={user} 
+        profile={user.profile} 
+        stats={stats} 
+      />
     </div>
   );
 }

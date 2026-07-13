@@ -130,6 +130,16 @@ export function ProductDetailDialog({ product, onClose }: ProductDetailDialogPro
                   <div>
                     <p className="text-xs text-white/50">Alamat</p>
                     <p className="text-sm text-white/90">{product.storeInfo.address || "Belum tersedia"}</p>
+                    {product.storeInfo.mapsUrl && (
+                      <a 
+                        href={product.storeInfo.mapsUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="text-xs text-[#EC4899] hover:underline mt-1 inline-block"
+                      >
+                        Buka di Google Maps
+                      </a>
+                    )}
                   </div>
                 </div>
 

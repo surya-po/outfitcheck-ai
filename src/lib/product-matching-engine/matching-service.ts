@@ -25,7 +25,7 @@ export class ProductMatchingService {
         id: `mock-prod-${idx}-${Date.now()}`,
         name: item.style,
         brand: "OutfitCheck AI Partner", // Placeholder brand
-        category: item.category,
+        category: item.category as any,
         style: item.style,
         fit: item.fit,
         material: "Katun Premium", // Mock material

@@ -85,6 +85,7 @@ export function usePoseLandmarker({
   const initialize = useCallback(async () => {
     if (landmarkerRef.current) return; // Already initialized
 
+    console.log("[MediaPipe] Starting initialization...");
     setState((prev) => ({
       ...prev,
       status: "initializing",
@@ -92,10 +93,12 @@ export function usePoseLandmarker({
     }));
 
     try {
+      console.log("[MediaPipe] Fetching FilesetResolver...");
       const vision = await FilesetResolver.forVisionTasks(
         "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
       );
-
+      
+      console.log("[MediaPipe] Creating PoseLandmarker...");
       const landmarker = await PoseLandmarker.createFromOptions(vision, {
         baseOptions: {
           modelAssetPath:
@@ -110,6 +113,7 @@ export function usePoseLandmarker({
       });
 
       landmarkerRef.current = landmarker;
+      console.log("[MediaPipe] PoseLandmarker created successfully.");
 
       setState((prev) => ({
         ...prev,
@@ -327,14 +331,20 @@ export function usePoseLandmarker({
     if (enabled && videoElement && canvasElement) {
       // Initialize if needed, then start loop
       const start = async () => {
-        if (!landmarkerRef.current) {
-          await initialize();
-        }
-        // Small delay to let video element become ready
-        if (isActive) {
-          setTimeout(() => {
-            if (isActive) rafIdRef.current = requestAnimationFrame(detect);
-          }, 300);
+        try {
+          console.log("[MediaPipe Hook] Checking initialization state...");
+          if (!landmarkerRef.current) {
+            await initialize();
+          }
+          // Small delay to let video element become ready
+          if (isActive) {
+            setTimeout(() => {
+              console.log("[MediaPipe Hook] Starting detection loop...");
+              if (isActive) rafIdRef.current = requestAnimationFrame(detect);
+            }, 300);
+          }
+        } catch (err) {
+          console.error("[MediaPipe Hook] Failed during start:", err);
         }
       };
       start();

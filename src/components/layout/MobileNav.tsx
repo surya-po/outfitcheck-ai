@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, ScanFace, Heart, User } from "lucide-react";
+import { LayoutDashboard, ScanFace, Heart, User, Wand2 } from "lucide-react";
 
 const mobileNavigation = [
   { name: "Beranda", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Scan Tubuh", href: "/body-scan", icon: ScanFace },
-  { name: "Koleksi", href: "/collection", icon: Heart },
+  { name: "Scan", href: "/body-scan", icon: ScanFace },
+  { name: "Mix & Match", href: "/mix-match", icon: Wand2 },
+  { name: "Wardrobe", href: "/collection", icon: Heart },
   { name: "Profil", href: "/profile", icon: User },
 ];
 
@@ -16,7 +17,7 @@ export function MobileNav() {
   const pathname = usePathname();
 
   return (
-    <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-t border-[#FDF2F8] pb-safe">
+    <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-t border-border pb-safe">
       <nav className="flex items-center justify-around px-2 h-16">
         {mobileNavigation.map((item) => {
           const isActive = pathname === item.href;
@@ -26,7 +27,7 @@ export function MobileNav() {
               href={item.href}
               className={cn(
                 "flex flex-col items-center justify-center w-full h-full gap-1 transition-colors duration-200",
-                isActive ? "text-[#EC4899]" : "text-gray-400 hover:text-gray-600"
+                isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
               )}
             >
               <item.icon

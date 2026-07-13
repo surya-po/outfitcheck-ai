@@ -1,16 +1,50 @@
 import { BodyMeasurementResult } from "@/lib/body-measurements/types";
 
 // ==========================================
+// GENDER
+// ==========================================
+
+export type GenderType = "Female" | "Male" | "Unknown";
+
+// ==========================================
+// FASHION PERSONA
+// ==========================================
+
+export type FashionPersonaType =
+  | "Minimalist"
+  | "Elegant"
+  | "Casual"
+  | "Chic"
+  | "Feminine"
+  | "Streetwear"
+  | "Smart Casual"
+  | "Relaxed"
+  | "Contemporary"
+  | "Classic"
+  | "Unknown";
+
+// ==========================================
 // CATEGORY A: LOCAL ANALYSIS (Math-based)
 // ==========================================
 
-export type BodyShapeType = 
-  | "Rectangle" 
-  | "Triangle" 
-  | "Inverted Triangle" 
-  | "Trapezoid" 
-  | "Oval" 
-  | "Hourglass";
+// Female-specific body shapes
+export type FemaleBodyShapeType =
+  | "Hourglass"
+  | "Pear"
+  | "Apple"
+  | "Rectangle"
+  | "Inverted Triangle";
+
+// Male-specific body shapes
+export type MaleBodyShapeType =
+  | "Rectangle"
+  | "Triangle"
+  | "Inverted Triangle"
+  | "Oval"
+  | "Trapezoid";
+
+// Union type for backward compatibility
+export type BodyShapeType = FemaleBodyShapeType | MaleBodyShapeType;
 
 export interface BodyShapeResult {
   shape: BodyShapeType;
@@ -18,12 +52,12 @@ export interface BodyShapeResult {
   details: string;
 }
 
-export type BodyProportionType = 
-  | "Balanced" 
-  | "Long Legs" 
-  | "Short Torso" 
-  | "Long Torso" 
-  | "Broad Shoulders" 
+export type BodyProportionType =
+  | "Balanced"
+  | "Long Legs"
+  | "Short Torso"
+  | "Long Torso"
+  | "Broad Shoulders"
   | "Narrow Shoulders";
 
 export interface BodyProportionResult {
@@ -56,26 +90,37 @@ export interface ClothingSizeResult {
 export interface ColorChip {
   name: string;
   hex: string;
+  reason?: string; // Why this color suits the user
 }
 
 export interface ColorAnalysisResult {
-  isAvailable: boolean; // Flag to indicate if vision AI is enabled
-  error?: string;       // Holds any error message if vision failed
-  
+  isAvailable: boolean;
+  error?: string;
+
+  // Core appearance
   skinTone?: string;
   undertone?: string;
   seasonalColor?: string;
   faceShape?: string;
   hairColor?: string;
   dominantClothingColor?: string;
+
+  // Color recommendations
   recommendedColors?: ColorChip[];
   colorsToAvoid?: ColorChip[];
   confidence?: number;
   summary?: string;
+
+  // Fashion Intelligence fields
+  gender?: GenderType;
+  genderConfidence?: number;
+  fashionPersona?: FashionPersonaType;
+  detectedBodyShape?: string; // AI-detected shape (visual), before math override
+  isWearingHijab?: boolean;
 }
 
 // ==========================================
-// FULL ENGINE RESULT
+// FULL ENGINE RESULT — Fashion Profile (Single Source of Truth)
 // ==========================================
 
 import { FashionRecommendationProfile } from "../fashion-recommendation-engine/recommendation-types";
@@ -88,4 +133,9 @@ export interface FashionAnalysisProfile {
   colorAnalysis: ColorAnalysisResult;
   recommendation?: FashionRecommendationProfile;
   analyzedAt: number;
+
+  // Fashion Profile fields (Single Source of Truth)
+  gender?: GenderType;
+  fashionPersona?: FashionPersonaType;
+  isWearingHijab?: boolean;
 }

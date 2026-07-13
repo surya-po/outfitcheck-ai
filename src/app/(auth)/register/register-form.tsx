@@ -215,6 +215,8 @@ export function RegisterForm() {
       if (result?.error) {
         addToast(result.error, "error");
         setIsGooglePending(false);
+      } else if (result?.url) {
+        window.location.href = result.url;
       }
     } catch {
       setIsGooglePending(false);

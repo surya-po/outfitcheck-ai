@@ -20,7 +20,9 @@ export async function signInWithEmail(formData: FormData) {
   });
 
   if (error) {
-    return { error: "Incorrect email or password." };
+    console.error("Login error:", error.message);
+    // Return actual error so users know if they need to verify email
+    return { error: error.message };
   }
 
   const remember = formData.get("remember") === "true";
@@ -48,7 +50,10 @@ export async function signInWithEmail(formData: FormData) {
 export async function signInWithGoogle() {
   const supabase = await createClient();
   const headersList = await headers();
-  const origin = headersList.get("origin") || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  // Use x-forwarded-host for Vercel/proxy environments, fallback to origin header
+  const host = headersList.get("x-forwarded-host") || headersList.get("host") || "localhost:3000";
+  const proto = headersList.get("x-forwarded-proto") || "http";
+  const origin = `${proto}://${host}`;
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
@@ -66,7 +71,7 @@ export async function signInWithGoogle() {
   }
 
   if (data.url) {
-    redirect(data.url);
+    return { url: data.url };
   }
 }
 

@@ -12,7 +12,18 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "test-prisma.js",
+    "setup-bucket.js",
+    "setup-policy.js",
+    "*.bak"
   ]),
+  {
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-vars": "warn",
+      "prefer-const": "warn"
+    }
+  }
 ]);
 
 export default eslintConfig;

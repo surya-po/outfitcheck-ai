@@ -1,0 +1,10 @@
+const { PrismaClient } = require('@prisma/client');
+
+try {
+  const prisma = new PrismaClient({ log: ['error', 'warn'] });
+  console.log("Keys in prisma client:");
+  console.log(Object.keys(prisma).filter(k => !k.startsWith('_')));
+} catch(e) {
+  console.error("Error creating PrismaClient:", e);
+}
+console.log(Object.keys(prisma).filter(k => !k.startsWith('_')));

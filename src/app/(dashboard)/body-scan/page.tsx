@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
-import { ScanFace, RefreshCcw, Save, ArrowRight } from "lucide-react";
+import { ScanFace, RefreshCcw, Save, ArrowRight, Zap, Target } from "lucide-react";
 import { CameraPreview, type CameraPreviewHandle } from "@/components/body-scan/CameraPreview";
 import { CameraOverlay } from "@/components/body-scan/CameraOverlay";
 import { HeightBadge } from "@/components/body-scan/HeightBadge";
@@ -19,13 +19,31 @@ import { FashionAnalysisProfile } from "@/lib/body-analysis-engine/analysis-type
 import { fashionAnalysisService } from "@/lib/body-analysis-engine/analysis-service";
 import { BodyShapeCard } from "@/components/body-scan/analysis-cards/BodyShapeCard";
 import { ProportionsCard } from "@/components/body-scan/analysis-cards/ProportionsCard";
-import { SizingCard } from "@/components/body-scan/analysis-cards/SizingCard";
+
 import { AiVisionCard } from "@/components/body-scan/analysis-cards/AiVisionCard";
 import { RecommendationCard } from "@/components/body-scan/analysis-cards/RecommendationCard";
+import { OutfitRecommendationCard } from "@/components/body-scan/analysis-cards/OutfitRecommendationCard";
+import { generateOutfitRecommendations } from "@/lib/outfit-engine/outfit-service";
+import { saveScanHistory } from "@/app/actions/history";
+import { findBestMatchingProducts } from "@/app/actions/product";
+import { getSavedOutfitProductIds, toggleFavoriteOutfit } from "@/app/actions/wardrobe";
+import { Product } from "@/lib/product-matching-engine/product-types";
+import { useRouter } from "next/navigation";
+
+// Absolute Measurement Modules
+import { validatePose } from "@/lib/body-analysis-engine/validation/pose-validation";
+import { calculateImageQuality } from "@/lib/body-analysis-engine/validation/quality-score";
+import { loadOpenCV } from "@/lib/body-analysis-engine/calibration/reference-card-utils";
+import { detectReferenceCard } from "@/lib/body-analysis-engine/calibration/reference-card-detector";
+import { calculatePixelScale } from "@/lib/body-analysis-engine/calibration/pixel-scale";
+import { calculateAllMeasurements } from "@/lib/body-analysis-engine/measurement/measurement-engine";
 
 export default function BodyScanPage() {
+  const [scanMode, setScanMode] = useState<"quick" | "accurate">("quick");
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const router = useRouter();
   
   // Capture States
   const [hasCaptured, setHasCaptured] = useState(false);
@@ -35,33 +53,33 @@ export default function BodyScanPage() {
 
   // Analysis Engine States
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisStep, setAnalysisStep] = useState("");
   const [analysisProfile, setAnalysisProfile] = useState<FashionAnalysisProfile | null>(null);
+  const [matchedProducts, setMatchedProducts] = useState<Product[]>([]);
+  const [savedProductIds, setSavedProductIds] = useState<Set<string>>(new Set());
 
-  // Video / canvas element refs for MediaPipe
+  // Extracted Metadata for History
+  const [scanMetadata, setScanMetadata] = useState<any>({});
+
   const [videoElement, setVideoElement] = useState<HTMLVideoElement | null>(null);
   const [canvasElement, setCanvasElement] = useState<HTMLCanvasElement | null>(null);
 
-  // Ref for stream to help with cleanup without adding it to dependency arrays
   const streamCleanupRef = useRef<MediaStream | null>(null);
   const cameraRef = useRef<CameraPreviewHandle>(null);
 
-  // ─── MediaPipe Pose Detection ───────────────────────────
   const poseState = usePoseLandmarker({
     videoElement,
     canvasElement,
-    enabled: isCameraActive && !hasCaptured, // Pause AI tracking when captured
+    enabled: isCameraActive && !hasCaptured,
   });
 
-  // Track the absolute latest measurements in a ref so captureFrame doesn't trigger endless re-renders
   const latestMeasurementsRef = useRef<BodyMeasurementResult | null>(null);
   useEffect(() => {
     latestMeasurementsRef.current = poseState.measurements;
   }, [poseState.measurements]);
 
-  // Sync video/canvas refs from CameraPreview after mount
   useEffect(() => {
     if (isCameraActive && cameraRef.current) {
-      // Small delay to let the video element attach the stream
       const timer = setTimeout(() => {
         setVideoElement(cameraRef.current?.getVideoElement() ?? null);
         setCanvasElement(cameraRef.current?.getCanvasElement() ?? null);
@@ -73,7 +91,10 @@ export default function BodyScanPage() {
     }
   }, [isCameraActive]);
 
-  // Cleanup camera on unmount
+  useEffect(() => {
+    getSavedOutfitProductIds().then((ids) => setSavedProductIds(new Set(ids))).catch(console.error);
+  }, []);
+
   useEffect(() => {
     return () => {
       if (streamCleanupRef.current) {
@@ -83,15 +104,32 @@ export default function BodyScanPage() {
     };
   }, []);
 
+  const handleToggleFavorite = async (product: Product) => {
+    setSavedProductIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(product.id)) next.delete(product.id);
+      else next.add(product.id);
+      return next;
+    });
+
+    try {
+      await toggleFavoriteOutfit(product.id, product.compatibilityScore, product.recommendationReason);
+    } catch (err: any) {
+      alert("Gagal menambahkan ke wardrobe");
+      setSavedProductIds((prev) => {
+        const next = new Set(prev);
+        if (next.has(product.id)) next.delete(product.id);
+        else next.add(product.id);
+        return next;
+      });
+    }
+  };
+
   const startCamera = useCallback(async () => {
     setIsLoading(true);
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: "user",
-          width: { ideal: 720 },
-          height: { ideal: 1280 },
-        },
+        video: { facingMode: "user", width: { ideal: 720 }, height: { ideal: 1280 } },
         audio: false,
       });
       setStream(mediaStream);
@@ -101,12 +139,19 @@ export default function BodyScanPage() {
       setCapturedImage(null);
       setCapturedMeasurements(null);
       setAnalysisProfile(null);
-    } catch {
-      // Ignore or log error
+      setMatchedProducts([]);
+      
+      if (scanMode === "accurate") {
+        setAnalysisStep("Loading Computer Vision...");
+        await loadOpenCV();
+        setAnalysisStep("");
+      }
+    } catch (err: any) {
+      alert("Gagal mengakses kamera.");
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [scanMode]);
 
   const stopCamera = useCallback(() => {
     if (streamCleanupRef.current) {
@@ -117,36 +162,137 @@ export default function BodyScanPage() {
     setIsCameraActive(false);
   }, []);
 
-  const captureFrame = useCallback(() => {
+  const captureFrame = useCallback(async () => {
     const frameData = cameraRef.current?.captureFrame();
-    if (frameData) {
-      setCapturedImage(frameData);
-      // Freeze the latest measurements
-      setCapturedMeasurements(latestMeasurementsRef.current);
-      setHasCaptured(true);
-      
-      // Trigger Analysis Workflow
-      setIsAnalyzing(true);
-      const meas = latestMeasurementsRef.current;
-      if (meas) {
-        fashionAnalysisService
-          .analyze(meas, frameData)
-          .then((profile) => {
-            setAnalysisProfile(profile);
-          })
-          .finally(() => {
-            setIsAnalyzing(false);
-          });
-      } else {
+    if (!frameData) return;
+    
+    setCapturedImage(frameData);
+    setHasCaptured(true);
+    setIsAnalyzing(true);
+    stopCamera();
+
+    let finalMeasurements = latestMeasurementsRef.current;
+    const metadata: any = { scanMode };
+
+    if (scanMode === "accurate") {
+      try {
+        const landmarks = poseState.result?.landmarks?.[0];
+        const canvas = cameraRef.current?.getCanvasElement();
+        
+        if (!landmarks || !canvas) throw new Error("Gagal mendapatkan data postur tubuh.");
+        
+        setAnalysisStep("1/5: Validasi Postur...");
+        const poseValidation = validatePose(landmarks);
+        if (!poseValidation.isValid) throw new Error(poseValidation.messages[0]);
+
+        setAnalysisStep("2/5: Validasi Kualitas Gambar...");
+        const quality = calculateImageQuality(canvas);
+        metadata.qualityScore = quality.score;
+        if (!quality.isValid) throw new Error(quality.messages[0]);
+
+        setAnalysisStep("3/5: Mencari Kartu Referensi...");
+        const cardResult = detectReferenceCard(canvas);
+        metadata.referenceCardDetected = cardResult.detected;
+        metadata.referenceCardConfidence = cardResult.confidence;
+        if (!cardResult.detected) throw new Error("Kartu referensi tidak terdeteksi. Pastikan kartu terlihat jelas.");
+
+        setAnalysisStep("4/5: Kalkulasi Skala & Ukuran...");
+        const scale = calculatePixelScale(cardResult.pixelWidth, cardResult.confidence);
+        metadata.pixelScale = scale.cmPerPixel;
+        const absMeas = calculateAllMeasurements(landmarks, canvas.width, canvas.height, scale);
+        
+        metadata.measurementConfidence = absMeas.overallConfidence;
+        metadata.heightMethod = "Segmented Addition";
+
+        if (absMeas.overallConfidence < 75) {
+          alert("Peringatan: Confidence pengukuran rendah (" + absMeas.overallConfidence + "%). Hasil mungkin kurang akurat.");
+        }
+
+        finalMeasurements = {
+          measurements: {
+            estimatedHeight: { value: absMeas.height.cm, confidence: absMeas.height.confidence, timestamp: Date.now() },
+            shoulderWidth: { value: absMeas.shoulderWidth.cm, confidence: absMeas.shoulderWidth.confidence, timestamp: Date.now() },
+            hipWidth: { value: absMeas.hipWidth.cm, confidence: absMeas.hipWidth.confidence, timestamp: Date.now() },
+            waistWidth: { value: absMeas.hipWidth.cm * 0.8, confidence: absMeas.overallConfidence, timestamp: Date.now() }, // Approximation
+            legLength: { value: absMeas.legLength.cm, confidence: absMeas.legLength.confidence, timestamp: Date.now() },
+            torsoLength: { value: absMeas.torsoLength.cm, confidence: absMeas.torsoLength.confidence, timestamp: Date.now() },
+            armLength: { value: absMeas.armLength.cm, confidence: absMeas.armLength.confidence, timestamp: Date.now() },
+            shoulderHipRatio: { value: absMeas.shoulderWidth.cm / absMeas.hipWidth.cm, confidence: absMeas.overallConfidence, timestamp: Date.now() },
+            overallConfidence: absMeas.overallConfidence
+          },
+          quality: {
+            isUpperBodyOnly: false, isFeetMissing: false, isTooClose: false, isTooFar: false, isRotated: false, isPoorLighting: false, warnings: []
+          }
+        };
+
+      } catch (err: any) {
+        alert("Kalibrasi Gagal: " + err.message);
+        setHasCaptured(false);
         setIsAnalyzing(false);
+        setAnalysisStep("");
+        startCamera(); // restart camera so user can try again
+        return;
       }
-      
-      // Stop the camera to save resources once we freeze the frame
-      stopCamera();
     }
-  }, [stopCamera]);
 
+    setCapturedMeasurements(finalMeasurements);
+    setScanMetadata(metadata);
+    setAnalysisStep("5/5: Menganalisis Fashion (AI)...");
+    
+    if (finalMeasurements) {
+      fashionAnalysisService
+        .analyze(finalMeasurements, frameData)
+        .then(async (profile) => {
+          setAnalysisProfile(profile);
+          if (profile) {
+            const products = await findBestMatchingProducts(profile);
+            setMatchedProducts(products);
+          }
+        })
+        .finally(() => {
+          setIsAnalyzing(false);
+          setAnalysisStep("");
+        });
+    } else {
+      setIsAnalyzing(false);
+    }
+  }, [stopCamera, scanMode, poseState.result, startCamera]);
 
+  const handleSave = async () => {
+    if (!analysisProfile || !capturedImage || !capturedMeasurements) return;
+    
+    setIsSaving(true);
+    try {
+      const colorConf = analysisProfile.colorAnalysis.confidence || 0;
+      const shapeConf = analysisProfile.shape.confidence || 0;
+      const aiScore = (colorConf + shapeConf) / 2 || 90;
+
+      const result = await saveScanHistory({
+        capturedImageBase64: capturedImage,
+        measurementsJson: { ...capturedMeasurements, metadata: scanMetadata },
+        fashionAnalysisJson: {
+          shape: analysisProfile.shape,
+          proportion: analysisProfile.proportion,
+          sizing: analysisProfile.sizing,
+        },
+        geminiAnalysisJson: analysisProfile.colorAnalysis || {},
+        recommendationJson: analysisProfile.recommendation || {},
+        matchedProductsJson: matchedProducts || [],
+        aiScore: aiScore
+      });
+
+      if (result && result.success === false) {
+        throw new Error(result.error);
+      }
+
+      alert("Analisis berhasil disimpan!");
+      router.push("/history");
+    } catch (error: any) {
+      alert("Gagal menyimpan analisis: " + (error?.message || "Terjadi kesalahan yang tidak diketahui."));
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   // ─── RESULT SCREEN (After Capture) ──────────────────────
   if (hasCaptured && capturedImage) {
@@ -165,7 +311,6 @@ export default function BodyScanPage() {
           <div className="lg:col-span-2 space-y-4">
             <div className="rounded-2xl border border-[#FDF2F8] bg-white p-4 sm:p-5 shadow-sm">
               <div className="relative w-full aspect-[3/4] sm:aspect-[4/5] max-h-[600px] rounded-2xl overflow-hidden bg-gray-900 flex items-center justify-center">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={capturedImage}
                   alt="Captured scan"
@@ -178,13 +323,15 @@ export default function BodyScanPage() {
                   <RefreshCcw className="w-4 h-4 mr-2" />
                   Ulangi Scan
                 </Button>
-                <Button onClick={() => {
-                  alert("Analisis disimpan! (Integrasi database menyusul)");
-                }} className="flex-1 bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-xl h-12">
+                <Button 
+                  onClick={handleSave} 
+                  disabled={isSaving || isAnalyzing || !analysisProfile}
+                  className="flex-1 bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-xl h-12"
+                >
                   <Save className="w-4 h-4 mr-2" />
-                  Simpan Hasil Analisis
+                  {isSaving ? "Menyimpan..." : "Simpan Hasil Analisis"}
                 </Button>
-                <Link href="/dashboard" className="flex-1">
+                <Link href="/history" className="flex-1">
                   <Button variant="secondary" className="w-full rounded-xl h-12">
                     Lanjut <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
@@ -192,7 +339,6 @@ export default function BodyScanPage() {
               </div>
             </div>
 
-            {/* Analysis Cards Container */}
             <div className="rounded-2xl bg-gradient-to-br from-[#1E1E2D] to-gray-900 p-6 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-[#EC4899]/10 rounded-full blur-3xl pointer-events-none" />
               
@@ -201,24 +347,36 @@ export default function BodyScanPage() {
               {isAnalyzing ? (
                 <div className="py-12 text-center text-white/50 flex flex-col items-center">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#EC4899] mb-4"></div>
-                  Sedang menganalisis profil fashion Anda...
+                  <div className="font-medium text-[#FDF2F8]">{analysisStep}</div>
                 </div>
               ) : analysisProfile ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <BodyShapeCard result={analysisProfile.shape} />
                   <ProportionsCard result={analysisProfile.proportion} />
-                  <SizingCard result={analysisProfile.sizing} />
-                  
-                  {/* The AI Vision card takes up full width below the others on sm screens */}
+
                   <div className="sm:col-span-2">
                     <AiVisionCard result={analysisProfile.colorAnalysis} />
                   </div>
 
-                  {/* Fashion Recommendation Card */}
                   {analysisProfile.recommendation && (
                     <div className="sm:col-span-2 mt-4">
-                      <RecommendationCard result={analysisProfile.recommendation} />
+                      <RecommendationCard 
+                        result={analysisProfile.recommendation} 
+                        products={matchedProducts} 
+                        savedProductIds={savedProductIds}
+                        onToggleFavorite={handleToggleFavorite}
+                      />
                     </div>
+                  )}
+
+                  {analysisProfile.shape && (
+                    <OutfitRecommendationCard 
+                      outfits={generateOutfitRecommendations(
+                        analysisProfile.shape.shape, 
+                        analysisProfile.colorAnalysis?.gender, 
+                        analysisProfile.colorAnalysis?.isWearingHijab
+                      )}
+                    />
                   )}
                 </div>
               ) : null}
@@ -237,9 +395,8 @@ export default function BodyScanPage() {
   // ─── LIVE CAMERA SCREEN ─────────────────────────────────
   return (
     <div className="animate-in fade-in-50 duration-500">
-      {/* Page Header */}
-      <div className="mb-6">
-        <div className="flex items-center gap-3 mb-2">
+      <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
           <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-[#EC4899] to-[#F472B6] text-white shadow-md shadow-[#EC4899]/20">
             <ScanFace className="w-5 h-5" />
           </div>
@@ -248,39 +405,56 @@ export default function BodyScanPage() {
               Scan Tubuh AI
             </h1>
             <p className="text-sm text-gray-500 mt-0.5">
-              Berdirilah secara alami di depan kamera untuk hasil analisis tubuh yang paling akurat.
+              Berdirilah secara alami di depan kamera.
             </p>
           </div>
         </div>
+        
+        {/* Mode Selector */}
+        {!isCameraActive && (
+          <div className="flex bg-gray-100 p-1 rounded-xl">
+            <button
+              onClick={() => setScanMode("quick")}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                scanMode === "quick" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              <Zap className="w-4 h-4" /> Quick
+            </button>
+            <button
+              onClick={() => setScanMode("accurate")}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                scanMode === "accurate" ? "bg-[#EC4899] text-white shadow-sm" : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              <Target className="w-4 h-4" /> Accurate
+            </button>
+          </div>
+        )}
       </div>
 
-      {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column - Camera Area */}
         <div className="lg:col-span-2 space-y-4">
-          {/* Camera Card */}
           <div className="rounded-2xl border border-[#FDF2F8] bg-white p-4 sm:p-5 shadow-sm">
-            {/* Camera Preview with Overlays */}
             <div className="relative mb-4">
               <CameraPreview
                 ref={cameraRef}
                 stream={stream}
                 isActive={isCameraActive}
               />
-              {/* Only show guide overlay when no pose detected yet */}
               {poseState.status !== "tracking" && (
                 <CameraOverlay isActive={isCameraActive} />
               )}
-              <HeightBadge 
-                isActive={isCameraActive} 
-                isEstimating={poseState.status === "initializing" || poseState.status === "no-person" || poseState.measurements?.measurements?.estimatedHeight.value === null} 
-                estimatedHeight={poseState.measurements?.measurements?.estimatedHeight.value ? Math.round(poseState.measurements.measurements.estimatedHeight.value) : undefined}
-              />
+              {scanMode === "quick" && (
+                <HeightBadge 
+                  isActive={isCameraActive} 
+                  isEstimating={poseState.status === "initializing" || poseState.status === "no-person" || poseState.measurements?.measurements?.estimatedHeight.value === null} 
+                  estimatedHeight={poseState.measurements?.measurements?.estimatedHeight.value ? Math.round(poseState.measurements.measurements.estimatedHeight.value) : undefined}
+                />
+              )}
             </div>
 
-            {/* Controls Row */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-              {/* Compact inline status */}
               <div className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium transition-all duration-500 ${
                 poseState.status === "tracking"
                   ? "bg-emerald-50 text-emerald-600 border border-emerald-200"
@@ -304,7 +478,7 @@ export default function BodyScanPage() {
                     <div className="absolute inset-0 w-2 h-2 rounded-full bg-emerald-500 animate-ping opacity-75" />
                   )}
                 </div>
-                {poseState.statusMessage}
+                {analysisStep || poseState.statusMessage}
               </div>
               <CameraControls
                 isCameraActive={isCameraActive}
@@ -318,9 +492,7 @@ export default function BodyScanPage() {
           </div>
         </div>
 
-        {/* Right Column - Status + Tips */}
         <div className="space-y-4">
-          {/* Pose Detection Status Panel */}
           <PoseStatusPanel
             status={poseState.status}
             statusMessage={poseState.statusMessage}
@@ -328,11 +500,27 @@ export default function BodyScanPage() {
             totalLandmarks={poseState.totalLandmarks}
             fps={poseState.fps}
           />
-
-          {/* Measurements Panel */}
           <MeasurementPanel result={poseState.measurements} />
-
-          {/* Scan Tips */}
+          
+          <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+            <h3 className="font-semibold text-[#1E1E2D] mb-3 flex items-center gap-2">
+              <Target className="w-5 h-5 text-[#EC4899]" />
+              Mode: {scanMode === "accurate" ? "Accurate Scan" : "Quick Scan"}
+            </h3>
+            {scanMode === "accurate" ? (
+              <ul className="space-y-2 text-sm text-gray-600 list-disc list-inside">
+                <li>Gunakan KTP/ATM sebagai referensi ukuran.</li>
+                <li>Pegang kartu secara horizontal/vertikal di samping tubuh.</li>
+                <li>Pastikan cahaya cukup terang.</li>
+                <li>Seluruh tubuh terlihat dari ujung kepala hingga kaki.</li>
+              </ul>
+            ) : (
+              <p className="text-sm text-gray-600">
+                Mode ini mengestimasi tinggi badan berdasarkan rasio tubuh rata-rata secara instan tanpa perlu memegang kartu.
+              </p>
+            )}
+          </div>
+          
           <ScanTips />
         </div>
       </div>

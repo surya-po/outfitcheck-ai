@@ -7,6 +7,7 @@ import { GeminiVisionResult } from "./types";
 
 export async function analyzeImageWithGemini(
   imageBase64: string,
+  measurementsJson: string,
   retries = 1
 ): Promise<GeminiVisionResult> {
   const apiKey = process.env.GEMINI_API_KEY;
@@ -31,12 +32,12 @@ export async function analyzeImageWithGemini(
             parts: [
               {
                 inlineData: {
-                  mimeType: "image/jpeg", // Assuming JPEG from canvas
+                  mimeType: "image/jpeg",
                   data: base64Data,
                 },
               },
               {
-                text: "Analyze this image and return the JSON profile.",
+                text: `Analyze this image and return the JSON profile. Here is the absolute body measurements calculated by Computer Vision: ${measurementsJson}`,
               },
             ],
           },

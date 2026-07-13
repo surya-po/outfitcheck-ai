@@ -49,6 +49,8 @@ export function LoginForm() {
       if (result?.error) {
         setError(result.error);
         setIsGooglePending(false);
+      } else if (result?.url) {
+        window.location.href = result.url;
       }
     } catch {
       setIsGooglePending(false);
@@ -251,8 +253,8 @@ export function LoginForm() {
           </div>
         </div>
 
-        {/* Google Sign In */}
         <button
+          type="button"
           onClick={handleGoogleLogin}
           disabled={isLoading}
           className="w-full py-3 px-4 rounded-xl bg-white border border-[#F0D0D8] text-[#2D1F24] font-medium text-sm transition-all duration-300 hover:border-[#E88CA0] hover:shadow-md hover:shadow-[#F7A8B8]/10 hover:scale-[1.01] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-3 relative overflow-hidden"
@@ -293,6 +295,19 @@ export function LoginForm() {
           Create one
         </Link>
       </p>
+
+      {/* Partner Login Link */}
+      <div className="mt-4 pt-4 border-t border-[#F5D5E5]/60">
+        <p className="text-center text-xs text-[#8C6B78]">
+          Admin Butik Partner?{" "}
+          <Link
+            href="/partner-login"
+            className="text-[#8C6B78] hover:text-[#C4506C] font-medium transition-colors underline underline-offset-2"
+          >
+            Masuk ke Partner Portal →
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }

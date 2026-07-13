@@ -1,12 +1,13 @@
-import { useState, useMemo } from "react";
+"use client";
+
+import { useState } from "react";
 import { Sparkles } from "lucide-react";
 import { FashionRecommendationProfile } from "@/lib/fashion-recommendation-engine/recommendation-types";
 import { ProductCard } from "../product-matching/ProductCard";
 import { ProductDetailDialog } from "../product-matching/ProductDetailDialog";
-import { productMatchingService } from "@/lib/product-matching-engine/matching-service";
 import { Product } from "@/lib/product-matching-engine/product-types";
 
-function RecommendationSection({ title, emoji, items, onViewDetail }: { title: string, emoji: string, items: Product[], onViewDetail: (p: Product) => void }) {
+function RecommendationSection({ title, emoji, items, onViewDetail, savedProductIds = new Set(), onToggleFavorite }: { title: string, emoji: string, items: Product[], onViewDetail: (p: Product) => void, savedProductIds?: Set<string>, onToggleFavorite?: (p: Product) => void }) {
   if (items.length === 0) return null;
   return (
     <div className="mb-6">
@@ -15,26 +16,29 @@ function RecommendationSection({ title, emoji, items, onViewDetail }: { title: s
       </h3>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
         {items.map((item, idx) => (
-          <ProductCard key={idx} product={item} onViewDetail={onViewDetail} />
+          <ProductCard 
+            key={idx} 
+            product={item} 
+            onViewDetail={onViewDetail}
+            isFavorite={savedProductIds.has(item.id)}
+            onToggleFavorite={onToggleFavorite}
+            isBestMatch={idx === 0 && title.includes("Best Match")}
+          />
         ))}
       </div>
     </div>
   );
 }
 
-export function RecommendationCard({ result }: { result: FashionRecommendationProfile }) {
+export function RecommendationCard({ result, products = [], savedProductIds = new Set(), onToggleFavorite }: { result: FashionRecommendationProfile, products?: Product[], savedProductIds?: Set<string>, onToggleFavorite?: (p: Product) => void }) {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  const matchedProducts = useMemo(() => {
-    return productMatchingService.matchProducts(result);
-  }, [result]);
+  if (!result || !products) return null;
 
-  if (!result) return null;
-
-  const tops = matchedProducts.filter(r => r.category === "top");
-  const bottoms = matchedProducts.filter(r => r.category === "bottom");
-  const shoes = matchedProducts.filter(r => r.category === "shoes");
-  const accessories = matchedProducts.filter(r => r.category === "accessory");
+  // Group by score (Assuming they are already sorted desc)
+  const bestMatches = products.slice(0, 2);
+  const recommended = products.slice(2, 6);
+  const alternatives = products.slice(6);
 
   return (
     <div className="rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 shadow-sm backdrop-blur-sm sm:col-span-2">
@@ -44,7 +48,7 @@ export function RecommendationCard({ result }: { result: FashionRecommendationPr
         </div>
         <div>
           <h2 className="text-lg font-bold text-white">Rekomendasi Fashion AI</h2>
-          <p className="text-xs text-white/60">Gaya personal yang disesuaikan khusus untuk Anda.</p>
+          <p className="text-xs text-white/60">Gaya personal yang disesuaikan khusus untuk Anda berdasarkan data Butik terverifikasi.</p>
         </div>
       </div>
 
@@ -57,10 +61,9 @@ export function RecommendationCard({ result }: { result: FashionRecommendationPr
         <div className="text-xs text-white/70">Alternatif: {result.alternativeStyles.join(", ")}</div>
       </div>
 
-      <RecommendationSection title="Rekomendasi Atasan" emoji="👕" items={tops} onViewDetail={setSelectedProduct} />
-      <RecommendationSection title="Rekomendasi Bawahan" emoji="👖" items={bottoms} onViewDetail={setSelectedProduct} />
-      <RecommendationSection title="Rekomendasi Sepatu" emoji="👟" items={shoes} onViewDetail={setSelectedProduct} />
-      <RecommendationSection title="Rekomendasi Aksesori" emoji="⌚" items={accessories} onViewDetail={setSelectedProduct} />
+      <RecommendationSection title="Best Match" emoji="⭐" items={bestMatches} onViewDetail={setSelectedProduct} savedProductIds={savedProductIds} onToggleFavorite={onToggleFavorite} />
+      <RecommendationSection title="Recommended" emoji="👍" items={recommended} onViewDetail={setSelectedProduct} savedProductIds={savedProductIds} onToggleFavorite={onToggleFavorite} />
+      <RecommendationSection title="Alternative" emoji="🔄" items={alternatives} onViewDetail={setSelectedProduct} savedProductIds={savedProductIds} onToggleFavorite={onToggleFavorite} />
 
       <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Palet Warna */}
