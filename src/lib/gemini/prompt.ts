@@ -19,19 +19,24 @@ STEP 3 — FASHION PERSONA:
 Based on the person's outfit (if visible) and overall vibe, determine their Fashion Persona.
 Choose ONE from: "Minimalist", "Elegant", "Casual", "Chic", "Feminine", "Streetwear", "Smart Casual", "Relaxed", "Contemporary", "Classic", "Unknown"
 
-STEP 4 — COLOR & APPEARANCE ANALYSIS:
+STEP 4 — MODESTY & FASHION PREFERENCE:
+Determine if the user is wearing a hijab, jilbab, head scarf, or other modest head covering.
+If YES, set "isWearingHijab" to true and strictly set "fashionPreference" to "MODEST".
+If NO, set "isWearingHijab" to false and determine "fashionPreference" from one of these: "STANDARD", "TRENDY", "SMART CASUAL", "MINIMALIST", "ELEGANT", "OFFICE", "STREETWEAR".
+
+STEP 5 — COLOR & APPEARANCE ANALYSIS:
 Analyze skin tone, undertone, seasonal color category, face shape, and hair color based on the provided data or image.
 
-STEP 5 — COLOR RECOMMENDATIONS:
+STEP 6 — COLOR RECOMMENDATIONS:
 Based on undertone, recommend colors from these palettes:
 Warm undertone → Earth Tones + Warm Neutrals (Beige, Cream, Olive, Brown)
 Cool undertone → Soft Tones + Cool Neutrals (White, Charcoal, Lavender, Dusty Blue)
 Neutral undertone → balanced mix from all palettes
 
-STEP 6 — SUMMARY:
+STEP 7 — SUMMARY:
 Write 2 paragraphs in Bahasa Indonesia as a professional personal stylist.
 Describe the person's body analysis naturally using the exact measurements provided, then give outfit and color recommendations.
-DO NOT use specific fashion style names (e.g., "Korean Fashion"). Describe CHARACTERISTICS instead: "potongan bersih", "lapisan yang rapi", dll.
+DO NOT use specific fashion style names (e.g., "Korean Fashion" or "Korean Style"). Describe CHARACTERISTICS instead: "potongan bersih", "lapisan yang rapi", "elegan", dll.
 Make it sound like genuine professional advice, not like an AI output.
 
 RULES:
@@ -46,13 +51,14 @@ JSON SCHEMA:
   "gender": "Female | Male | Unknown",
   "genderConfidence": number (0-100),
   "isWearingHijab": boolean,
+  "fashionPreference": "MODEST | STANDARD | TRENDY | SMART CASUAL | MINIMALIST | ELEGANT | OFFICE | STREETWEAR",
   "skinTone": "Warna Kulit dalam Bahasa Indonesia | Tidak diketahui",
   "undertone": "Hangat | Dingin | Netral | Olive | Tidak diketahui",
   "season": "Musim Semi | Musim Panas | Musim Gugur | Musim Dingin | Tidak diketahui",
   "faceShape": "Oval | Bulat | Persegi | Hati | Berlian | Persegi Panjang | Tidak diketahui",
   "hairColor": "string | Tidak diketahui",
   "dominantClothingColor": "string | Tidak diketahui",
-  "fashionPersona": "Minimalist | Elegant | Casual | Chic | Feminine | Streetwear | Smart Casual | Relaxed | Contemporary | Classic | Unknown",
+  "fashionPersona": "Minimalist | Elegant | Casual | Chic | Feminine | Streetwear | Smart Casual | Relaxed | Contemporary | Classic | Modest Fashion | Elegant Casual | Office Wear | Unknown",
   "detectedBodyShape": "Body shape detected (use correct gender category)",
   "recommendedColors": [
     { "name": "Nama Warna", "hex": "#RRGGBB", "reason": "Alasan" }

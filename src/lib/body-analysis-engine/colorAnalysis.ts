@@ -33,6 +33,8 @@ export async function analyzeColorsFromImage(imageBase64: string, measurementsJs
     gender: data.gender,
     genderConfidence: data.genderConfidence,
     fashionPersona: data.fashionPersona,
+    fashionPreference: data.fashionPreference,
+    isWearingHijab: data.isWearingHijab,
     detectedBodyShape: data.detectedBodyShape,
   };
 }

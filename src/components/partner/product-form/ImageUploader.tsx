@@ -148,7 +148,7 @@ export function ImageUploader({
 
       {/* Upload Area */}
       <div 
-        className={`relative flex flex-col items-center justify-center w-full min-h-[160px] border-2 border-dashed rounded-xl transition-all duration-200 
+        className={`relative flex flex-col items-center justify-center w-full min-h-[160px] border-2 border-dashed rounded-[var(--radius-button)] transition-all duration-200 
           ${isDragging ? 'border-[#EC4899] bg-[#FDF2F8] dark:bg-[#EC4899]/10 scale-[1.01]' : 'border-[#FDF2F8] dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900/50'}
           ${isProcessing ? 'opacity-50 cursor-not-allowed pointer-events-none' : 'cursor-pointer'}
         `}
@@ -181,7 +181,7 @@ export function ImageUploader({
           
           {/* Existing Images */}
           {activeExistingImages.map(img => (
-            <div key={img.id} className={`relative group aspect-square rounded-xl overflow-hidden border-2 transition-all ${thumbnailId === img.id ? 'border-[#EC4899] ring-2 ring-[#EC4899]/20' : 'border-transparent hover:border-gray-200 dark:hover:border-gray-700'}`}>
+            <div key={img.id} className={`relative group aspect-square rounded-[var(--radius-button)] overflow-hidden border-2 transition-all ${thumbnailId === img.id ? 'border-[#EC4899] ring-2 ring-[#EC4899]/20' : 'border-transparent hover:border-gray-200 dark:hover:border-gray-700'}`}>
               <img src={img.url} alt="Product" className="w-full h-full object-cover" />
               
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
@@ -209,7 +209,7 @@ export function ImageUploader({
               </div>
 
               {thumbnailId === img.id && (
-                <div className="absolute top-2 left-2 bg-[#EC4899] text-white text-[10px] font-bold px-2 py-1 rounded-md flex items-center gap-1 shadow-md">
+                <div className="absolute top-2 left-2 bg-[#EC4899] text-white text-[10px] font-bold px-2 py-1 rounded-md flex items-center gap-1 shadow-sm">
                   <Star className="w-3 h-3 fill-current" /> Thumbnail
                 </div>
               )}
@@ -218,7 +218,7 @@ export function ImageUploader({
 
           {/* New Images */}
           {newImages.map(img => (
-            <div key={img.id} className={`relative group aspect-square rounded-xl overflow-hidden border-2 transition-all ${thumbnailId === img.id ? 'border-[#EC4899] ring-2 ring-[#EC4899]/20' : 'border-transparent hover:border-gray-200 dark:hover:border-gray-700'}`}>
+            <div key={img.id} className={`relative group aspect-square rounded-[var(--radius-button)] overflow-hidden border-2 transition-all ${thumbnailId === img.id ? 'border-[#EC4899] ring-2 ring-[#EC4899]/20' : 'border-transparent hover:border-gray-200 dark:hover:border-gray-700'}`}>
               <img src={img.previewUrl} alt="New Product" className="w-full h-full object-cover" />
               
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
@@ -246,12 +246,12 @@ export function ImageUploader({
               </div>
 
               {thumbnailId === img.id && (
-                <div className="absolute top-2 left-2 bg-[#EC4899] text-white text-[10px] font-bold px-2 py-1 rounded-md flex items-center gap-1 shadow-md">
+                <div className="absolute top-2 left-2 bg-[#EC4899] text-white text-[10px] font-bold px-2 py-1 rounded-md flex items-center gap-1 shadow-sm">
                   <Star className="w-3 h-3 fill-current" /> Thumbnail
                 </div>
               )}
               
-              <div className="absolute bottom-2 right-2 bg-blue-500 text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-md">
+              <div className="absolute bottom-2 right-2 bg-blue-500 text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-sm">
                 Baru
               </div>
             </div>
@@ -261,3 +261,5 @@ export function ImageUploader({
     </Card>
   );
 }
+
+

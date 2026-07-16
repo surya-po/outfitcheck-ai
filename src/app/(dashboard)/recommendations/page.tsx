@@ -41,7 +41,7 @@ export default async function RecommendationsPage() {
             description="Lakukan Body Scan terlebih dahulu untuk mendapatkan rekomendasi gaya dan outfit personal dari AI."
             action={
               <Link href="/body-scan">
-                <Button className="mt-4 bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-xl">
+                <Button className="mt-4 rounded-[var(--radius-button)] shadow-sm">
                   Mulai Body Scan <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
@@ -55,16 +55,16 @@ export default async function RecommendationsPage() {
   return (
     <div className="max-w-7xl mx-auto pb-12 animate-in fade-in-50 duration-500">
       <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#1E1E2D] tracking-tight flex items-center gap-2">
-          <Sparkles className="w-6 h-6 text-[#EC4899]" /> Rekomendasi Outfit Anda
+        <h1 className="text-2xl sm:text-3xl font-heading font-bold text-foreground tracking-tight flex items-center gap-2">
+          <Sparkles className="w-6 h-6 text-primary" /> Rekomendasi Outfit Anda
         </h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-muted-foreground mt-1">
           Berdasarkan hasil analisis scan tubuh terbaru Anda.
         </p>
       </div>
 
-      <div className="rounded-2xl bg-gradient-to-br from-[#1E1E2D] to-gray-900 p-4 sm:p-6 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[#EC4899]/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="rounded-[var(--radius-card)] bg-gradient-to-br from-card to-muted border border-border/60 p-4 sm:p-6 shadow-sm relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
         
         <div className="grid grid-cols-1 gap-6">
           <RecommendationCard 
@@ -82,3 +82,5 @@ export default async function RecommendationsPage() {
     </div>
   );
 }
+
+

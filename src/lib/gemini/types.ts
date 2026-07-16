@@ -16,7 +16,23 @@ export type FashionPersonaType =
   | "Relaxed"
   | "Contemporary"
   | "Classic"
+  | "Modest Fashion"
+  | "Minimalist"
+  | "Elegant Casual"
+  | "Smart Casual"
+  | "Streetwear"
+  | "Office Wear"
   | "Unknown";
+
+export type FashionPreferenceType = 
+  | "MODEST" 
+  | "STANDARD" 
+  | "TRENDY" 
+  | "SMART CASUAL" 
+  | "MINIMALIST" 
+  | "ELEGANT" 
+  | "OFFICE" 
+  | "STREETWEAR";
 
 export interface GeminiVisionResponse {
   // Gender Detection (Step 1 — foundational)
@@ -31,8 +47,10 @@ export interface GeminiVisionResponse {
   hairColor: string;
   dominantClothingColor: string;
 
-  // Fashion Persona (AI-determined style personality)
+  // Fashion Persona & Preference
   fashionPersona: FashionPersonaType;
+  fashionPreference: FashionPreferenceType;
+  isWearingHijab: boolean;
 
   // Color Recommendations
   recommendedColors: ColorChip[];

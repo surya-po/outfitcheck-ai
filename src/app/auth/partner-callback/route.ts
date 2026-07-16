@@ -7,10 +7,8 @@ export async function GET(request: Request) {
   const code = searchParams.get("code");
   const next = searchParams.get("next") ?? "/partner/dashboard";
 
-  // Use VERCEL_URL (auto-set by Vercel) to ensure we always redirect to the live domain.
-  const appOrigin = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : origin;
+  // Use the origin from the request URL to ensure redirects go to the correct domain automatically
+  const appOrigin = origin;
 
   if (code) {
     const supabase = await createClient();

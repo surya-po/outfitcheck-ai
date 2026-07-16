@@ -29,7 +29,7 @@ export function HistoryCard({ item, onDelete, onToggleFavorite }: HistoryCardPro
   const score = item.aiScore ? Math.round(item.aiScore) : "-";
 
   return (
-    <div className="bg-white border border-[#FDF2F8] rounded-2xl overflow-hidden shadow-sm flex flex-col group hover:shadow-md transition-shadow relative">
+    <div className="bg-card border border-border/60 rounded-[var(--radius-card)] overflow-hidden shadow-sm flex flex-col group hover:shadow-sm transition-shadow relative">
       
       {/* Thumbnail Area */}
       <div className="relative w-full aspect-[4/5] bg-gray-100 overflow-hidden">
@@ -50,7 +50,7 @@ export function HistoryCard({ item, onDelete, onToggleFavorite }: HistoryCardPro
           </div>
           <button 
             onClick={onToggleFavorite}
-            className={`p-2 rounded-full backdrop-blur-md border border-white/10 transition-colors ${item.isFavorite ? 'bg-[#EC4899] text-white' : 'bg-black/40 text-white hover:bg-white/20'}`}
+            className={`p-2 rounded-full backdrop-blur-md border border-white/10 transition-colors ${item.isFavorite ? 'bg-primary text-primary-foreground' : 'bg-black/40 text-white hover:bg-white/20'}`}
           >
             <Star className={`w-4 h-4 ${item.isFavorite ? 'fill-white' : ''}`} />
           </button>
@@ -59,11 +59,14 @@ export function HistoryCard({ item, onDelete, onToggleFavorite }: HistoryCardPro
         {/* Bottom Info overlay */}
         <div className="absolute bottom-3 left-3 right-3 text-white">
           <div className="flex items-center justify-between mb-1">
-            <h3 className="font-bold text-lg drop-shadow-md">{style}</h3>
-            <span className="bg-[#EC4899] text-[10px] font-bold px-2 py-0.5 rounded-sm">Skor {score}</span>
+            <h3 className="font-bold text-lg drop-shadow-sm">{style}</h3>
+            <span className="bg-primary text-[10px] font-bold px-2 py-0.5 rounded-sm text-primary-foreground">Skor {score}</span>
           </div>
           <div className="flex flex-wrap gap-1">
             <span className="text-[10px] bg-white/20 backdrop-blur-md px-1.5 py-0.5 rounded border border-white/10">{shape}</span>
+            {fas?.fashionPreference && (
+               <span className="text-[10px] bg-white/20 backdrop-blur-md px-1.5 py-0.5 rounded border border-white/10">{fas.fashionPreference}</span>
+            )}
             <span className="text-[10px] bg-white/20 backdrop-blur-md px-1.5 py-0.5 rounded border border-white/10">{color}</span>
           </div>
         </div>
@@ -72,13 +75,13 @@ export function HistoryCard({ item, onDelete, onToggleFavorite }: HistoryCardPro
       {/* Action Area */}
       <div className="p-3 flex items-center justify-between gap-2">
         <Link href={`/history/${item.id}`} className="flex-1">
-          <button className="w-full h-9 bg-gray-50 hover:bg-[#EC4899]/10 text-gray-700 hover:text-[#EC4899] text-sm font-semibold rounded-xl transition-colors flex items-center justify-center gap-2">
+          <button className="w-full h-9 bg-secondary hover:bg-primary/10 text-muted-foreground hover:text-primary text-sm font-semibold rounded-[var(--radius-button)] transition-colors flex items-center justify-center gap-2">
             Lihat Detail <ArrowRight className="w-4 h-4" />
           </button>
         </Link>
         <button 
           onClick={onDelete}
-          className="h-9 w-9 flex items-center justify-center bg-gray-50 hover:bg-red-50 text-gray-400 hover:text-red-500 rounded-xl transition-colors"
+          className="h-9 w-9 flex items-center justify-center bg-secondary hover:bg-destructive/10 text-muted-foreground hover:text-destructive rounded-[var(--radius-button)] transition-colors"
         >
           <Trash2 className="w-4 h-4" />
         </button>
@@ -86,3 +89,5 @@ export function HistoryCard({ item, onDelete, onToggleFavorite }: HistoryCardPro
     </div>
   );
 }
+
+

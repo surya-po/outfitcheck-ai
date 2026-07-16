@@ -189,7 +189,7 @@ export default function ProductListClient({ initialProducts }: Props) {
   const getStatusBadge = (status: ProductStatus) => {
     switch (status) {
       case "PUBLISHED": return <span className="px-2.5 py-1 text-[10px] font-semibold rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border border-green-200 dark:border-green-800">Aktif</span>;
-      case "DRAFT": return <span className="px-2.5 py-1 text-[10px] font-semibold rounded-full bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400 border border-gray-200 dark:border-gray-700">Draft</span>;
+      case "DRAFT": return <span className="px-2.5 py-1 text-[10px] font-semibold rounded-full bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400 border border-gray-200 border-border/60">Draft</span>;
       case "HIDDEN": return <span className="px-2.5 py-1 text-[10px] font-semibold rounded-full bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800">Tersembunyi</span>;
       case "SOLDOUT": return <span className="px-2.5 py-1 text-[10px] font-semibold rounded-full bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border border-red-200 dark:border-red-800">Habis</span>;
       default: return <span className="px-2.5 py-1 text-[10px] font-semibold rounded-full bg-gray-100 text-gray-700">{status}</span>;
@@ -211,12 +211,12 @@ export default function ProductListClient({ initialProducts }: Props) {
               placeholder="Cari nama atau kategori..." 
               value={search}
               onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
-              className="pl-9 bg-white dark:bg-gray-900 border-[#FDF2F8] dark:border-gray-800 focus-visible:ring-[#EC4899]"
+              className="pl-10 bg-white dark:bg-gray-900 border-border/60 border-border/60 focus-visible:ring-primary"
             />
           </div>
           
           <select 
-            className="h-10 rounded-md border border-[#FDF2F8] dark:border-gray-800 bg-white dark:bg-gray-900 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#EC4899] focus:ring-offset-2 focus:ring-offset-background"
+            className="h-10 rounded-md border border-border/60 border-border/60 bg-white dark:bg-gray-900 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
             value={categoryFilter}
             onChange={(e) => { setCategoryFilter(e.target.value); setCurrentPage(1); }}
           >
@@ -227,7 +227,7 @@ export default function ProductListClient({ initialProducts }: Props) {
           </select>
           
           <select 
-            className="h-10 rounded-md border border-[#FDF2F8] dark:border-gray-800 bg-white dark:bg-gray-900 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#EC4899] focus:ring-offset-2 focus:ring-offset-background"
+            className="h-10 rounded-md border border-border/60 border-border/60 bg-white dark:bg-gray-900 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
             value={statusFilter}
             onChange={(e) => { setStatusFilter(e.target.value); setCurrentPage(1); }}
           >
@@ -239,7 +239,7 @@ export default function ProductListClient({ initialProducts }: Props) {
           </select>
 
           <select 
-            className="h-10 rounded-md border border-[#FDF2F8] dark:border-gray-800 bg-white dark:bg-gray-900 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#EC4899] focus:ring-offset-2 focus:ring-offset-background"
+            className="h-10 rounded-md border border-border/60 border-border/60 bg-white dark:bg-gray-900 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
             value={sortOption}
             onChange={(e) => { setSortOption(e.target.value); setCurrentPage(1); }}
           >
@@ -253,7 +253,7 @@ export default function ProductListClient({ initialProducts }: Props) {
         </div>
         
         <Link href="/partner/products/create" className="shrink-0">
-          <Button className="bg-gradient-to-r from-[#EC4899] to-[#8B5CF6] text-white w-full sm:w-auto shadow-md hover:shadow-lg transition-shadow">
+          <Button className="bg-gradient-to-r from-[#EC4899] to-[#8B5CF6] text-white w-full sm:w-auto shadow-sm hover:shadow-sm transition-shadow">
             <Plus className="w-4 h-4 mr-2" />
             Tambah Produk
           </Button>
@@ -262,8 +262,8 @@ export default function ProductListClient({ initialProducts }: Props) {
 
       {/* Bulk Actions */}
       {selectedIds.length > 0 && (
-        <div className="bg-[#FFF7FB] dark:bg-[#EC4899]/10 border border-[#FDF2F8] dark:border-[#EC4899]/30 rounded-xl p-3 px-5 flex flex-wrap items-center justify-between gap-4 shadow-sm animate-in fade-in slide-in-from-top-4">
-          <span className="text-sm font-semibold text-[#EC4899] dark:text-[#FBCFE8]">
+        <div className="bg-secondary/20 dark:bg-primary/10 border border-border/60 dark:border-primary/30 rounded-[var(--radius-button)] p-3 px-5 flex flex-wrap items-center justify-between gap-4 shadow-sm animate-in fade-in slide-in-from-top-4">
+          <span className="text-sm font-semibold text-primary dark:text-[#FBCFE8]">
             {selectedIds.length} produk dipilih
           </span>
           <div className="flex gap-2">
@@ -275,15 +275,15 @@ export default function ProductListClient({ initialProducts }: Props) {
       )}
 
       {/* Main Table */}
-      <Card className="overflow-hidden border-[#FDF2F8] dark:border-gray-800 shadow-sm rounded-2xl">
+      <Card className="overflow-hidden border-border/60 border-border/60 shadow-sm rounded-[var(--radius-card)]">
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
-            <thead className="text-xs text-gray-500 uppercase bg-gray-50 dark:bg-gray-900/50 dark:text-gray-400 border-b border-[#FDF2F8] dark:border-gray-800">
+            <thead className="text-xs text-gray-500 uppercase bg-gray-50 dark:bg-secondary/20 dark:text-gray-400 border-b border-border/60 border-border/60">
               <tr>
                 <th className="px-4 py-4 w-12 text-center">
-                  <button onClick={toggleSelectAll} className="text-gray-400 hover:text-[#EC4899] transition-colors focus:outline-none">
+                  <button onClick={toggleSelectAll} className="text-gray-400 hover:text-primary transition-colors focus:outline-none">
                     {currentProducts.length > 0 && selectedIds.length === currentProducts.length ? 
-                      <CheckSquare className="w-5 h-5 text-[#EC4899]" /> : 
+                      <CheckSquare className="w-5 h-5 text-primary" /> : 
                       <Square className="w-5 h-5" />
                     }
                   </button>
@@ -310,7 +310,7 @@ export default function ProductListClient({ initialProducts }: Props) {
                       <p className="text-sm mb-6 text-gray-500">Pencarian Anda tidak menemukan hasil, atau Anda belum menambahkan produk ke katalog ini.</p>
                       {products.length === 0 && (
                         <Link href="/partner/products/create">
-                          <Button className="bg-[#EC4899] hover:bg-[#BE185D] text-white">Mulai Tambah Produk</Button>
+                          <Button className="bg-primary hover:opacity-90 text-white">Mulai Tambah Produk</Button>
                         </Link>
                       )}
                     </div>
@@ -318,17 +318,17 @@ export default function ProductListClient({ initialProducts }: Props) {
                 </tr>
               ) : (
                 currentProducts.map(product => (
-                  <tr key={product.id} className="border-b last:border-0 border-[#FDF2F8] hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-900/50 transition-colors group">
+                  <tr key={product.id} className="border-b last:border-0 border-border/60 hover:bg-gray-50 border-border/60 dark:hover:bg-gray-900/50 transition-colors group">
                     <td className="px-4 py-4 text-center">
-                      <button onClick={() => toggleSelect(product.id)} className="text-gray-400 hover:text-[#EC4899] transition-colors focus:outline-none">
+                      <button onClick={() => toggleSelect(product.id)} className="text-gray-400 hover:text-primary transition-colors focus:outline-none">
                         {selectedIds.includes(product.id) ? 
-                          <CheckSquare className="w-5 h-5 text-[#EC4899]" /> : 
+                          <CheckSquare className="w-5 h-5 text-primary" /> : 
                           <Square className="w-5 h-5 opacity-50 group-hover:opacity-100" />
                         }
                       </button>
                     </td>
                     <td className="px-2 py-4">
-                      <div className="w-12 h-16 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shrink-0 border border-[#FDF2F8] dark:border-gray-700 shadow-sm">
+                      <div className="w-12 h-16 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shrink-0 border border-border/60 border-border/60 shadow-sm">
                         {product.thumbnail || product.image ? (
                           <img src={product.thumbnail || product.image || ""} alt={product.name} className="w-full h-full object-cover" />
                         ) : (
@@ -346,7 +346,7 @@ export default function ProductListClient({ initialProducts }: Props) {
                     <td className="px-4 py-4 whitespace-nowrap">
                       {product.discountPrice ? (
                         <div>
-                          <div className="font-bold text-[#EC4899]">{formatPrice(product.discountPrice)}</div>
+                          <div className="font-bold text-primary">{formatPrice(product.discountPrice)}</div>
                           <div className="text-xs text-gray-400 line-through mt-0.5">{formatPrice(product.price)}</div>
                         </div>
                       ) : (
@@ -367,19 +367,19 @@ export default function ProductListClient({ initialProducts }: Props) {
                           checked={product.productStatus === "PUBLISHED"} 
                           onCheckedChange={() => handleToggleActive(product.id, product.productStatus)}
                           disabled={isProcessing}
-                          className="data-[state=checked]:bg-[#EC4899]"
+                          className="data-[state=checked]:bg-primary"
                         />
                       </div>
                     </td>
                     <td className="px-4 py-4 text-right">
                       <div className="flex justify-end gap-1 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
-                        <Link href={`/partner/products/${product.id}`} className="p-2 text-gray-400 hover:text-blue-500 transition-colors bg-white dark:bg-gray-900 rounded-md shadow-sm border border-gray-100 dark:border-gray-800" title="Preview">
+                        <Link href={`/partner/products/${product.id}`} className="p-2 text-gray-400 hover:text-blue-500 transition-colors bg-white dark:bg-gray-900 rounded-md shadow-sm border border-gray-100 border-border/60" title="Preview">
                           <Eye className="w-4 h-4" />
                         </Link>
                         <button 
                           onClick={() => confirmDelete(product.id)}
                           disabled={isProcessing}
-                          className="p-2 text-gray-400 hover:text-red-500 transition-colors disabled:opacity-50 bg-white dark:bg-gray-900 rounded-md shadow-sm border border-gray-100 dark:border-gray-800"
+                          className="p-2 text-gray-400 hover:text-red-500 transition-colors disabled:opacity-50 bg-white dark:bg-gray-900 rounded-md shadow-sm border border-gray-100 border-border/60"
                           title="Hapus"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -395,7 +395,7 @@ export default function ProductListClient({ initialProducts }: Props) {
         
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between px-6 py-4 border-t border-[#FDF2F8] dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/20">
+          <div className="flex items-center justify-between px-6 py-4 border-t border-border/60 border-border/60 bg-gray-50/50 dark:bg-secondary/20">
             <div className="text-sm text-gray-500">
               Menampilkan {((currentPage - 1) * ITEMS_PER_PAGE) + (filteredProducts.length > 0 ? 1 : 0)} - {Math.min(currentPage * ITEMS_PER_PAGE, filteredProducts.length)} dari {filteredProducts.length} produk
             </div>
@@ -453,3 +453,6 @@ export default function ProductListClient({ initialProducts }: Props) {
     </div>
   );
 }
+
+
+

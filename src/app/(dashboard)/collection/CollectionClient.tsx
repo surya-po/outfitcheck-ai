@@ -69,19 +69,19 @@ export default function CollectionClient({ initialOutfits }: CollectionClientPro
   return (
     <div>
       {/* Controls */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-8 bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-sm">
+      <div className="flex flex-col sm:flex-row gap-4 mb-8 bg-card border border-border/60 rounded-[var(--radius-card)] p-4 shadow-sm">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Cari gaya atau nama produk..."
-            className="pl-9 bg-black/20 border-white/10 text-white placeholder:text-white/30 h-11 rounded-xl focus-visible:ring-[#EC4899]"
+            className="pl-10 bg-background border-border/60 text-foreground placeholder:text-muted-foreground h-11 rounded-[var(--radius-button)] focus-visible:ring-primary"
           />
         </div>
         
         <div className="flex gap-2 overflow-hidden">
-          <div className="flex bg-black/20 rounded-xl p-1 border border-white/10 overflow-x-auto hide-scrollbar whitespace-nowrap">
+          <div className="flex bg-background rounded-[var(--radius-button)] p-1 border border-border/60 overflow-x-auto hide-scrollbar whitespace-nowrap">
             {["all", "Atasan", "Bawahan", "Dress", "Outerwear", "Sepatu", "Sandal", "Tas", "Hijab", "Aksesoris"].map((cat) => {
               const labels: Record<string, string> = {
                 all: "Semua",
@@ -101,8 +101,8 @@ export default function CollectionClient({ initialOutfits }: CollectionClientPro
                   onClick={() => setCategoryFilter(cat)}
                   className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
                     categoryFilter === cat
-                      ? "bg-[#EC4899] text-white"
-                      : "text-white/60 hover:text-white hover:bg-white/5"
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground hover:bg-secondary"
                   }`}
                 >
                   {labels[cat]}
@@ -114,7 +114,7 @@ export default function CollectionClient({ initialOutfits }: CollectionClientPro
           <Button
             variant="outline"
             onClick={() => setSortOrder(sortOrder === "latest" ? "oldest" : "latest")}
-            className="bg-black/20 border-white/10 text-white hover:bg-white/10 h-11 rounded-xl px-4"
+            className="bg-background border-border/60 text-foreground hover:bg-secondary h-11 rounded-[var(--radius-button)] px-4"
           >
             <SlidersHorizontal className="w-4 h-4 mr-2" />
             {sortOrder === "latest" ? "Terbaru" : "Terlama"}
@@ -124,7 +124,7 @@ export default function CollectionClient({ initialOutfits }: CollectionClientPro
 
       {/* Grid */}
       {filteredAndSortedOutfits.length === 0 ? (
-        <div className="text-center py-12 text-white/50 bg-white/5 rounded-2xl border border-white/10">
+        <div className="text-center py-12 text-muted-foreground bg-card rounded-[var(--radius-card)] border border-border/60 shadow-sm">
           Tidak ada outfit yang cocok dengan filter pencarian.
         </div>
       ) : (
@@ -150,3 +150,5 @@ export default function CollectionClient({ initialOutfits }: CollectionClientPro
     </div>
   );
 }
+
+

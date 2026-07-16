@@ -16,6 +16,8 @@ export interface OutfitRecommendationItem {
 export interface FashionRecommendationProfile {
   gender?: string;
   fashionPersona?: string;
+  fashionPreference?: string;
+  isWearingHijab?: boolean;
   primaryStyle: string;
   alternativeStyles: string[];
   recommendations: OutfitRecommendationItem[];

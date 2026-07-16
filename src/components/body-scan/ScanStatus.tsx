@@ -47,7 +47,7 @@ export function ScanStatus({ status }: ScanStatusProps) {
   const Icon = config.icon;
 
   return (
-    <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border transition-all duration-500 ${config.bgColor} ${config.borderColor}`}>
+    <div className={`flex items-center gap-3 px-4 py-3 rounded-[var(--radius-button)] border transition-all duration-500 ${config.bgColor} ${config.borderColor}`}>
       <div className="relative">
         <div className={`w-2.5 h-2.5 rounded-full ${config.dotColor}`} />
         {status === "ready" && (
@@ -61,3 +61,5 @@ export function ScanStatus({ status }: ScanStatusProps) {
     </div>
   );
 }
+
+

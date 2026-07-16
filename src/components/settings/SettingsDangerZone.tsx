@@ -14,9 +14,9 @@ interface SettingsDangerZoneProps {
 
 export function SettingsDangerZone({ icon: Icon = Trash2, title, description, actionLabel, onClick, isLoading }: SettingsDangerZoneProps) {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-red-50/50 border border-red-100 rounded-2xl">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-red-50/50 border border-red-100 rounded-[var(--radius-card)]">
       <div className="flex items-start sm:items-center gap-4">
-        <div className="w-10 h-10 bg-red-100 text-red-600 rounded-xl flex items-center justify-center shrink-0">
+        <div className="w-10 h-10 bg-red-100 text-red-600 rounded-[var(--radius-button)] flex items-center justify-center shrink-0">
           <Icon className="w-5 h-5" />
         </div>
         <div>
@@ -28,10 +28,12 @@ export function SettingsDangerZone({ icon: Icon = Trash2, title, description, ac
         variant="destructive" 
         onClick={onClick} 
         disabled={isLoading}
-        className="rounded-xl shrink-0 font-medium"
+        className="rounded-[var(--radius-button)] shrink-0 font-medium"
       >
         {isLoading ? "Memproses..." : actionLabel}
       </Button>
     </div>
   );
 }
+
+

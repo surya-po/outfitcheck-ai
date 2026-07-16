@@ -90,7 +90,7 @@ export function PoseStatusPanel({
   const isActive = status === "tracking" || status === "partial" || status === "low-confidence" || status === "no-person";
 
   return (
-    <div className="rounded-2xl border border-[#FDF2F8] bg-white p-5 shadow-sm">
+    <div className="rounded-[var(--radius-card)] border border-[#FDF2F8] bg-white p-6 shadow-sm">
       <div className="flex items-center gap-2 mb-4">
         <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#FDF2F8] text-[#EC4899]">
           <Activity className="w-4 h-4" />
@@ -101,7 +101,7 @@ export function PoseStatusPanel({
       </div>
 
       {/* Status indicator */}
-      <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border mb-4 transition-all duration-500 ${colors.bg} ${colors.border}`}>
+      <div className={`flex items-center gap-3 px-4 py-3 rounded-[var(--radius-button)] border mb-4 transition-all duration-500 ${colors.bg} ${colors.border}`}>
         <div className="relative">
           <div className={`w-2.5 h-2.5 rounded-full ${colors.dot}`} />
           {status === "tracking" && (
@@ -122,7 +122,7 @@ export function PoseStatusPanel({
       {/* Stats grid */}
       <div className="grid grid-cols-2 gap-3">
         {/* Landmarks */}
-        <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-[#FFFAFC] border border-[#FDF2F8]">
+        <div className="flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius-button)] bg-[#FFFAFC] border border-[#FDF2F8]">
           <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-[#FDF2F8] text-[#EC4899]">
             <Eye className="w-3.5 h-3.5" />
           </div>
@@ -137,7 +137,7 @@ export function PoseStatusPanel({
         </div>
 
         {/* FPS */}
-        <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-[#FFFAFC] border border-[#FDF2F8]">
+        <div className="flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius-button)] bg-[#FFFAFC] border border-[#FDF2F8]">
           <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-[#FDF2F8] text-[#EC4899]">
             <Gauge className="w-3.5 h-3.5" />
           </div>
@@ -162,3 +162,5 @@ export function PoseStatusPanel({
     </div>
   );
 }
+
+

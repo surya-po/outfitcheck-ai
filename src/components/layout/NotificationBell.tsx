@@ -134,7 +134,7 @@ export function NotificationBell() {
         )}
       </DropdownMenuTrigger>
       
-      <DropdownMenuContent align="end" className="w-80 mt-2 rounded-xl border-[#FDF2F8] p-0 shadow-lg shadow-[#EC4899]/5 overflow-hidden">
+      <DropdownMenuContent align="end" className="w-80 mt-2 rounded-[var(--radius-button)] border-[#FDF2F8] p-0 shadow-sm shadow-[#EC4899]/5 overflow-hidden">
         <div className="p-3 bg-gray-50 dark:bg-gray-900 border-b flex justify-between items-center">
           <h3 className="font-semibold text-sm">Notifikasi</h3>
           <Link href="/notifications" className="text-xs text-[#EC4899] hover:underline">
@@ -174,3 +174,5 @@ export function NotificationBell() {
     </DropdownMenu>
   );
 }
+
+

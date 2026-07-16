@@ -11,27 +11,25 @@ export async function signInWithEmail(formData: FormData) {
   const password = formData.get("password") as string;
 
   if (!email || !password) {
-    return { error: "Email and password are required." };
+    return { error: "Email dan password wajib diisi." };
   }
 
+  // 1. Sign in with Supabase Auth
   const { error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
   if (error) {
-    console.error("Login error:", error.message);
-    // Return actual error so users know if they need to verify email
+    console.error("User Login error:", error.message);
     return { error: error.message };
   }
 
+  // 2. Handle remember me
   const remember = formData.get("remember") === "true";
-  
   if (!remember) {
     const cookieStore = await cookies();
     const allCookies = cookieStore.getAll();
-    
-    // Convert Supabase auth cookies to session cookies by removing maxAge
     allCookies.forEach((cookie) => {
       if (cookie.name.startsWith("sb-")) {
         cookieStore.set(cookie.name, cookie.value, {

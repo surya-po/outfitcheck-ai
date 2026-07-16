@@ -63,7 +63,7 @@ export function LoginForm() {
     <div className="animate-scale-in">
       {/* Logo & Tagline */}
       <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-[#F7A8B8] via-[#E88CA0] to-[#D86A84] shadow-lg shadow-[#F7A8B8]/30 mb-4 animate-float">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-[var(--radius-card)] bg-gradient-to-br from-[#F7A8B8] via-[#E88CA0] to-[#D86A84] shadow-sm shadow-[#F7A8B8]/30 mb-4 animate-float">
           <svg
             width="32"
             height="32"
@@ -92,7 +92,7 @@ export function LoginForm() {
             />
           </svg>
         </div>
-        <h1 className="text-2xl font-bold text-[#2D1F24] font-[family-name:var(--font-poppins)] tracking-tight">
+        <h1 className="text-2xl font-bold text-foreground font-[family-name:var(--font-poppins)] tracking-tight">
           OutfitCheck
           <span className="bg-gradient-to-r from-[#D86A84] to-[#E88CA0] bg-clip-text text-transparent">
             {" "}AI
@@ -104,8 +104,8 @@ export function LoginForm() {
       </div>
 
       {/* Card */}
-      <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl shadow-[#F7A8B8]/10 border border-[#F7A8B8]/20 p-8">
-        <h2 className="text-xl font-semibold text-[#2D1F24] font-[family-name:var(--font-poppins)] mb-1">
+      <div className="bg-white/80 backdrop-blur-xl rounded-[var(--radius-card)] shadow-xl shadow-[#F7A8B8]/10 border border-[#F7A8B8]/20 p-8">
+        <h2 className="text-xl font-semibold text-foreground font-[family-name:var(--font-poppins)] mb-1">
           Welcome back
         </h2>
         <p className="text-sm text-[#8C6B78] mb-6">
@@ -114,7 +114,7 @@ export function LoginForm() {
 
         {/* Error Message */}
         {error && (
-          <div className="mb-4 p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm animate-fade-in-up">
+          <div className="mb-4 p-3 rounded-[var(--radius-button)] bg-red-50 border border-red-200 text-red-600 text-sm animate-fade-in-up">
             <div className="flex items-center gap-2">
               <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
@@ -134,7 +134,7 @@ export function LoginForm() {
               Email
             </label>
             <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#C4A0AE] group-focus-within:text-[#D86A84] transition-colors">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-muted-foreground group-focus-within:text-[#D86A84] transition-colors">
                 <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                 </svg>
@@ -149,7 +149,7 @@ export function LoginForm() {
                 required
                 disabled={isLoading}
                 placeholder="you@example.com"
-                className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#FFF5F7] border border-[#F0D0D8] text-[#2D1F24] placeholder:text-[#C4A0AE] text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#F7A8B8] focus:border-[#E88CA0] focus:bg-white hover:border-[#E88CA0] disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full pl-12 pr-4 py-3 rounded-[var(--radius-button)] bg-background border border-border text-foreground placeholder:text-muted-foreground text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:bg-white hover:border-primary disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
           </div>
@@ -160,7 +160,7 @@ export function LoginForm() {
               Password
             </label>
             <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#C4A0AE] group-focus-within:text-[#D86A84] transition-colors">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-muted-foreground group-focus-within:text-[#D86A84] transition-colors">
                 <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
                 </svg>
@@ -173,7 +173,7 @@ export function LoginForm() {
                 required
                 disabled={isLoading}
                 placeholder="••••••••"
-                className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#FFF5F7] border border-[#F0D0D8] text-[#2D1F24] placeholder:text-[#C4A0AE] text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#F7A8B8] focus:border-[#E88CA0] focus:bg-white hover:border-[#E88CA0] disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full pl-12 pr-4 py-3 rounded-[var(--radius-button)] bg-background border border-border text-foreground placeholder:text-muted-foreground text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:bg-white hover:border-primary disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
           </div>
@@ -190,7 +190,7 @@ export function LoginForm() {
                   disabled={isLoading}
                   className="peer sr-only"
                 />
-                <div className="w-4.5 h-4.5 rounded-md border border-[#F0D0D8] bg-[#FFF5F7] peer-checked:bg-gradient-to-br peer-checked:from-[#F7A8B8] peer-checked:to-[#D86A84] peer-checked:border-transparent transition-all duration-300 group-hover:border-[#E88CA0]">
+                <div className="w-4.5 h-4.5 rounded-md border border-border bg-background peer-checked:bg-gradient-to-br peer-checked:from-[#F7A8B8] peer-checked:to-[#D86A84] peer-checked:border-transparent transition-all duration-300 group-hover:border-primary">
                   <svg
                     className="w-4.5 h-4.5 text-white opacity-0 peer-checked:opacity-100 transition-opacity"
                     fill="none"
@@ -226,7 +226,7 @@ export function LoginForm() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3 px-4 rounded-xl text-white font-semibold text-sm bg-gradient-to-r from-[#E88CA0] via-[#D86A84] to-[#C4506C] shadow-lg shadow-[#D86A84]/25 transition-all duration-300 hover:shadow-xl hover:shadow-[#D86A84]/30 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-lg relative overflow-hidden group"
+            className="w-full py-3 px-4 rounded-[var(--radius-button)] text-white font-semibold text-sm bg-gradient-to-r from-[#E88CA0] via-[#D86A84] to-[#C4506C] shadow-sm shadow-[#D86A84]/25 transition-all duration-300 hover:shadow-xl hover:shadow-[#D86A84]/30 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-sm relative overflow-hidden group"
           >
             <span className={`flex items-center justify-center gap-2 ${isPending ? 'opacity-0' : ''}`}>
               Sign In
@@ -244,7 +244,7 @@ export function LoginForm() {
         {/* Divider */}
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-[#F0D0D8]" />
+            <div className="w-full border-t border-border" />
           </div>
           <div className="relative flex justify-center text-xs">
             <span className="px-3 bg-white/80 text-[#8C6B78] tracking-wider uppercase">
@@ -257,10 +257,10 @@ export function LoginForm() {
           type="button"
           onClick={handleGoogleLogin}
           disabled={isLoading}
-          className="w-full py-3 px-4 rounded-xl bg-white border border-[#F0D0D8] text-[#2D1F24] font-medium text-sm transition-all duration-300 hover:border-[#E88CA0] hover:shadow-md hover:shadow-[#F7A8B8]/10 hover:scale-[1.01] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-3 relative overflow-hidden"
+          className="w-full py-3 px-4 rounded-[var(--radius-button)] bg-white border border-border text-foreground font-medium text-sm transition-all duration-300 hover:border-primary hover:shadow-sm hover:shadow-[#F7A8B8]/10 hover:scale-[1.01] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-3 relative overflow-hidden"
         >
           {isGooglePending ? (
-            <div className="w-5 h-5 border-2 border-[#E88CA0]/30 border-t-[#D86A84] rounded-full animate-spin" />
+            <div className="w-5 h-5 border-2 border-primary/30 border-t-[#D86A84] rounded-full animate-spin" />
           ) : (
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path
@@ -311,3 +311,6 @@ export function LoginForm() {
     </div>
   );
 }
+
+
+

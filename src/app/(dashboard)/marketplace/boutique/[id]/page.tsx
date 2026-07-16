@@ -60,8 +60,8 @@ export default async function BoutiqueProfilePage(
           
           {/* Logo */}
           <div className="shrink-0 group">
-            <div className="w-32 h-32 sm:w-40 sm:h-40 bg-white rounded-3xl p-2 shadow-[0_8px_30px_rgb(0,0,0,0.08)] ring-1 ring-black/5 transition-transform duration-500 group-hover:scale-105">
-              <div className="w-full h-full rounded-2xl overflow-hidden bg-gray-50 flex items-center justify-center text-gray-300">
+            <div className="w-32 h-32 sm:w-40 sm:h-40 bg-white rounded-[var(--radius-card)] p-2 shadow-[0_8px_30px_rgb(0,0,0,0.08)] ring-1 ring-black/5 transition-transform duration-500 group-hover:scale-105">
+              <div className="w-full h-full rounded-[var(--radius-card)] overflow-hidden bg-gray-50 flex items-center justify-center text-gray-300">
                 {boutique.logo ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={boutique.logo} alt="Logo" className="w-full h-full object-cover" />
@@ -97,7 +97,7 @@ export default async function BoutiqueProfilePage(
               <div className="flex flex-wrap gap-2">
                 {boutique.instagram && (
                   <a href={`https://instagram.com/${boutique.instagram.replace('@','')}`} target="_blank" rel="noreferrer" 
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-full text-sm font-medium hover:bg-gray-800 transition-all hover:-translate-y-0.5 hover:shadow-md">
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-full text-sm font-medium hover:bg-gray-800 transition-all hover:-translate-y-0.5 hover:shadow-sm">
                     <ExternalLink className="w-4 h-4" /> Instagram
                   </a>
                 )}
@@ -185,3 +185,5 @@ export default async function BoutiqueProfilePage(
     </div>
   );
 }
+
+

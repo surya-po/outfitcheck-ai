@@ -49,7 +49,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
         {/* Gallery Section */}
         <div className="space-y-4">
-          <div className="aspect-[3/4] rounded-3xl overflow-hidden bg-gray-100 border border-gray-200 relative">
+          <div className="aspect-[3/4] rounded-[var(--radius-card)] overflow-hidden bg-gray-100 border border-gray-200 relative">
             {images.length > 0 ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={images[0]} alt={product.name} className="w-full h-full object-cover" />
@@ -66,7 +66,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 productId={product.id} 
                 initialIsSaved={isSaved}
                 compatibilityScore={aiData?.score}
-                className="w-12 h-12 shadow-lg bg-white/80 border-none"
+                className="w-12 h-12 shadow-sm bg-white/80 border-none"
                 iconClassName="w-6 h-6"
               />
             </div>
@@ -75,7 +75,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
           {images.length > 1 && (
             <div className="flex gap-2 overflow-x-auto pb-2">
               {images.map((img, i) => (
-                <div key={i} className="w-20 h-24 shrink-0 rounded-xl overflow-hidden bg-gray-100 border border-gray-200 cursor-pointer hover:border-pink-500 transition-colors">
+                <div key={i} className="w-20 h-24 shrink-0 rounded-[var(--radius-button)] overflow-hidden bg-gray-100 border border-gray-200 cursor-pointer hover:border-pink-500 transition-colors">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={img} alt={`Gallery ${i+1}`} className="w-full h-full object-cover" />
                 </div>
@@ -120,7 +120,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
           {/* AI Compatibility Card */}
           {aiData ? (
-            <div className="bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-100 rounded-2xl p-5 relative overflow-hidden">
+            <div className="bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-100 rounded-[var(--radius-card)] p-6 relative overflow-hidden">
               <div className="absolute top-0 right-0 p-4 opacity-10">
                 <Sparkles className="w-24 h-24 text-pink-500" />
               </div>
@@ -153,7 +153,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               </div>
             </div>
           ) : (
-             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-5 flex flex-col sm:flex-row items-center gap-4 justify-between">
+             <div className="bg-gray-50 border border-gray-200 rounded-[var(--radius-card)] p-6 flex flex-col sm:flex-row items-center gap-4 justify-between">
                 <div>
                   <h3 className="font-semibold text-gray-900">Cek Kecocokan Produk</h3>
                   <p className="text-sm text-gray-500 mt-1">Lakukan Body Scan untuk melihat seberapa cocok produk ini dengan bentuk tubuh Anda.</p>
@@ -222,15 +222,49 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               </p>
             </div>
           )}
+
+          {/* Cara Order Section */}
+          <div className="bg-pink-50 border border-pink-100 rounded-[var(--radius-card)] p-6 mt-6">
+            <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+              <ShoppingBag className="w-4 h-4 text-pink-600" />
+              Cara Order
+            </h4>
+            <p className="text-sm text-gray-600 mb-4">
+              Produk ini dijual secara eksklusif oleh partner butik kami. Anda dapat langsung memesan atau menanyakan ketersediaan melalui:
+            </p>
+            <div className="flex flex-wrap gap-3">
+              {product.boutique?.phone && (
+                <Button asChild className="bg-green-600 hover:bg-green-700 text-white rounded-full">
+                  <a href={`https://wa.me/${product.boutique.phone.replace(/[^0-9]/g, '')}?text=Halo%20${encodeURIComponent(product.boutique.name)},%20saya%20ingin%20bertanya%20tentang%20produk%20${encodeURIComponent(product.name)}`} target="_blank" rel="noreferrer">
+                    Chat WhatsApp
+                  </a>
+                </Button>
+              )}
+              {product.boutique?.instagram && (
+                <Button asChild variant="outline" className="border-pink-200 text-pink-600 hover:bg-pink-50 rounded-full">
+                  <a href={`https://instagram.com/${product.boutique.instagram.replace('@','')}`} target="_blank" rel="noreferrer">
+                    DM Instagram
+                  </a>
+                </Button>
+              )}
+              {(!product.boutique?.phone && !product.boutique?.instagram) && product.boutique && (
+                <Button asChild className="bg-pink-600 hover:bg-pink-700 text-white rounded-full">
+                   <Link href={`/marketplace/boutique/${product.boutique.id}`}>
+                     Kunjungi Halaman Toko
+                   </Link>
+                </Button>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Boutique Info Section */}
       {product.boutique && (
         <div className="mt-12 pt-8 border-t border-gray-100">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-sm flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
-            <div className="flex items-center gap-5">
-              <div className="w-16 h-16 bg-[#FDF2F8] rounded-2xl flex items-center justify-center text-pink-500 shrink-0">
+          <div className="bg-white rounded-[var(--radius-card)] p-6 sm:p-8 border border-gray-100 shadow-sm flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
+            <div className="flex items-center gap-6">
+              <div className="w-16 h-16 bg-[#FDF2F8] rounded-[var(--radius-card)] flex items-center justify-center text-pink-500 shrink-0">
                 <Store className="w-8 h-8" />
               </div>
               <div>
@@ -283,3 +317,5 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 }
 
 import { Sparkles } from "lucide-react";
+
+

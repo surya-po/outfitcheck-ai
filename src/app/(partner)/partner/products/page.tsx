@@ -25,8 +25,8 @@ export default async function ProductsPage() {
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-2">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Katalog Produk</h1>
-        <p className="text-gray-500 dark:text-gray-400">Kelola semua produk butik Anda. Pastikan detail produk lengkap untuk hasil rekomendasi AI yang maksimal.</p>
+        <h1 className="text-2xl font-heading font-bold text-foreground">Katalog Produk</h1>
+        <p className="text-muted-foreground">Kelola semua produk butik Anda. Pastikan detail produk lengkap untuk hasil rekomendasi AI yang maksimal.</p>
       </div>
 
 
@@ -35,3 +35,6 @@ export default async function ProductsPage() {
     </div>
   );
 }
+
+
+

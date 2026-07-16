@@ -63,8 +63,8 @@ export function SettingsClient() {
       <div className="space-y-6">
 
         {/* Privacy */}
-        <Card className="p-6 border-[#FDF2F8] dark:border-gray-800">
-          <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100 dark:border-gray-800">
+        <Card className="p-6 border-border/60 border-border/60">
+          <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100 border-border/60">
             <Eye className="w-5 h-5 text-gray-400" />
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Profil Publik & Keamanan</h2>
           </div>
@@ -78,7 +78,7 @@ export function SettingsClient() {
               <Switch defaultChecked />
             </div>
             
-            <div className="pt-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between border-t border-gray-100 dark:border-gray-800">
+            <div className="pt-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between border-t border-gray-100 border-border/60">
               <div>
                 <h4 className="text-sm font-medium text-gray-900 dark:text-white">Kata Sandi Akun</h4>
                 <p className="text-xs text-gray-500 mt-1">Terakhir diubah 3 bulan lalu.</p>
@@ -160,3 +160,6 @@ export function SettingsClient() {
     </div>
   );
 }
+
+
+

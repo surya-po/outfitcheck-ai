@@ -57,7 +57,7 @@ export default async function PartnerLayout({
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#FFF7FB] dark:bg-gray-950">
+    <div className="flex h-screen overflow-hidden bg-background">
       {/* Sidebar (Desktop) */}
       <PartnerSidebar />
 
@@ -72,3 +72,6 @@ export default async function PartnerLayout({
     </div>
   );
 }
+
+
+

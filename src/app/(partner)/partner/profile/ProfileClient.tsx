@@ -77,14 +77,14 @@ export default function ProfileClient({ initialData }: Props) {
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       {/* Visual Assets */}
-      <Card className="p-6 border-[#FDF2F8] dark:border-gray-800">
+      <Card className="p-6 border-border/60 border-border/60">
         <h3 className="text-lg font-semibold mb-4">Aset Visual</h3>
         <div className="space-y-6">
           {/* Banner */}
           <div>
             <label className="block text-sm font-medium mb-2">Banner Butik (Disarankan 16:9)</label>
             {formData.banner ? (
-              <div className="relative w-full h-48 rounded-xl overflow-hidden group">
+              <div className="relative w-full h-48 rounded-[var(--radius-button)] overflow-hidden group">
                 <img src={formData.banner} alt="Banner" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <Button type="button" variant="destructive" onClick={() => handleRemoveImage("banner")} disabled={isProcessing}>
@@ -93,9 +93,9 @@ export default function ProfileClient({ initialData }: Props) {
                 </div>
               </div>
             ) : (
-              <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-[#FDF2F8] dark:border-gray-800 rounded-xl cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors">
+              <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-border/60 border-border/60 rounded-[var(--radius-button)] cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors">
                 <div className="flex flex-col items-center justify-center pt-5 pb-6 text-gray-500">
-                  <Upload className="w-8 h-8 mb-3 text-[#EC4899]" />
+                  <Upload className="w-8 h-8 mb-3 text-primary" />
                   <p className="mb-2 text-sm font-semibold">Klik untuk unggah banner</p>
                   <p className="text-xs">SVG, PNG, JPG atau GIF (Maks. 5MB)</p>
                 </div>
@@ -108,17 +108,17 @@ export default function ProfileClient({ initialData }: Props) {
           <div className="flex items-end gap-6">
             <div className="shrink-0 relative group">
               {formData.logo ? (
-                <div className="w-32 h-32 rounded-2xl overflow-hidden border-4 border-white dark:border-gray-950 shadow-md">
+                <div className="w-32 h-32 rounded-[var(--radius-card)] overflow-hidden border-4 border-white border-border/60 shadow-sm">
                   <img src={formData.logo} alt="Logo" className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-2xl">
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-[var(--radius-card)]">
                     <button type="button" onClick={() => handleRemoveImage("logo")} className="text-white hover:text-red-500 transition-colors" disabled={isProcessing}>
                       <X className="w-8 h-8" />
                     </button>
                   </div>
                 </div>
               ) : (
-                <label className="w-32 h-32 rounded-2xl border-2 border-dashed border-[#FDF2F8] dark:border-gray-800 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors shadow-sm">
-                  <Upload className="w-6 h-6 mb-2 text-[#EC4899]" />
+                <label className="w-32 h-32 rounded-[var(--radius-card)] border-2 border-dashed border-border/60 border-border/60 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors shadow-sm">
+                  <Upload className="w-6 h-6 mb-2 text-primary" />
                   <span className="text-xs font-medium text-gray-500">Logo</span>
                   <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload(e, "logo")} disabled={isProcessing} />
                 </label>
@@ -132,7 +132,7 @@ export default function ProfileClient({ initialData }: Props) {
       </Card>
 
       {/* Basic Info */}
-      <Card className="p-6 border-[#FDF2F8] dark:border-gray-800">
+      <Card className="p-6 border-border/60 border-border/60">
         <h3 className="text-lg font-semibold mb-4">Informasi Dasar</h3>
         <div className="space-y-4">
           <div>
@@ -141,7 +141,7 @@ export default function ProfileClient({ initialData }: Props) {
               <Store className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input 
                 required
-                className="pl-9"
+                className="pl-10"
                 value={formData.name || ""}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="Contoh: Zara Jakarta"
@@ -161,7 +161,7 @@ export default function ProfileClient({ initialData }: Props) {
       </Card>
 
       {/* Contact & Location */}
-      <Card className="p-6 border-[#FDF2F8] dark:border-gray-800">
+      <Card className="p-6 border-border/60 border-border/60">
         <h3 className="text-lg font-semibold mb-4">Kontak & Lokasi</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -169,7 +169,7 @@ export default function ProfileClient({ initialData }: Props) {
             <div className="relative">
               <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input 
-                className="pl-9"
+                className="pl-10"
                 value={formData.phone || ""}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 placeholder="6281234567890"
@@ -181,7 +181,7 @@ export default function ProfileClient({ initialData }: Props) {
             <div className="relative">
               <AtSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input 
-                className="pl-9"
+                className="pl-10"
                 value={formData.instagram || ""}
                 onChange={(e) => setFormData({ ...formData, instagram: e.target.value })}
                 placeholder="@username"
@@ -194,7 +194,7 @@ export default function ProfileClient({ initialData }: Props) {
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input 
                 type="email"
-                className="pl-9"
+                className="pl-10"
                 value={formData.email || ""}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="contact@butik.com"
@@ -206,7 +206,7 @@ export default function ProfileClient({ initialData }: Props) {
             <div className="relative">
               <Globe className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input 
-                className="pl-9"
+                className="pl-10"
                 value={formData.website || ""}
                 onChange={(e) => setFormData({ ...formData, website: e.target.value })}
                 placeholder="https://www.butik.com"
@@ -226,7 +226,7 @@ export default function ProfileClient({ initialData }: Props) {
             <div className="relative">
               <MapPin className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
               <Textarea 
-                className="pl-9"
+                className="pl-10"
                 rows={3}
                 value={formData.address || ""}
                 onChange={(e) => setFormData({ ...formData, address: e.target.value })}
@@ -265,3 +265,6 @@ export default function ProfileClient({ initialData }: Props) {
     </form>
   );
 }
+
+
+

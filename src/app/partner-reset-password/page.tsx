@@ -9,3 +9,5 @@ export const metadata: Metadata = {
 export default function PartnerResetPasswordPage() {
   return <PartnerResetPasswordForm />;
 }
+
+

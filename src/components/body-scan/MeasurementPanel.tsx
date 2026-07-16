@@ -50,7 +50,7 @@ const RatioRow = ({ label, metric }: { label: string; metric: MeasurementValue }
 export function MeasurementPanel({ result }: MeasurementPanelProps) {
   if (!result || !result.measurements) {
     return (
-      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 shadow-xl w-full max-w-sm h-full flex flex-col items-center justify-center text-center">
+      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-[var(--radius-card)] p-6 shadow-xl w-full max-w-sm h-full flex flex-col items-center justify-center text-center">
         <Ruler className="h-10 w-10 text-white/50 mb-3" />
         <p className="text-white/70 font-medium">Menunggu scan tubuh...</p>
       </div>
@@ -62,7 +62,7 @@ export function MeasurementPanel({ result }: MeasurementPanelProps) {
 
 
   return (
-    <div className="bg-[#1E1E2D]/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl w-full max-w-sm flex flex-col overflow-hidden animate-in fade-in slide-in-from-right-4 duration-500">
+    <div className="bg-[#1E1E2D]/80 backdrop-blur-xl border border-white/10 rounded-[var(--radius-card)] shadow-2xl w-full max-w-sm flex flex-col overflow-hidden animate-in fade-in slide-in-from-right-4 duration-500">
       <div className="bg-gradient-to-r from-[#EC4899]/20 to-[#F472B6]/10 p-4 border-b border-white/10 flex items-center gap-3">
         <div className="bg-[#EC4899] p-2 rounded-lg">
           <Ruler className="h-5 w-5 text-white" />
@@ -102,3 +102,5 @@ export function MeasurementPanel({ result }: MeasurementPanelProps) {
     </div>
   );
 }
+
+

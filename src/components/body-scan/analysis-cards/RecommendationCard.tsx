@@ -11,7 +11,7 @@ function RecommendationSection({ title, emoji, items, onViewDetail, savedProduct
   if (items.length === 0) return null;
   return (
     <div className="mb-6">
-      <h3 className="text-white font-bold text-sm mb-3 flex items-center gap-2">
+      <h3 className="text-foreground font-bold text-sm mb-3 flex items-center gap-2">
         <span>{emoji}</span> {title}
       </h3>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
@@ -41,24 +41,31 @@ export function RecommendationCard({ result, products = [], savedProductIds = ne
   const alternatives = products.slice(6);
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 shadow-sm backdrop-blur-sm sm:col-span-2">
+    <div className="rounded-[var(--radius-card)] border border-border/60 bg-card p-4 sm:p-6 shadow-sm backdrop-blur-sm">
       <div className="flex items-center gap-3 mb-6">
-        <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-[#EC4899] to-[#F472B6] text-white">
+        <div className="flex items-center justify-center w-10 h-10 rounded-[var(--radius-button)] bg-gradient-to-br from-primary to-[#E14D72] text-primary-foreground">
           <Sparkles className="w-5 h-5" />
         </div>
         <div>
-          <h2 className="text-lg font-bold text-white">Rekomendasi Fashion AI</h2>
-          <p className="text-xs text-white/60">Gaya personal yang disesuaikan khusus untuk Anda berdasarkan data Butik terverifikasi.</p>
+          <h2 className="text-lg font-bold text-foreground">Rekomendasi Fashion AI</h2>
+          <p className="text-xs text-muted-foreground">Gaya personal yang disesuaikan khusus untuk Anda berdasarkan data Butik terverifikasi.</p>
         </div>
       </div>
 
-      <div className="bg-[#EC4899]/10 border border-[#EC4899]/20 rounded-xl p-4 mb-6">
-        <div className="flex items-center gap-2 mb-2">
-          <span className="text-xl">🎯</span>
-          <span className="text-sm uppercase tracking-wider text-[#EC4899] font-bold">Gaya yang Direkomendasikan</span>
+      <div className="bg-primary/10 border border-primary/20 rounded-[var(--radius-card)] p-4 mb-6">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <span className="text-xl">🎯</span>
+            <span className="text-sm uppercase tracking-wider text-primary font-bold">Gaya yang Direkomendasikan</span>
+          </div>
+          {result.fashionPreference && (
+            <span className="text-xs font-semibold px-2 py-1 bg-primary/20 text-primary rounded-full uppercase">
+              {result.fashionPreference}
+            </span>
+          )}
         </div>
-        <div className="text-xl font-bold text-white mb-2">{result.primaryStyle}</div>
-        <div className="text-xs text-white/70">Alternatif: {result.alternativeStyles.join(", ")}</div>
+        <div className="text-xl font-bold text-foreground mb-2">{result.primaryStyle}</div>
+        <div className="text-xs text-muted-foreground">Alternatif: {result.alternativeStyles.join(", ")}</div>
       </div>
 
       <RecommendationSection title="Best Match" emoji="⭐" items={bestMatches} onViewDetail={setSelectedProduct} savedProductIds={savedProductIds} onToggleFavorite={onToggleFavorite} />
@@ -67,30 +74,30 @@ export function RecommendationCard({ result, products = [], savedProductIds = ne
 
       <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Palet Warna */}
-        <div className="bg-white/5 border border-white/10 rounded-xl p-4">
-          <h3 className="text-white font-bold text-sm mb-3 flex items-center gap-2">
+        <div className="bg-secondary border border-border/60 rounded-[var(--radius-button)] p-4">
+          <h3 className="text-foreground font-bold text-sm mb-3 flex items-center gap-2">
             <span>🎨</span> Palet Warna
           </h3>
           <div className="flex flex-wrap gap-2">
             {result.recommendedColors.map((color, idx) => (
-              <div key={idx} className="flex items-center gap-2 bg-black/20 pr-3 rounded-full overflow-hidden border border-white/5">
+              <div key={idx} className="flex items-center gap-2 bg-background pr-3 rounded-full overflow-hidden border border-border/60 shadow-sm">
                 <div className="w-6 h-6" style={{ backgroundColor: color.hex }} />
-                <span className="text-xs text-white/80">{color.name}</span>
+                <span className="text-xs text-muted-foreground">{color.name}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Warna Dihindari */}
-        <div className="bg-white/5 border border-white/10 rounded-xl p-4">
-          <h3 className="text-white font-bold text-sm mb-3 flex items-center gap-2">
+        <div className="bg-secondary border border-border/60 rounded-[var(--radius-button)] p-4">
+          <h3 className="text-foreground font-bold text-sm mb-3 flex items-center gap-2">
             <span>🚫</span> Hindari Warna
           </h3>
           <div className="flex flex-wrap gap-2">
             {result.avoidColors.map((color, idx) => (
-              <div key={idx} className="flex items-center gap-2 bg-black/20 pr-3 rounded-full overflow-hidden border border-white/5">
+              <div key={idx} className="flex items-center gap-2 bg-background pr-3 rounded-full overflow-hidden border border-border/60 shadow-sm">
                 <div className="w-6 h-6" style={{ backgroundColor: color.hex }} />
-                <span className="text-xs text-white/80">{color.name}</span>
+                <span className="text-xs text-muted-foreground">{color.name}</span>
               </div>
             ))}
           </div>
@@ -98,23 +105,23 @@ export function RecommendationCard({ result, products = [], savedProductIds = ne
       </div>
 
       <div className="mb-6">
-        <h3 className="text-white font-bold text-sm mb-3 flex items-center gap-2">
+        <h3 className="text-foreground font-bold text-sm mb-3 flex items-center gap-2">
           <span>💡</span> Tips Fashion Personal
         </h3>
         <ul className="space-y-2">
           {result.tips.map((tip, idx) => (
-            <li key={idx} className="flex items-start gap-2 text-sm text-white/80">
-              <span className="text-[#EC4899]">•</span> {tip}
+            <li key={idx} className="flex items-start gap-2 text-sm text-muted-foreground">
+              <span className="text-primary">•</span> {tip}
             </li>
           ))}
         </ul>
       </div>
 
-      <div className="bg-white/5 border border-white/10 rounded-xl p-4">
-        <h3 className="text-white font-bold text-sm mb-2 flex items-center gap-2">
+      <div className="bg-secondary border border-border/60 rounded-[var(--radius-button)] p-4">
+        <h3 className="text-foreground font-bold text-sm mb-2 flex items-center gap-2">
           <span>📝</span> Ringkasan AI
         </h3>
-        <p className="text-sm text-white/70 leading-relaxed">
+        <p className="text-sm text-muted-foreground leading-relaxed">
           {result.summary}
         </p>
       </div>
@@ -128,3 +135,7 @@ export function RecommendationCard({ result, products = [], savedProductIds = ne
     </div>
   );
 }
+
+
+
+

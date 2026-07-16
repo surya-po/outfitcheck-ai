@@ -102,10 +102,9 @@ export async function signUpWithEmail(data: {
 export async function signUpWithGoogle() {
   const supabase = await createClient();
   const headersList = await headers();
-  const origin =
-    headersList.get("origin") ||
-    process.env.NEXT_PUBLIC_APP_URL ||
-    "http://localhost:3000";
+  const host = headersList.get("x-forwarded-host") || headersList.get("host") || "localhost:3000";
+  const proto = headersList.get("x-forwarded-proto") || "http";
+  const origin = `${proto}://${host}`;
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",

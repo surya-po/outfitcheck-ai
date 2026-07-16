@@ -30,7 +30,7 @@ export function LivePreviewCard({ formData, thumbnailUrl, categories }: Props) {
         <h3 className="font-semibold text-gray-700 dark:text-gray-300">Live Preview</h3>
       </div>
       
-      <Card className="overflow-hidden border-[#FDF2F8] dark:border-gray-800 shadow-lg hover:shadow-xl transition-shadow bg-white dark:bg-black">
+      <Card className="overflow-hidden border-[#FDF2F8] dark:border-gray-800 shadow-sm hover:shadow-xl transition-shadow bg-white dark:bg-black">
         {/* Image */}
         <div className="relative aspect-[3/4] w-full bg-gray-100 dark:bg-gray-900 overflow-hidden">
           {thumbnailUrl ? (
@@ -61,7 +61,7 @@ export function LivePreviewCard({ formData, thumbnailUrl, categories }: Props) {
 
           {/* Discount Badge */}
           {formData.discountPrice && parseInt(formData.discountPrice) > 0 && parseInt(formData.price) > 0 && (
-            <div className="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md">
+            <div className="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm">
               {Math.round((1 - parseInt(formData.discountPrice) / parseInt(formData.price)) * 100)}% OFF
             </div>
           )}
@@ -158,3 +158,5 @@ function EyeIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   )
 }
+
+

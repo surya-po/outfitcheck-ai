@@ -60,8 +60,67 @@ export class FashionRecommendationEngine {
       accessories = femaleAccessories;
     }
 
+    const fashionPreference = profile.fashionPreference || "STANDARD";
+    const isWearingHijab = profile.isWearingHijab || false;
+    const isModest = fashionPreference === "MODEST" || isWearingHijab;
+
+    // --- RULE ENGINE: CANDIDATE FILTERING ---
+    const filterRules = (rules: { type: string; style: string; fit: string; reason: string }[]) => {
+      if (!isModest) return rules;
+      
+      const { modestBlockedItems } = require("./recommendation-rules");
+      const blockedLower = modestBlockedItems.map((item: string) => item.toLowerCase());
+      
+      return rules.filter(rule => {
+        const typeLower = rule.type.toLowerCase();
+        const styleLower = rule.style.toLowerCase();
+        
+        // Strict elimination: if any keyword matches, block it completely
+        const isBlocked = blockedLower.some((blocked: string) => 
+          typeLower.includes(blocked) || styleLower.includes(blocked)
+        );
+        return !isBlocked;
+      });
+    };
+
+    const filteredTops = filterRules(clothingRules.tops);
+    const filteredBottoms = filterRules(clothingRules.bottoms);
+    const filteredOuters = filterRules(clothingRules.outers);
+
+    // If modest, inject modest priorities if not already present
+    if (isModest) {
+      // Add a default long sleeve tunic as high priority top if not enough tops
+      if (filteredTops.length < 2) {
+        filteredTops.unshift({
+          type: "Atasan",
+          style: "Long Sleeve Tunic",
+          fit: "Relaxed Fit",
+          reason: "Tunik lengan panjang memberikan siluet yang proporsional, anggun, dan tertutup."
+        });
+      }
+      // Add wide leg pants as high priority bottom
+      if (filteredBottoms.length < 2) {
+        filteredBottoms.unshift({
+          type: "Celana",
+          style: "Wide Leg Pants",
+          fit: "Relaxed Fit",
+          reason: "Potongan celana yang longgar memberikan keseimbangan yang sangat baik untuk siluet yang elegan."
+        });
+      }
+      // Add Long Outer
+      if (filteredOuters.length < 2) {
+        filteredOuters.unshift({
+          type: "Outer",
+          style: "Long Outerwear",
+          fit: "Regular Fit",
+          reason: "Outer panjang memberikan lapisan tambahan yang menciptakan dimensi dan siluet yang terstruktur."
+        });
+      }
+    }
+
+
     // ── Tops ──
-    clothingRules.tops.forEach((rule, index) => {
+    filteredTops.forEach((rule, index) => {
       recommendations.push({
         category: "top",
         type: rule.type,
@@ -75,7 +134,7 @@ export class FashionRecommendationEngine {
     });
 
     // ── Bottoms ──
-    clothingRules.bottoms.forEach((rule, index) => {
+    filteredBottoms.forEach((rule, index) => {
       recommendations.push({
         category: "bottom",
         type: rule.type,
@@ -89,7 +148,7 @@ export class FashionRecommendationEngine {
     });
 
     // ── Outers ──
-    clothingRules.outers.forEach((rule, index) => {
+    filteredOuters.forEach((rule, index) => {
       recommendations.push({
         category: "outer",
         type: rule.type,
@@ -143,6 +202,8 @@ export class FashionRecommendationEngine {
     return {
       gender,
       fashionPersona,
+      fashionPreference,
+      isWearingHijab,
       primaryStyle: styleInfo.primary,
       alternativeStyles: styleInfo.alternatives,
       recommendations,
@@ -211,9 +272,17 @@ export class FashionRecommendationEngine {
     } else {
       colorAdvice = `Berdasarkan analisis warna kulit ${skinTone}, palet warna netral dan earth tone yang lembut akan memberikan tampilan yang harmonis.`;
     }
+    
+    // Fashion Preference & Modesty context
+    let preferenceDesc = `Karakter fashion Anda cenderung mengarah pada ${personaDesc}.`;
+    if (profile.isWearingHijab || profile.fashionPreference === "MODEST") {
+      preferenceDesc = `Analisis menunjukkan preferensi terhadap Modest Fashion, sehingga pilihan pakaian difokuskan pada potongan berlapis (layering) yang anggun, tertutup, dan nyaman.`;
+    } else if (profile.fashionPreference) {
+      preferenceDesc = `Karakter fashion Anda difokuskan pada gaya ${profile.fashionPreference.toLowerCase()} yang mendukung aktivitas dan persona Anda.`;
+    }
 
-    const paragraph1 = `${shapeDesc} Berdasarkan analisis AI, karakter fashion Anda cenderung mengarah pada ${personaDesc}. ${profile.shape.details}`;
-    const paragraph2 = `${colorAdvice} Kombinasi ini akan membantu Anda tampil dengan siluet yang proporsional, bersih, dan memiliki kesan yang modern sekaligus nyaman sepanjang hari.`;
+    const paragraph1 = `${shapeDesc} ${preferenceDesc} ${profile.shape.details}`;
+    const paragraph2 = `${colorAdvice} Kombinasi ini akan membantu Anda tampil dengan siluet yang proporsional, bersih, dan memiliki kesan modern sesuai dengan kebutuhan Anda.`;
 
     return `${paragraph1}\n\n${paragraph2}`;
   }

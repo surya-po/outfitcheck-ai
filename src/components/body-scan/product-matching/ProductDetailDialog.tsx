@@ -17,7 +17,7 @@ export function ProductDetailDialog({ product, onClose }: ProductDetailDialogPro
       />
       
       {/* Dialog Content */}
-      <div className="relative w-full max-w-2xl bg-[#1E1E2D] border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200">
+      <div className="relative w-full max-w-2xl bg-[#1E1E2D] border border-white/10 rounded-[var(--radius-card)] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200">
         
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-white/10 bg-white/5">
@@ -33,12 +33,12 @@ export function ProductDetailDialog({ product, onClose }: ProductDetailDialogPro
         </div>
 
         {/* Scrollable Body */}
-        <div className="overflow-y-auto p-5 sm:p-6 custom-scrollbar">
+        <div className="overflow-y-auto p-6 sm:p-6 custom-scrollbar">
           
           {/* Main Info */}
           <div className="flex flex-col sm:flex-row gap-6 mb-8">
             {/* Image */}
-            <div className="w-full sm:w-1/3 aspect-[3/4] rounded-xl overflow-hidden bg-black/50 border border-white/5 flex-shrink-0">
+            <div className="w-full sm:w-1/3 aspect-[3/4] rounded-[var(--radius-button)] overflow-hidden bg-black/50 border border-white/5 flex-shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img 
                 src={product.image} 
@@ -61,7 +61,7 @@ export function ProductDetailDialog({ product, onClose }: ProductDetailDialogPro
                 </div>
               </div>
 
-              <div className="bg-white/5 rounded-xl p-3 border border-white/5">
+              <div className="bg-white/5 rounded-[var(--radius-button)] p-3 border border-white/5">
                 <div className="flex items-start gap-2">
                   <Info className="w-4 h-4 text-white/50 mt-0.5" />
                   <div>
@@ -114,7 +114,7 @@ export function ProductDetailDialog({ product, onClose }: ProductDetailDialogPro
               )}
             </div>
 
-            <div className="bg-black/20 rounded-xl p-4 border border-white/5">
+            <div className="bg-black/20 rounded-[var(--radius-button)] p-4 border border-white/5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6">
                 
                 <div className="flex items-start gap-3">
@@ -191,7 +191,7 @@ export function ProductDetailDialog({ product, onClose }: ProductDetailDialogPro
         <div className="p-4 border-t border-white/10 bg-white/5 flex justify-end">
           <Button 
             onClick={onClose}
-            className="w-full sm:w-auto bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-xl"
+            className="w-full sm:w-auto bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-[var(--radius-button)]"
           >
             Tutup
           </Button>
@@ -200,3 +200,5 @@ export function ProductDetailDialog({ product, onClose }: ProductDetailDialogPro
     </div>
   );
 }
+
+

@@ -56,45 +56,43 @@ export async function updateSession(request: NextRequest) {
     pathname.startsWith("/api/") ||
     pathname === "/partner-login"; // Partner login is also public
 
+  // Helper to ensure redirects use the correct domain
+  const getRedirectUrl = (path: string) => {
+    const url = request.nextUrl.clone();
+    url.pathname = path;
+    url.search = ""; // clear query params if needed, or leave it depending on usage. Actually, just clear them to be safe for basic redirects.
+    return url;
+  };
+
   // --- Partner routes: redirect to /partner-login if not authenticated ---
   const isPartnerRoute =
     pathname.startsWith("/partner/") && pathname !== "/partner-login";
 
   if (!user && isPartnerRoute) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/partner-login";
-    return NextResponse.redirect(url);
+    return NextResponse.redirect(getRedirectUrl("/partner-login"));
   }
 
   // If already logged in and trying to access /partner-login → redirect to partner dashboard
   if (user && pathname === "/partner-login") {
     // Prevent redirect loop if they were just redirected here due to unauthorized access
     if (!request.nextUrl.searchParams.has("error")) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/partner/dashboard";
-      return NextResponse.redirect(url);
+      return NextResponse.redirect(getRedirectUrl("/partner/dashboard"));
     }
   }
 
   // --- Regular routes: redirect to /login if not authenticated ---
   if (!user && !isPublicRoute) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    return NextResponse.redirect(url);
+    return NextResponse.redirect(getRedirectUrl("/login"));
   }
 
   // Redirect authenticated users away from landing and auth pages (not partner login)
   if (user && (pathname === "/" || pathname === "/login" || pathname === "/register")) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/dashboard";
-    return NextResponse.redirect(url);
+    return NextResponse.redirect(getRedirectUrl("/dashboard"));
   }
 
   // Fallback: If Supabase redirects to /?code=... due to misconfigured Redirect URIs
   if (pathname === "/" && request.nextUrl.searchParams.has("code")) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/auth/callback";
-    return NextResponse.redirect(url);
+    return NextResponse.redirect(getRedirectUrl("/auth/callback"));
   }
 
   return supabaseResponse;

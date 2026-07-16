@@ -51,7 +51,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row items-center gap-4 mt-4 animate-in fade-in slide-in-from-bottom-10 duration-700 delay-500">
             <Link
               href="/register"
-              className="group flex h-14 w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-primary px-8 text-primary-foreground font-semibold text-lg transition-all hover:bg-primary/90 hover:scale-105 active:scale-95 shadow-lg shadow-primary/25"
+              className="group flex h-14 w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-primary px-8 text-primary-foreground font-semibold text-lg transition-all hover:bg-primary/90 hover:scale-105 active:scale-95 shadow-sm shadow-primary/25"
             >
               Mulai Gratis
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -84,8 +84,8 @@ export default function Home() {
               icon: Sparkles,
             },
           ].map((feature, i) => (
-            <div key={i} className="flex flex-col items-center sm:items-start text-center sm:text-left p-6 rounded-3xl bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-100 dark:border-zinc-800/50 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors">
-              <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
+            <div key={i} className="flex flex-col items-center sm:items-start text-center sm:text-left p-6 rounded-[var(--radius-card)] bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-100 dark:border-zinc-800/50 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors">
+              <div className="w-12 h-12 rounded-[var(--radius-card)] bg-primary/10 flex items-center justify-center mb-6">
                 <feature.icon className="w-6 h-6 text-primary" />
               </div>
               <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-50 mb-3">{feature.title}</h3>
@@ -97,3 +97,5 @@ export default function Home() {
     </div>
   );
 }
+
+

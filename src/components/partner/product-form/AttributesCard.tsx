@@ -89,7 +89,7 @@ export function AttributesCard({ formData, onChange, onMultiSelectChange, isProc
               onClick={() => onMultiSelectChange("sizes", size)}
               className={`px-4 py-2 rounded-full text-xs font-semibold transition-all border ${
                 formData.sizes.includes(size)
-                  ? 'bg-[#EC4899] text-white border-[#EC4899] shadow-md'
+                  ? 'bg-[#EC4899] text-white border-[#EC4899] shadow-sm'
                   : 'bg-white text-gray-700 border-gray-200 hover:border-[#EC4899] hover:text-[#EC4899]'
               }`}
             >
@@ -112,7 +112,7 @@ export function AttributesCard({ formData, onChange, onMultiSelectChange, isProc
               onClick={() => onMultiSelectChange("colors", color)}
               className={`px-4 py-2 rounded-full text-xs font-semibold transition-all border ${
                 formData.colors.includes(color)
-                  ? 'bg-[#EC4899] text-white border-[#EC4899] shadow-md'
+                  ? 'bg-[#EC4899] text-white border-[#EC4899] shadow-sm'
                   : 'bg-white text-gray-700 border-gray-200 hover:border-[#EC4899] hover:text-[#EC4899]'
               }`}
             >
@@ -124,3 +124,5 @@ export function AttributesCard({ formData, onChange, onMultiSelectChange, isProc
     </Card>
   );
 }
+
+

@@ -24,7 +24,7 @@ import { deleteAllScanHistory } from "@/app/actions/history";
 import { changeUserPassword } from "@/app/actions/settings";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function SettingsClient({ user, profile, stats }: any) {
+export function SettingsClient({ user, profile, stats, isEmailUser = true }: any) {
   const router = useRouter();
   const supabase = createClient();
   
@@ -158,34 +158,17 @@ export function SettingsClient({ user, profile, stats }: any) {
             </div>
             
             <div className="flex gap-3">
-              <Button onClick={() => router.push("/profile")} className="w-full bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-xl">
+              <Button onClick={() => router.push("/profile")} className="w-full bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-[var(--radius-button)]">
                 Edit Profil
               </Button>
-              <Button onClick={() => router.push("/profile")} variant="outline" className="w-full rounded-xl">
+              <Button onClick={() => router.push("/profile")} variant="outline" className="w-full rounded-[var(--radius-button)]">
                 Lihat Profil
               </Button>
             </div>
           </SettingsSection>
 
-          {/* 2. TAMPILAN */}
-          <SettingsSection title="Tampilan" description="Sesuaikan tema aplikasi." icon={Palette}>
-            <SettingsSelect 
-              storageKey="theme"
-              label="Tema Aplikasi"
-              defaultValue="system"
-              options={[
-                { label: "Terang (Light)", value: "light" },
-                { label: "Gelap (Dark)", value: "dark" },
-                { label: "Mengikuti Sistem", value: "system" },
-              ]}
-            />
-          </SettingsSection>
 
-        </div>
 
-        {/* RIGHT COLUMN */}
-        <div className="space-y-6">
-          
           {/* 5. PRIVASI */}
           <SettingsSection title="Privasi" description="Kontrol data dan privasi Anda." icon={Shield}>
             <div className="divide-y divide-gray-50">
@@ -195,14 +178,19 @@ export function SettingsClient({ user, profile, stats }: any) {
             </div>
           </SettingsSection>
 
+        </div>
+
+        {/* RIGHT COLUMN */}
+        <div className="space-y-6">
+
           {/* 6. PENYIMPANAN */}
           <SettingsSection title="Penyimpanan" description="Kelola data dan memori aplikasi." icon={HardDrive}>
             <div className="grid grid-cols-2 gap-4 mb-6">
-              <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100">
+              <div className="bg-gray-50 p-4 rounded-[var(--radius-card)] border border-gray-100">
                 <span className="text-xs text-gray-500 font-medium block mb-1">Total Scan</span>
                 <span className="text-xl font-bold text-gray-900">{stats.scans}</span>
               </div>
-              <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100">
+              <div className="bg-gray-50 p-4 rounded-[var(--radius-card)] border border-gray-100">
                 <span className="text-xs text-gray-500 font-medium block mb-1">Outfit Favorit</span>
                 <span className="text-xl font-bold text-gray-900">{stats.outfits}</span>
               </div>
@@ -235,7 +223,7 @@ export function SettingsClient({ user, profile, stats }: any) {
           {/* 9. KEAMANAN */}
           <SettingsSection title="Keamanan" description="Pengaturan sesi dan kata sandi." icon={Lock}>
             <div className="space-y-4 mb-6">
-              <div className="flex justify-between items-center p-4 bg-gray-50 rounded-2xl border border-gray-100">
+              <div className="flex justify-between items-center p-4 bg-gray-50 rounded-[var(--radius-card)] border border-gray-100">
                 <div>
                   <span className="text-xs text-gray-500 block">Sesi Saat Ini</span>
                   <span className="text-sm font-semibold text-gray-900">{user?.email}</span>
@@ -248,13 +236,15 @@ export function SettingsClient({ user, profile, stats }: any) {
             </div>
 
             <div className="space-y-3">
-              <SettingsActionCard 
-                icon={Key}
-                title="Ganti Password"
-                description="Perbarui kata sandi akun Anda."
-                actionLabel="Ubah"
-                onClick={() => setChangePasswordOpen(true)}
-              />
+              {isEmailUser && (
+                <SettingsActionCard 
+                  icon={Key}
+                  title="Ganti Password"
+                  description="Perbarui kata sandi akun Anda."
+                  actionLabel="Ubah"
+                  onClick={() => setChangePasswordOpen(true)}
+                />
+              )}
               <SettingsDangerZone 
                 icon={LogOut}
                 title="Keluar (Logout)"
@@ -272,7 +262,7 @@ export function SettingsClient({ user, profile, stats }: any) {
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-md rounded-2xl">
+        <DialogContent className="sm:max-w-md rounded-[var(--radius-card)]">
           <DialogHeader>
             <DialogTitle>{dialogContent.title}</DialogTitle>
             <DialogDescription>{dialogContent.description}</DialogDescription>
@@ -287,7 +277,7 @@ export function SettingsClient({ user, profile, stats }: any) {
 
       {/* Change Password Dialog */}
       <Dialog open={changePasswordOpen} onOpenChange={setChangePasswordOpen}>
-        <DialogContent className="sm:max-w-md rounded-2xl">
+        <DialogContent className="sm:max-w-md rounded-[var(--radius-card)]">
           <DialogHeader>
             <DialogTitle>Ganti Password</DialogTitle>
             <DialogDescription>
@@ -334,3 +324,5 @@ export function SettingsClient({ user, profile, stats }: any) {
     </div>
   );
 }
+
+

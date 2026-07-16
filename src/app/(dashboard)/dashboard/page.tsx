@@ -61,13 +61,13 @@ export default async function DashboardPage() {
     <div className="space-y-8 animate-in fade-in-50 duration-500">
       
       {/* 1. Welcome Hero Section */}
-      <section className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-8 rounded-3xl bg-gradient-to-br from-[#EC4899] to-[#F472B6] text-white shadow-xl shadow-[#EC4899]/20 relative overflow-hidden">
+      <section className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-8 rounded-[var(--radius-card)] bg-gradient-to-br from-[#EC4899] to-[#F472B6] text-white shadow-xl shadow-[#EC4899]/20 relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-[-50px] right-[-50px] w-48 h-48 bg-white/10 rounded-full blur-2xl" />
         <div className="absolute bottom-[-50px] left-[-50px] w-64 h-64 bg-white/10 rounded-full blur-3xl" />
         
         <div className="relative z-10 flex items-center gap-6">
-          <Avatar className="h-20 w-20 border-4 border-white/20 shadow-lg">
+          <Avatar className="h-20 w-20 border-4 border-white/20 shadow-sm">
             <AvatarImage src={avatarUrl} alt={fullName} />
             <AvatarFallback className="bg-white/20 text-white text-xl font-bold">
               {initials}
@@ -85,12 +85,12 @@ export default async function DashboardPage() {
         
         <div className="relative z-10 flex flex-col sm:flex-row gap-3 mt-4 md:mt-0">
           <Link href="/body-scan">
-            <Button className="w-full sm:w-auto bg-white text-[#EC4899] hover:bg-white/90 shadow-lg border-0 font-semibold rounded-xl h-11 px-6 transition-all duration-300 hover:scale-105 hover:shadow-xl">
+            <Button className="w-full sm:w-auto bg-white text-[#EC4899] hover:bg-white/90 shadow-sm border-0 font-semibold rounded-[var(--radius-button)] h-11 px-6 transition-all duration-300 hover:scale-105 hover:shadow-xl">
               Mulai Scan Tubuh
             </Button>
           </Link>
           <Link href="/collection">
-            <Button variant="outline" className="w-full sm:w-auto bg-transparent border-white/30 text-white hover:bg-white/10 rounded-xl h-11 px-6 transition-colors">
+            <Button variant="outline" className="w-full sm:w-auto bg-transparent border-white/30 text-white hover:bg-white/10 rounded-[var(--radius-button)] h-11 px-6 transition-colors">
               Lihat Koleksi
             </Button>
           </Link>
@@ -125,7 +125,7 @@ export default async function DashboardPage() {
         
         <div className="lg:col-span-2 space-y-8">
           {/* 2. AI Body Scan Card */}
-          <Card className="border-[#FDF2F8] shadow-sm hover:shadow-md transition-shadow overflow-hidden group">
+          <Card className="border-[#FDF2F8] shadow-sm hover:shadow-sm transition-shadow overflow-hidden group">
             <CardHeader className="border-b border-[#FFF7FB] bg-[#FFF7FB]/50">
               <CardTitle className="text-xl flex items-center gap-2">
                 <ScanFace className="h-5 w-5 text-[#EC4899]" />
@@ -143,7 +143,7 @@ export default async function DashboardPage() {
                     Profil bentuk tubuh Anda telah dianalisis. Anda siap menerima rekomendasi gaya berpakaian dari AI.
                   </p>
                   <Link href="/history">
-                    <Button className="bg-white border-2 border-[#EC4899] text-[#EC4899] hover:bg-[#FFF7FB] rounded-xl px-8 h-11 font-medium transition-all hover:scale-105">
+                    <Button className="bg-white border-2 border-[#EC4899] text-[#EC4899] hover:bg-[#FFF7FB] rounded-[var(--radius-button)] px-8 h-11 font-medium transition-all hover:scale-105">
                       Lihat Hasil
                     </Button>
                   </Link>
@@ -155,7 +155,7 @@ export default async function DashboardPage() {
                   description="Mulai scan tubuh Anda untuk mendapatkan rekomendasi pakaian yang dipersonalisasi khusus untuk Anda."
                   action={
                     <Link href="/body-scan">
-                      <Button className="bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-xl px-8 h-11 shadow-lg shadow-[#EC4899]/25 transition-all hover:scale-105 mt-2">
+                      <Button className="bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-[var(--radius-button)] px-8 h-11 shadow-sm shadow-[#EC4899]/25 transition-all hover:scale-105 mt-2">
                         Mulai Scan <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </Link>
@@ -167,7 +167,7 @@ export default async function DashboardPage() {
           </Card>
 
           {/* 3. Outfit Recommendation Card */}
-          <Card className="border-[#FDF2F8] shadow-sm hover:shadow-md transition-shadow">
+          <Card className="border-[#FDF2F8] shadow-sm hover:shadow-sm transition-shadow">
             <CardHeader className="border-b border-[#FFF7FB] bg-[#FFF7FB]/50">
               <CardTitle className="text-xl flex items-center gap-2">
                 <Sparkles className="h-5 w-5 text-[#EC4899]" />
@@ -185,7 +185,7 @@ export default async function DashboardPage() {
                     Kami telah menyiapkan rekomendasi pakaian yang akan membuat Anda tampil memukau.
                   </p>
                   <Link href="/recommendations">
-                    <Button className="bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-xl px-8 h-11 shadow-md hover:scale-105 transition-all">
+                    <Button className="bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-[var(--radius-button)] px-8 h-11 shadow-sm hover:scale-105 transition-all">
                       Lihat Rekomendasi
                     </Button>
                   </Link>
@@ -199,7 +199,7 @@ export default async function DashboardPage() {
                   <p className="text-gray-500 text-sm mb-6 max-w-md mx-auto">
                     Kami perlu menganalisis bentuk tubuh Anda terlebih dahulu untuk memberikan rekomendasi yang akurat.
                   </p>
-                  <Button disabled className="rounded-xl px-8">
+                  <Button disabled className="rounded-[var(--radius-button)] px-8">
                     Lihat Rekomendasi
                   </Button>
                 </>
@@ -208,7 +208,7 @@ export default async function DashboardPage() {
           </Card>
 
           {/* 3.5 AI Fashion Assistant Card */}
-          <Card className="border-[#FDF2F8] shadow-sm hover:shadow-md transition-shadow overflow-hidden group">
+          <Card className="border-[#FDF2F8] shadow-sm hover:shadow-sm transition-shadow overflow-hidden group">
             <CardHeader className="border-b border-[#FFF7FB] bg-[#FFF7FB]/50">
               <CardTitle className="text-xl flex items-center gap-2">
                 <Bot className="h-5 w-5 text-[#EC4899]" />
@@ -222,7 +222,7 @@ export default async function DashboardPage() {
                 description="Dapatkan rekomendasi gaya, warna, dan kombinasi pakaian yang paling cocok dengan bentuk tubuh Anda."
                 action={
                   <Link href="/fashion-assistant">
-                    <Button className="bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-xl px-8 h-11 shadow-lg shadow-[#EC4899]/25 transition-all hover:scale-105 mt-2">
+                    <Button className="bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-[var(--radius-button)] px-8 h-11 shadow-sm shadow-[#EC4899]/25 transition-all hover:scale-105 mt-2">
                       Mulai Ngobrol <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
@@ -235,13 +235,13 @@ export default async function DashboardPage() {
 
         <div className="space-y-8">
           {/* 5. Profile Card */}
-          <Card className="border-[#FDF2F8] shadow-sm hover:shadow-md transition-shadow">
+          <Card className="border-[#FDF2F8] shadow-sm hover:shadow-sm transition-shadow">
             <CardHeader className="pb-4">
               <CardTitle className="text-lg">Profil Saya</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-col items-center text-center">
-                <Avatar className="h-24 w-24 border-4 border-[#FFF7FB] shadow-md mb-4">
+                <Avatar className="h-24 w-24 border-4 border-[#FFF7FB] shadow-sm mb-4">
                   <AvatarImage src={avatarUrl} alt={fullName} />
                   <AvatarFallback className="bg-[#FDF2F8] text-[#EC4899] text-2xl font-bold">
                     {initials}
@@ -250,7 +250,7 @@ export default async function DashboardPage() {
                 <h3 className="text-xl font-bold text-[#1E1E2D]">{fullName}</h3>
                 <p className="text-gray-500 text-sm mb-6">{user.email}</p>
                 <Link href="/profile" className="w-full">
-                  <Button variant="outline" className="w-full rounded-xl border-[#EC4899]/20 text-[#EC4899] hover:bg-[#FFF7FB] hover:text-[#EC4899]">
+                  <Button variant="outline" className="w-full rounded-[var(--radius-button)] border-[#EC4899]/20 text-[#EC4899] hover:bg-[#FFF7FB] hover:text-[#EC4899]">
                     Edit Profil
                   </Button>
                 </Link>
@@ -259,7 +259,7 @@ export default async function DashboardPage() {
           </Card>
 
           {/* 4. Collection Card */}
-          <Card className="border-[#FDF2F8] shadow-sm hover:shadow-md transition-shadow">
+          <Card className="border-[#FDF2F8] shadow-sm hover:shadow-sm transition-shadow">
             <CardHeader className="pb-2">
               <CardTitle className="text-lg flex items-center gap-2">
                 <Heart className="h-5 w-5 text-[#EC4899]" />
@@ -275,7 +275,7 @@ export default async function DashboardPage() {
                   <p className="text-sm font-medium text-gray-900 mb-1">Anda memiliki {savedLooksCount} pakaian tersimpan!</p>
                   <p className="text-xs text-gray-500 mb-4">Terus temukan gaya baru yang menarik.</p>
                   <Link href="/collection">
-                    <Button variant="secondary" className="rounded-xl w-full bg-[#FFF7FB] text-[#EC4899] hover:bg-[#FDF2F8]">
+                    <Button variant="secondary" className="rounded-[var(--radius-button)] w-full bg-[#FFF7FB] text-[#EC4899] hover:bg-[#FDF2F8]">
                       Lihat Koleksi
                     </Button>
                   </Link>
@@ -287,7 +287,7 @@ export default async function DashboardPage() {
                   </div>
                   <p className="text-sm text-gray-500 mb-4">Anda belum menyimpan pakaian apa pun.</p>
                   <Link href="/collection">
-                    <Button variant="secondary" className="rounded-xl w-full bg-gray-100 hover:bg-gray-200 text-gray-900">
+                    <Button variant="secondary" className="rounded-[var(--radius-button)] w-full bg-gray-100 hover:bg-gray-200 text-gray-900">
                       Lihat Koleksi
                     </Button>
                   </Link>
@@ -297,7 +297,7 @@ export default async function DashboardPage() {
           </Card>
 
           {/* 7. Recent Activity */}
-          <Card className="border-[#FDF2F8] shadow-sm hover:shadow-md transition-shadow">
+          <Card className="border-[#FDF2F8] shadow-sm hover:shadow-sm transition-shadow">
             <CardHeader className="pb-4">
               <CardTitle className="text-lg">Aktivitas Terakhir</CardTitle>
             </CardHeader>
@@ -344,3 +344,5 @@ export default async function DashboardPage() {
     </div>
   );
 }
+
+

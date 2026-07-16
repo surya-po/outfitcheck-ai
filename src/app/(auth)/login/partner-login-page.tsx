@@ -45,10 +45,10 @@ export default function PartnerLoginPage() {
       </div>
 
       <div className="relative w-full max-w-md">
-        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl p-8 space-y-8">
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[var(--radius-card)] shadow-2xl p-8 space-y-8">
           {/* Header */}
           <div className="text-center space-y-3">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-pink-500/20 border border-pink-400/30 rounded-2xl mx-auto mb-2">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-pink-500/20 border border-pink-400/30 rounded-[var(--radius-card)] mx-auto mb-2">
               <Store className="w-8 h-8 text-pink-400" />
             </div>
             <div>
@@ -63,7 +63,7 @@ export default function PartnerLoginPage() {
 
           {/* Error Alert */}
           {error && (
-            <div className="flex items-start gap-3 bg-red-500/10 border border-red-500/30 text-red-300 rounded-xl p-4 text-sm animate-in fade-in-50 duration-200">
+            <div className="flex items-start gap-3 bg-red-500/10 border border-red-500/30 text-red-300 rounded-[var(--radius-button)] p-4 text-sm animate-in fade-in-50 duration-200">
               <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
               <span>{error}</span>
             </div>
@@ -86,7 +86,7 @@ export default function PartnerLoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="admin@butikanda.com"
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-500/50 focus:border-pink-400/50 transition-all"
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-[var(--radius-button)] text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-500/50 focus:border-pink-400/50 transition-all"
               />
             </div>
 
@@ -102,7 +102,7 @@ export default function PartnerLoginPage() {
                   autoComplete="current-password"
                   required
                   placeholder="••••••••"
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-500/50 focus:border-pink-400/50 transition-all pr-12"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-[var(--radius-button)] text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-500/50 focus:border-pink-400/50 transition-all pr-12"
                 />
                 <button
                   type="button"
@@ -130,7 +130,7 @@ export default function PartnerLoginPage() {
             <button
               type="submit"
               disabled={isPending}
-              className="w-full py-3 px-4 bg-pink-500 hover:bg-pink-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-pink-500/20"
+              className="w-full py-3 px-4 bg-pink-500 hover:bg-pink-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold rounded-[var(--radius-button)] transition-all duration-200 flex items-center justify-center gap-2 shadow-sm shadow-pink-500/20"
             >
               {isPending ? (
                 <>
@@ -170,3 +170,6 @@ export default function PartnerLoginPage() {
     </div>
   );
 }
+
+
+

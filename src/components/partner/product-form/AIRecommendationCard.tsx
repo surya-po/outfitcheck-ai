@@ -39,7 +39,7 @@ export function AIRecommendationCard({ formData, onMultiSelectChange, isProcessi
                 onClick={() => onMultiSelectChange("recommendedBodyShapes", shape)}
                 className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all border ${
                   formData.recommendedBodyShapes.includes(shape)
-                    ? 'bg-blue-500 text-white border-blue-500 shadow-md'
+                    ? 'bg-blue-500 text-white border-blue-500 shadow-sm'
                     : 'bg-white text-gray-700 border-gray-200 hover:border-blue-500 hover:text-blue-500'
                 }`}
               >
@@ -62,7 +62,7 @@ export function AIRecommendationCard({ formData, onMultiSelectChange, isProcessi
                 onClick={() => onMultiSelectChange("recommendedSkinTones", tone)}
                 className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all border ${
                   formData.recommendedSkinTones.includes(tone)
-                    ? 'bg-blue-500 text-white border-blue-500 shadow-md'
+                    ? 'bg-blue-500 text-white border-blue-500 shadow-sm'
                     : 'bg-white text-gray-700 border-gray-200 hover:border-blue-500 hover:text-blue-500'
                 }`}
               >
@@ -75,3 +75,5 @@ export function AIRecommendationCard({ formData, onMultiSelectChange, isProcessi
     </Card>
   );
 }
+
+

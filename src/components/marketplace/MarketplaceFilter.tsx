@@ -79,7 +79,7 @@ export function MarketplaceFilter() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Cari produk atau nama boutique..."
-            className="pl-9 bg-white/60 backdrop-blur-sm border-white/60 focus-visible:ring-pink-500 rounded-full"
+            className="pl-10 bg-background/60 backdrop-blur-sm border-border/60 focus-visible:ring-primary rounded-[var(--radius-button)]"
           />
           {searchQuery && (
             <button 
@@ -101,7 +101,7 @@ export function MarketplaceFilter() {
             value={currentSort} 
             onValueChange={(val) => updateParams({ sort: val })}
           >
-            <SelectTrigger className="bg-white/60 backdrop-blur-sm border-white/60 rounded-full">
+            <SelectTrigger className="bg-background/60 backdrop-blur-sm border-border/60 rounded-[var(--radius-button)]">
               <SelectValue placeholder="Urutkan" />
             </SelectTrigger>
             <SelectContent>
@@ -117,7 +117,7 @@ export function MarketplaceFilter() {
         {/* Mobile Filters Sheet */}
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="outline" className="bg-white/60 backdrop-blur-sm border-white/60 rounded-full gap-2 sm:hidden">
+            <Button variant="outline" className="bg-background/60 backdrop-blur-sm border-border/60 rounded-[var(--radius-button)] gap-2 sm:hidden">
               <SlidersHorizontal className="w-4 h-4" />
               Filter
             </Button>
@@ -135,7 +135,7 @@ export function MarketplaceFilter() {
                     <Badge 
                       key={cat}
                       variant={currentCategory === cat.toLowerCase() ? "default" : "outline"}
-                      className={`cursor-pointer ${currentCategory === cat.toLowerCase() ? 'bg-pink-500 hover:bg-pink-600 text-white' : ''}`}
+                      className={`cursor-pointer ${currentCategory === cat.toLowerCase() ? 'bg-primary hover:bg-primary/90 text-primary-foreground' : ''}`}
                       onClick={() => updateParams({ category: currentCategory === cat.toLowerCase() ? null : cat.toLowerCase() })}
                     >
                       {cat}
@@ -152,7 +152,7 @@ export function MarketplaceFilter() {
                     <Badge 
                       key={g}
                       variant={currentGender === g.toLowerCase() ? "default" : "outline"}
-                      className={`cursor-pointer ${currentGender === g.toLowerCase() ? 'bg-pink-500 hover:bg-pink-600 text-white' : ''}`}
+                      className={`cursor-pointer ${currentGender === g.toLowerCase() ? 'bg-primary hover:bg-primary/90 text-primary-foreground' : ''}`}
                       onClick={() => updateParams({ gender: currentGender === g.toLowerCase() ? null : g.toLowerCase() })}
                     >
                       {g}
@@ -169,7 +169,7 @@ export function MarketplaceFilter() {
                     <Badge 
                       key={s}
                       variant={currentStyle === s.toLowerCase() ? "default" : "outline"}
-                      className={`cursor-pointer ${currentStyle === s.toLowerCase() ? 'bg-pink-500 hover:bg-pink-600 text-white' : ''}`}
+                      className={`cursor-pointer ${currentStyle === s.toLowerCase() ? 'bg-primary hover:bg-primary/90 text-primary-foreground' : ''}`}
                       onClick={() => updateParams({ style: currentStyle === s.toLowerCase() ? null : s.toLowerCase() })}
                     >
                       {s}
@@ -181,7 +181,7 @@ export function MarketplaceFilter() {
               {hasActiveFilters && (
                 <Button 
                   variant="outline" 
-                  className="w-full mt-4 border-pink-200 text-pink-600 hover:bg-pink-50"
+                  className="w-full mt-4 border-primary/20 text-primary hover:bg-primary/10"
                   onClick={clearFilters}
                 >
                   Reset Filter
@@ -201,8 +201,8 @@ export function MarketplaceFilter() {
             onClick={() => updateParams({ category: currentCategory === cat.toLowerCase() ? null : cat.toLowerCase() })}
             className={`px-3 py-1 text-sm rounded-full transition-colors ${
               currentCategory === cat.toLowerCase() 
-                ? 'bg-pink-500 text-white shadow-sm' 
-                : 'bg-white/60 text-gray-600 hover:bg-gray-100 hover:text-gray-900 border border-white/60'
+                ? 'bg-primary text-primary-foreground shadow-sm' 
+                : 'bg-background/60 text-muted-foreground hover:bg-secondary hover:text-foreground border border-border/60'
             }`}
           >
             {cat}
@@ -212,3 +212,5 @@ export function MarketplaceFilter() {
     </div>
   );
 }
+
+

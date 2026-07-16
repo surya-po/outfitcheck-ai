@@ -115,8 +115,9 @@ export interface ColorAnalysisResult {
   gender?: GenderType;
   genderConfidence?: number;
   fashionPersona?: FashionPersonaType;
-  detectedBodyShape?: string; // AI-detected shape (visual), before math override
+  fashionPreference?: string;
   isWearingHijab?: boolean;
+  detectedBodyShape?: string; // AI-detected shape (visual), before math override
 }
 
 // ==========================================
@@ -137,5 +138,6 @@ export interface FashionAnalysisProfile {
   // Fashion Profile fields (Single Source of Truth)
   gender?: GenderType;
   fashionPersona?: FashionPersonaType;
+  fashionPreference?: string;
   isWearingHijab?: boolean;
 }

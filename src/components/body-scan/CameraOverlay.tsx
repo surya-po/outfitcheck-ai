@@ -78,3 +78,5 @@ export function CameraOverlay({ isActive }: CameraOverlayProps) {
     </div>
   );
 }
+
+

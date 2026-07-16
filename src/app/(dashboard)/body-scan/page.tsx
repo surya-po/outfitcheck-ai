@@ -166,11 +166,6 @@ export default function BodyScanPage() {
     const frameData = cameraRef.current?.captureFrame();
     if (!frameData) return;
     
-    setCapturedImage(frameData);
-    setHasCaptured(true);
-    setIsAnalyzing(true);
-    stopCamera();
-
     let finalMeasurements = latestMeasurementsRef.current;
     const metadata: any = { scanMode };
 
@@ -181,22 +176,18 @@ export default function BodyScanPage() {
         
         if (!landmarks || !canvas) throw new Error("Gagal mendapatkan data postur tubuh.");
         
-        setAnalysisStep("1/5: Validasi Postur...");
         const poseValidation = validatePose(landmarks);
         if (!poseValidation.isValid) throw new Error(poseValidation.messages[0]);
 
-        setAnalysisStep("2/5: Validasi Kualitas Gambar...");
         const quality = calculateImageQuality(canvas);
         metadata.qualityScore = quality.score;
         if (!quality.isValid) throw new Error(quality.messages[0]);
 
-        setAnalysisStep("3/5: Mencari Kartu Referensi...");
         const cardResult = detectReferenceCard(canvas);
         metadata.referenceCardDetected = cardResult.detected;
         metadata.referenceCardConfidence = cardResult.confidence;
         if (!cardResult.detected) throw new Error("Kartu referensi tidak terdeteksi. Pastikan kartu terlihat jelas.");
 
-        setAnalysisStep("4/5: Kalkulasi Skala & Ukuran...");
         const scale = calculatePixelScale(cardResult.pixelWidth, cardResult.confidence);
         metadata.pixelScale = scale.cmPerPixel;
         const absMeas = calculateAllMeasurements(landmarks, canvas.width, canvas.height, scale);
@@ -227,13 +218,14 @@ export default function BodyScanPage() {
 
       } catch (err: any) {
         alert("Kalibrasi Gagal: " + err.message);
-        setHasCaptured(false);
-        setIsAnalyzing(false);
-        setAnalysisStep("");
-        startCamera(); // restart camera so user can try again
         return;
       }
     }
+
+    setCapturedImage(frameData);
+    setHasCaptured(true);
+    setIsAnalyzing(true);
+    stopCamera();
 
     setCapturedMeasurements(finalMeasurements);
     setScanMetadata(metadata);
@@ -299,7 +291,7 @@ export default function BodyScanPage() {
     return (
       <div className="animate-in fade-in-50 duration-500">
         <div className="mb-6">
-          <h1 className="text-xl sm:text-2xl font-bold text-[#1E1E2D] tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-heading font-bold text-foreground tracking-tight">
             Analisis Selesai
           </h1>
           <p className="text-sm text-gray-500 mt-0.5">
@@ -307,10 +299,11 @@ export default function BodyScanPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-4">
-            <div className="rounded-2xl border border-[#FDF2F8] bg-white p-4 sm:p-5 shadow-sm">
-              <div className="relative w-full aspect-[3/4] sm:aspect-[4/5] max-h-[600px] rounded-2xl overflow-hidden bg-gray-900 flex items-center justify-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+          {/* Left Column: Image and Measurements */}
+          <div className="lg:col-span-4 space-y-6">
+            <div className="rounded-[var(--radius-card)] border border-border/60 bg-card p-4 shadow-sm">
+              <div className="relative w-full aspect-[3/4] max-h-[500px] rounded-[var(--radius-card)] overflow-hidden bg-muted flex items-center justify-center">
                 <img
                   src={capturedImage}
                   alt="Captured scan"
@@ -318,39 +311,48 @@ export default function BodyScanPage() {
                   style={{ transform: "scaleX(-1)" }}
                 />
               </div>
-              <div className="mt-6 flex flex-col sm:flex-row gap-3">
-                <Button variant="outline" onClick={startCamera} className="flex-1 rounded-xl h-12">
-                  <RefreshCcw className="w-4 h-4 mr-2" />
-                  Ulangi Scan
-                </Button>
+              <div className="mt-4 flex flex-col gap-3">
                 <Button 
                   onClick={handleSave} 
                   disabled={isSaving || isAnalyzing || !analysisProfile}
-                  className="flex-1 bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-xl h-12"
+                  className="w-full rounded-[var(--radius-button)] h-12 shadow-sm font-semibold"
                 >
                   <Save className="w-4 h-4 mr-2" />
-                  {isSaving ? "Menyimpan..." : "Simpan Hasil Analisis"}
+                  {isSaving ? "Menyimpan..." : "Simpan Analisis"}
                 </Button>
-                <Link href="/history" className="flex-1">
-                  <Button variant="secondary" className="w-full rounded-xl h-12">
-                    Lanjut <ArrowRight className="w-4 h-4 ml-2" />
+                <div className="flex gap-3">
+                  <Button variant="outline" onClick={startCamera} className="flex-1 rounded-[var(--radius-button)] h-11 border-border/60">
+                    <RefreshCcw className="w-4 h-4 mr-2" />
+                    Ulangi
                   </Button>
-                </Link>
+                  <Link href="/history" className="flex-1">
+                    <Button variant="secondary" className="w-full rounded-[var(--radius-button)] h-11">
+                      Lanjut <ArrowRight className="w-4 h-4 ml-1" />
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </div>
 
-            <div className="rounded-2xl bg-gradient-to-br from-[#1E1E2D] to-gray-900 p-6 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-[#EC4899]/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="hidden lg:block">
+              <MeasurementPanel result={capturedMeasurements} />
+            </div>
+          </div>
+
+          {/* Right Column: AI Analysis */}
+          <div className="lg:col-span-8 space-y-6">
+            <div className="rounded-[var(--radius-card)] bg-gradient-to-br from-card to-muted p-6 sm:p-8 shadow-sm relative overflow-hidden h-full border border-border/60">
+              <div className="absolute top-0 right-0 w-80 h-80 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
               
-              <h2 className="text-white font-bold text-xl mb-4">Profil Fashion AI</h2>
+              <h2 className="text-foreground font-heading font-bold text-xl sm:text-2xl mb-6">Profil Fashion AI</h2>
               
               {isAnalyzing ? (
-                <div className="py-12 text-center text-white/50 flex flex-col items-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#EC4899] mb-4"></div>
-                  <div className="font-medium text-[#FDF2F8]">{analysisStep}</div>
+                <div className="py-24 text-center text-muted-foreground flex flex-col items-center justify-center min-h-[400px]">
+                  <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mb-4"></div>
+                  <div className="font-medium text-foreground">{analysisStep}</div>
                 </div>
               ) : analysisProfile ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <BodyShapeCard result={analysisProfile.shape} />
                   <ProportionsCard result={analysisProfile.proportion} />
 
@@ -359,7 +361,7 @@ export default function BodyScanPage() {
                   </div>
 
                   {analysisProfile.recommendation && (
-                    <div className="sm:col-span-2 mt-4">
+                    <div className="sm:col-span-2">
                       <RecommendationCard 
                         result={analysisProfile.recommendation} 
                         products={matchedProducts} 
@@ -370,22 +372,23 @@ export default function BodyScanPage() {
                   )}
 
                   {analysisProfile.shape && (
-                    <OutfitRecommendationCard 
-                      outfits={generateOutfitRecommendations(
-                        analysisProfile.shape.shape, 
-                        analysisProfile.colorAnalysis?.gender, 
-                        analysisProfile.colorAnalysis?.isWearingHijab
-                      )}
-                    />
+                    <div className="sm:col-span-2">
+                      <OutfitRecommendationCard 
+                        outfits={generateOutfitRecommendations(
+                          analysisProfile.shape.shape, 
+                          analysisProfile.colorAnalysis?.gender, 
+                          analysisProfile.colorAnalysis?.isWearingHijab
+                        )}
+                      />
+                    </div>
                   )}
                 </div>
               ) : null}
             </div>
 
-          </div>
-          
-          <div className="space-y-4">
-            <MeasurementPanel result={capturedMeasurements} />
+            <div className="block lg:hidden">
+              <MeasurementPanel result={capturedMeasurements} />
+            </div>
           </div>
         </div>
       </div>
@@ -397,11 +400,11 @@ export default function BodyScanPage() {
     <div className="animate-in fade-in-50 duration-500">
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-[#EC4899] to-[#F472B6] text-white shadow-md shadow-[#EC4899]/20">
+          <div className="flex items-center justify-center w-10 h-10 rounded-[var(--radius-button)] bg-gradient-to-br from-primary to-[#E14D72] text-primary-foreground shadow-sm">
             <ScanFace className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-[#1E1E2D] tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-heading font-bold text-foreground tracking-tight">
               Scan Tubuh AI
             </h1>
             <p className="text-sm text-gray-500 mt-0.5">
@@ -412,11 +415,11 @@ export default function BodyScanPage() {
         
         {/* Mode Selector */}
         {!isCameraActive && (
-          <div className="flex bg-gray-100 p-1 rounded-xl">
+          <div className="flex bg-muted/50 p-1 rounded-[var(--radius-button)]">
             <button
               onClick={() => setScanMode("quick")}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                scanMode === "quick" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-700"
+                scanMode === "quick" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
               }`}
             >
               <Zap className="w-4 h-4" /> Quick
@@ -424,7 +427,7 @@ export default function BodyScanPage() {
             <button
               onClick={() => setScanMode("accurate")}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                scanMode === "accurate" ? "bg-[#EC4899] text-white shadow-sm" : "text-gray-500 hover:text-gray-700"
+                scanMode === "accurate" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
               }`}
             >
               <Target className="w-4 h-4" /> Accurate
@@ -435,7 +438,7 @@ export default function BodyScanPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-4">
-          <div className="rounded-2xl border border-[#FDF2F8] bg-white p-4 sm:p-5 shadow-sm">
+          <div className="rounded-[var(--radius-card)] border border-border/60 bg-card p-4 sm:p-6 shadow-sm">
             <div className="relative mb-4">
               <CameraPreview
                 ref={cameraRef}
@@ -455,7 +458,7 @@ export default function BodyScanPage() {
             </div>
 
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-              <div className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium transition-all duration-500 ${
+              <div className={`flex items-center gap-2 px-3 py-2 rounded-[var(--radius-button)] text-xs font-medium transition-all duration-500 ${
                 poseState.status === "tracking"
                   ? "bg-emerald-50 text-emerald-600 border border-emerald-200"
                   : poseState.status === "initializing"
@@ -502,9 +505,9 @@ export default function BodyScanPage() {
           />
           <MeasurementPanel result={poseState.measurements} />
           
-          <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
-            <h3 className="font-semibold text-[#1E1E2D] mb-3 flex items-center gap-2">
-              <Target className="w-5 h-5 text-[#EC4899]" />
+          <div className="rounded-[var(--radius-card)] border border-border/60 bg-card p-6 shadow-sm">
+            <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+              <Target className="w-5 h-5 text-primary" />
               Mode: {scanMode === "accurate" ? "Accurate Scan" : "Quick Scan"}
             </h3>
             {scanMode === "accurate" ? (
@@ -527,3 +530,5 @@ export default function BodyScanPage() {
     </div>
   );
 }
+
+

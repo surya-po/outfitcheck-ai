@@ -52,13 +52,19 @@ export default async function SettingsPage() {
     outfits: user._count.savedOutfits,
   };
 
+  const providers = authUser.app_metadata?.providers || [];
+  const isEmailUser = providers.includes("email");
+
   return (
     <div className="w-full">
       <SettingsClient 
         user={user} 
         profile={user.profile} 
         stats={stats} 
+        isEmailUser={isEmailUser}
       />
     </div>
   );
 }
+
+

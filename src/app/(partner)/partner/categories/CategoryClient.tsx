@@ -84,7 +84,7 @@ export default function CategoryClient({ initialCategories }: Props) {
             placeholder="Cari kategori..." 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-9"
+            className="pl-10"
           />
         </div>
         <Button 
@@ -96,10 +96,10 @@ export default function CategoryClient({ initialCategories }: Props) {
         </Button>
       </div>
 
-      <Card className="overflow-hidden border-[#FDF2F8] dark:border-gray-800">
+      <Card className="overflow-hidden border-border/60 border-border/60">
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
-            <thead className="text-xs text-gray-500 uppercase bg-gray-50 dark:bg-gray-900/50 dark:text-gray-400 border-b border-[#FDF2F8] dark:border-gray-800">
+            <thead className="text-xs text-gray-500 uppercase bg-gray-50 dark:bg-secondary/20 dark:text-gray-400 border-b border-border/60 border-border/60">
               <tr>
                 <th className="px-6 py-4 font-semibold">Nama Kategori</th>
                 <th className="px-6 py-4 font-semibold">Slug</th>
@@ -109,7 +109,7 @@ export default function CategoryClient({ initialCategories }: Props) {
             </thead>
             <tbody>
               {isCreating && (
-                <tr className="bg-[#FFF7FB] dark:bg-[#EC4899]/5 border-b border-[#FDF2F8] dark:border-gray-800">
+                <tr className="bg-secondary/20 dark:bg-primary/5 border-b border-border/60 border-border/60">
                   <td className="px-6 py-4">
                     <Input 
                       value={newName} 
@@ -124,7 +124,7 @@ export default function CategoryClient({ initialCategories }: Props) {
                   <td className="px-6 py-4 hidden md:table-cell">-</td>
                   <td className="px-6 py-4 text-right space-x-2">
                     <Button size="sm" variant="outline" onClick={() => setIsCreating(false)} disabled={isProcessing}>Batal</Button>
-                    <Button size="sm" onClick={handleCreate} disabled={isProcessing} className="bg-[#EC4899] hover:bg-[#BE185D] text-white">Simpan</Button>
+                    <Button size="sm" onClick={handleCreate} disabled={isProcessing} className="bg-primary hover:opacity-90 text-white">Simpan</Button>
                   </td>
                 </tr>
               )}
@@ -137,7 +137,7 @@ export default function CategoryClient({ initialCategories }: Props) {
                 </tr>
               ) : (
                 filteredCategories.map(category => (
-                  <tr key={category.id} className="border-b last:border-0 border-[#FDF2F8] hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-900/50 transition-colors">
+                  <tr key={category.id} className="border-b last:border-0 border-border/60 hover:bg-gray-50 border-border/60 dark:hover:bg-gray-900/50 transition-colors">
                     <td className="px-6 py-4 font-medium text-gray-900 dark:text-gray-100">
                       {isEditing === category.id ? (
                         <Input 
@@ -162,7 +162,7 @@ export default function CategoryClient({ initialCategories }: Props) {
                           <Button size="sm" variant="outline" onClick={() => setIsEditing(null)} disabled={isProcessing} className="h-8 px-2">
                             <X className="w-4 h-4" />
                           </Button>
-                          <Button size="sm" onClick={() => handleUpdate(category.id)} disabled={isProcessing} className="h-8 px-3 bg-[#EC4899] hover:bg-[#BE185D] text-white">
+                          <Button size="sm" onClick={() => handleUpdate(category.id)} disabled={isProcessing} className="h-8 px-3 bg-primary hover:opacity-90 text-white">
                             Simpan
                           </Button>
                         </div>
@@ -173,7 +173,7 @@ export default function CategoryClient({ initialCategories }: Props) {
                               setIsEditing(category.id);
                               setEditName(category.name);
                             }}
-                            className="p-1.5 text-gray-400 hover:text-[#EC4899] transition-colors"
+                            className="p-1.5 text-gray-400 hover:text-primary transition-colors"
                           >
                             <Edit2 className="w-4 h-4" />
                           </button>
@@ -196,3 +196,6 @@ export default function CategoryClient({ initialCategories }: Props) {
     </div>
   );
 }
+
+
+

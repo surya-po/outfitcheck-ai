@@ -7,6 +7,25 @@ import {
 } from "../body-analysis-engine/analysis-types";
 
 // ============================================================
+// MODEST FASHION RULES
+// ============================================================
+
+export const modestBlockedItems = [
+  "Tank Top", "Crop Top", "Tube Top", "Tube Dress", "Sleeveless",
+  "Off Shoulder", "Deep V Neck", "Low Cut", "Mini Dress",
+  "Mini Skirt", "Bodycon Dress", "Open Back", "Spaghetti Strap",
+  "Transparent Top", "Halter Neck"
+];
+
+export const modestPriorities = [
+  "Long Sleeve", "Loose Shirt", "Blouse", "Tunic", "Outer",
+  "Cardigan", "Oversized Shirt", "Wide Leg Pants", "Straight Pants",
+  "Pleated Skirt", "Long Dress", "Maxi Dress", "Hijab Friendly Outfit",
+  "Abaya", "Layering Outfit", "Blazer", "Vest", "Long Outer",
+  "Midi Skirt", "Loose Jeans"
+];
+
+// ============================================================
 // STYLE MAP — Gender-specific
 // ============================================================
 

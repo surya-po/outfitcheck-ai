@@ -114,13 +114,13 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
         {success && <div className="text-sm font-medium text-emerald-500 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-100 mr-auto self-center">{success}</div>}
         
         {!isEditing ? (
-          <Button onClick={() => setIsEditing(true)} className="bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-xl shadow-sm">
+          <Button onClick={() => setIsEditing(true)} className="bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-[var(--radius-button)] shadow-sm">
             Edit Profil
           </Button>
         ) : (
           <div className="flex gap-2">
-            <Button variant="outline" onClick={handleCancel} disabled={isSaving} className="rounded-xl">Batal</Button>
-            <Button onClick={handleSave} disabled={isSaving} className="bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-xl shadow-sm">
+            <Button variant="outline" onClick={handleCancel} disabled={isSaving} className="rounded-[var(--radius-button)]">Batal</Button>
+            <Button onClick={handleSave} disabled={isSaving} className="bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-[var(--radius-button)] shadow-sm">
               {isSaving ? "Menyimpan..." : "Simpan Perubahan"}
             </Button>
           </div>
@@ -130,8 +130,8 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Col: Account Info */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white border border-[#FDF2F8] rounded-2xl p-6 shadow-sm flex flex-col items-center text-center">
-            <div className="relative w-32 h-32 rounded-full overflow-hidden bg-gray-100 border-4 border-[#FDF2F8] shadow-md mb-4">
+          <div className="bg-white border border-[#FDF2F8] rounded-[var(--radius-card)] p-6 shadow-sm flex flex-col items-center text-center">
+            <div className="relative w-32 h-32 rounded-full overflow-hidden bg-gray-100 border-4 border-[#FDF2F8] shadow-sm mb-4">
               {formData.avatarUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={formData.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
@@ -175,7 +175,7 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
                       reader.readAsDataURL(file);
                     }
                   }}
-                  className="file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#FDF2F8] file:text-[#EC4899] hover:file:bg-[#FCE7F3] rounded-xl h-10 cursor-pointer"
+                  className="file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#FDF2F8] file:text-[#EC4899] hover:file:bg-[#FCE7F3] rounded-[var(--radius-button)] h-10 cursor-pointer"
                 />
               </div>
             )}
@@ -184,7 +184,7 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
 
         {/* Right Col: Personal Info & AI Summary */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white border border-[#FDF2F8] rounded-2xl p-6 shadow-sm">
+          <div className="bg-white border border-[#FDF2F8] rounded-[var(--radius-card)] p-6 shadow-sm">
             <h3 className="font-bold text-lg text-gray-900 mb-6 flex items-center gap-2">
               <Calendar className="w-5 h-5 text-[#EC4899]" /> Informasi Personal
             </h3>
@@ -195,13 +195,13 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
               {isEditing && (
                 <div className="space-y-1 col-span-2">
                   <label className="text-xs text-gray-500 font-medium">Nama Depan</label>
-                  <Input name="firstName" value={formData.firstName} onChange={handleChange} className="rounded-xl h-10" />
+                  <Input name="firstName" value={formData.firstName} onChange={handleChange} className="rounded-[var(--radius-button)] h-10" />
                 </div>
               )}
               {isEditing && (
                 <div className="space-y-1 col-span-2">
                   <label className="text-xs text-gray-500 font-medium">Nama Belakang</label>
-                  <Input name="lastName" value={formData.lastName} onChange={handleChange} className="rounded-xl h-10" />
+                  <Input name="lastName" value={formData.lastName} onChange={handleChange} className="rounded-[var(--radius-button)] h-10" />
                 </div>
               )}
 
@@ -212,7 +212,7 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
                     name="gender" 
                     value={formData.gender} 
                     onChange={handleChange} 
-                    className="flex h-10 w-full items-center justify-between rounded-xl border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+                    className="flex h-10 w-full items-center justify-between rounded-[var(--radius-button)] border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
                   >
                     <option value="">Pilih...</option>
                     <option value="Male">Laki-laki (Male)</option>
@@ -226,7 +226,7 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
               <div className="space-y-1 col-span-2 sm:col-span-1">
                 <span className="text-xs text-gray-500 font-medium">Tanggal Lahir</span>
                 {isEditing ? (
-                  <Input type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} className="rounded-xl h-10" />
+                  <Input type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} className="rounded-[var(--radius-button)] h-10" />
                 ) : (
                   <p className="text-sm font-semibold text-gray-900">{displayDate}</p>
                 )}
@@ -236,7 +236,7 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
                 <span className="text-xs text-gray-500 font-medium">Tinggi Badan</span>
                 {isEditing ? (
                   <div className="flex items-center gap-2">
-                    <Input type="number" name="heightCm" value={formData.heightCm} onChange={handleChange} className="rounded-xl h-10" />
+                    <Input type="number" name="heightCm" value={formData.heightCm} onChange={handleChange} className="rounded-[var(--radius-button)] h-10" />
                     <span className="text-sm text-gray-500">cm</span>
                   </div>
                 ) : (
@@ -248,7 +248,7 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
                 <span className="text-xs text-gray-500 font-medium">Berat Badan</span>
                 {isEditing ? (
                   <div className="flex items-center gap-2">
-                    <Input type="number" name="weightKg" value={formData.weightKg} onChange={handleChange} className="rounded-xl h-10" />
+                    <Input type="number" name="weightKg" value={formData.weightKg} onChange={handleChange} className="rounded-[var(--radius-button)] h-10" />
                     <span className="text-sm text-gray-500">kg</span>
                   </div>
                 ) : (
@@ -258,7 +258,7 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
             </div>
           </div>
 
-          <div className="rounded-2xl bg-gradient-to-br from-[#1E1E2D] to-gray-900 p-6 shadow-xl relative overflow-hidden">
+          <div className="rounded-[var(--radius-card)] bg-gradient-to-br from-[#1E1E2D] to-gray-900 p-6 shadow-xl relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-[#EC4899]/10 rounded-full blur-3xl pointer-events-none" />
             
             <h3 className="text-white font-bold text-lg mb-6 flex items-center gap-2">
@@ -267,19 +267,19 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
 
             {latestScanData.latestBodyShape !== "-" ? (
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="bg-black/20 border border-white/5 rounded-xl p-4">
+                <div className="bg-black/20 border border-white/5 rounded-[var(--radius-button)] p-4">
                   <span className="text-[10px] uppercase tracking-wider text-[#EC4899] font-bold block mb-1">
                     Bentuk Tubuh
                   </span>
                   <span className="text-white font-bold text-lg capitalize">{latestScanData.latestBodyShape}</span>
                 </div>
-                <div className="bg-black/20 border border-white/5 rounded-xl p-4">
+                <div className="bg-black/20 border border-white/5 rounded-[var(--radius-button)] p-4">
                   <span className="text-[10px] uppercase tracking-wider text-[#EC4899] font-bold block mb-1">
                     Skor AI
                   </span>
                   <span className="text-white font-bold text-lg">{latestScanData.latestAiScore}</span>
                 </div>
-                <div className="bg-black/20 border border-white/5 rounded-xl p-4">
+                <div className="bg-black/20 border border-white/5 rounded-[var(--radius-button)] p-4">
                   <span className="text-[10px] uppercase tracking-wider text-[#EC4899] font-bold block mb-1">
                     Tanggal Scan
                   </span>
@@ -296,3 +296,5 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
     </>
   );
 }
+
+

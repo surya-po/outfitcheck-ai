@@ -7,16 +7,16 @@ import { SizeEstimate } from "@/lib/body-analysis-engine/analysis-types";
 const SizeRow = ({ label, estimate }: { label: string; estimate: SizeEstimate }) => (
   <div className="flex flex-col py-2 border-b border-white/5 last:border-0">
     <div className="flex items-center justify-between">
-      <span className="text-sm text-white/70">{label}</span>
+      <span className="text-sm text-muted-foreground">{label}</span>
       <div className="flex items-center gap-2">
-        <span className="text-[10px] text-white/40">{estimate.confidence}%</span>
-        <span className="text-sm font-bold text-white bg-white/10 px-2.5 py-0.5 rounded-md border border-white/20">
+        <span className="text-[10px] text-muted-foreground">{estimate.confidence}%</span>
+        <span className="text-sm font-bold text-foreground bg-secondary px-2.5 py-0.5 rounded-md border border-border/60">
           {estimate.size}
         </span>
       </div>
     </div>
     {estimate.alternative && (
-      <span className="text-xs text-white/50 mt-1 text-right">
+      <span className="text-xs text-muted-foreground mt-1 text-right">
         Alternatif: {estimate.alternative}
       </span>
     )}
@@ -42,14 +42,18 @@ export function SizingCard({ result }: { result: ClothingSizeResult }) {
         <SizeRow label="Hoodie" estimate={result.hoodieSize} />
       </div>
 
-      <div className="bg-[#EC4899]/10 border border-[#EC4899]/20 rounded-xl p-3 text-center">
+      <div className="bg-[#EC4899]/10 border border-[#EC4899]/20 rounded-[var(--radius-button)] p-3 text-center">
         <span className="block text-[10px] uppercase tracking-wider text-[#EC4899] font-bold mb-1">
           Rekomendasi Potongan Pakaian
         </span>
-        <span className="text-sm font-medium text-white">
+        <span className="text-sm font-medium text-foreground">
           {fitMap[result.recommendedFit] || result.recommendedFit}
         </span>
       </div>
     </AnalysisCardBase>
   );
 }
+
+
+
+

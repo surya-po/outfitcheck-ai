@@ -14,7 +14,7 @@ export function SettingsSection({ title, description, icon: Icon, children, clas
   return (
     <Card className={`overflow-hidden border-[#FDF2F8] shadow-sm ${className || ''}`}>
       <CardHeader className="pb-4 border-b border-gray-50 flex flex-row items-center gap-4 space-y-0">
-        <div className="h-12 w-12 bg-[#FFF7FB] text-[#EC4899] rounded-2xl flex items-center justify-center shrink-0 shadow-sm border border-[#FCE7F3]/50">
+        <div className="h-12 w-12 bg-[#FFF7FB] text-[#EC4899] rounded-[var(--radius-card)] flex items-center justify-center shrink-0 shadow-sm border border-[#FCE7F3]/50">
           <Icon className="w-6 h-6" />
         </div>
         <div>
@@ -28,3 +28,5 @@ export function SettingsSection({ title, description, icon: Icon, children, clas
     </Card>
   );
 }
+
+

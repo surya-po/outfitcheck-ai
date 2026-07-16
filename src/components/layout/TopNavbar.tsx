@@ -100,7 +100,7 @@ export function TopNavbar({ user }: TopNavbarProps) {
                 </span>
               </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 mt-2 rounded-xl border-border bg-popover p-2 shadow-lg">
+            <DropdownMenuContent align="end" className="w-56 mt-2 rounded-[var(--radius-card)] border-border bg-popover p-2 shadow-sm">
               <DropdownMenuLabel className="font-normal px-2 py-1.5">
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-medium leading-none text-foreground">
@@ -112,14 +112,14 @@ export function TopNavbar({ user }: TopNavbarProps) {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator className="bg-border" />
-              <DropdownMenuItem asChild className="rounded-lg cursor-pointer focus:bg-secondary focus:text-primary">
+              <DropdownMenuItem asChild className="rounded-[var(--radius-button)] cursor-pointer focus:bg-secondary focus:text-primary">
                 <Link href="/profile">Profil Saya</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild className="rounded-lg cursor-pointer focus:bg-secondary focus:text-primary">
+              <DropdownMenuItem asChild className="rounded-[var(--radius-button)] cursor-pointer focus:bg-secondary focus:text-primary">
                 <Link href="/settings">Pengaturan</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator className="bg-border" />
-              <DropdownMenuItem asChild className="rounded-lg cursor-pointer focus:bg-destructive/10 focus:text-destructive">
+              <DropdownMenuItem asChild className="rounded-[var(--radius-button)] cursor-pointer focus:bg-destructive/10 focus:text-destructive">
                 <form action={signOut} className="w-full">
                   <button type="submit" className="w-full text-left">
                     Keluar
@@ -133,3 +133,5 @@ export function TopNavbar({ user }: TopNavbarProps) {
     </header>
   );
 }
+
+

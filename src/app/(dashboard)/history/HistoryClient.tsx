@@ -145,20 +145,20 @@ export default function HistoryClient({ initialData }: HistoryClientProps) {
           <StatCard title="Scan Bulan Ini" value={stats.thisMonth} icon={<Calendar />} />
           <StatCard title="Skor AI Rata-rata" value={`${stats.avgScore}%`} icon={<Info />} />
           <StatCard title="Gaya Favorit" value={stats.favStyle} icon={<Shirt />} />
-          <StatCard title="Warna Dominan" value={stats.favColor} icon={<div className="w-4 h-4 rounded-full bg-gradient-to-br from-pink-400 to-purple-500" />} />
+          <StatCard title="Warna Dominan" value={stats.favColor} icon={<div className="w-4 h-4 rounded-full bg-gradient-to-br from-primary to-[#E14D72]" />} />
         </div>
       )}
 
       {/* Controls */}
-      <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-white p-4 rounded-2xl border border-[#FDF2F8] shadow-sm">
+      <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-card p-4 rounded-[var(--radius-card)] border border-border/60 shadow-sm">
         <div className="flex w-full sm:w-auto items-center relative">
-          <Search className="w-4 h-4 absolute left-3 text-gray-400" />
+          <Search className="w-4 h-4 absolute left-3 text-muted-foreground" />
           <input
             type="text"
             placeholder="Cari gaya, tanggal, warna..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9 pr-4 py-2 w-full sm:w-64 rounded-xl border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-[#EC4899] focus:border-transparent outline-none text-sm"
+            className="pl-10 pr-4 py-2 w-full sm:w-64 rounded-[var(--radius-button)] border border-border/60 bg-background focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm text-foreground placeholder:text-muted-foreground"
           />
         </div>
         
@@ -169,13 +169,13 @@ export default function HistoryClient({ initialData }: HistoryClientProps) {
           <FilterBtn active={filter === "month"} onClick={() => setFilter("month")}>30 Hari</FilterBtn>
           <FilterBtn active={filter === "year"} onClick={() => setFilter("year")}>Tahun Ini</FilterBtn>
           
-          <div className="w-px h-6 bg-gray-200 mx-1" />
+          <div className="w-px h-6 bg-border/60 mx-1" />
           
           <Button 
             variant="ghost" 
             onClick={handleDeleteAll}
             disabled={isDeleting || data.length === 0}
-            className="text-red-500 hover:text-red-600 hover:bg-red-50 h-9 px-3 rounded-xl flex-shrink-0"
+            className="text-destructive hover:text-destructive hover:bg-destructive/10 h-9 px-3 rounded-[var(--radius-button)] flex-shrink-0"
           >
             <Trash2 className="w-4 h-4 sm:mr-2" />
             <span className="hidden sm:inline">Hapus Semua</span>
@@ -196,12 +196,12 @@ export default function HistoryClient({ initialData }: HistoryClientProps) {
           ))}
         </div>
       ) : (
-        <div className="text-center py-24 bg-white rounded-2xl border border-[#FDF2F8]">
-          <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Search className="w-6 h-6 text-gray-400" />
+        <div className="text-center py-24 bg-card rounded-[var(--radius-card)] border border-border/60">
+          <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+            <Search className="w-6 h-6 text-muted-foreground" />
           </div>
-          <h3 className="text-gray-900 font-bold mb-1">Tidak ada riwayat ditemukan</h3>
-          <p className="text-gray-500 text-sm">Coba sesuaikan filter atau kata kunci pencarian Anda.</p>
+          <h3 className="text-foreground font-bold mb-1">Tidak ada riwayat ditemukan</h3>
+          <p className="text-muted-foreground text-sm">Coba sesuaikan filter atau kata kunci pencarian Anda.</p>
         </div>
       )}
     </div>
@@ -211,12 +211,12 @@ export default function HistoryClient({ initialData }: HistoryClientProps) {
 // Subcomponents
 function StatCard({ title, value, icon }: { title: string, value: string | number, icon: React.ReactNode }) {
   return (
-    <div className="bg-white p-4 rounded-2xl border border-[#FDF2F8] shadow-sm flex flex-col justify-between h-full min-h-[90px]">
-      <div className="flex items-center justify-between text-gray-400 mb-2">
-        <span className="text-xs font-medium uppercase tracking-wider">{title}</span>
+    <div className="bg-card p-4 rounded-[var(--radius-card)] border border-border/60 shadow-sm flex flex-col justify-between h-full min-h-[90px]">
+      <div className="flex items-center justify-between text-muted-foreground mb-2">
+        <span className="text-xs font-heading font-medium uppercase tracking-wider">{title}</span>
         <div className="[&>svg]:w-4 [&>svg]:h-4">{icon}</div>
       </div>
-      <div className="text-lg font-bold text-gray-900 truncate">{value}</div>
+      <div className="text-lg font-heading font-bold text-foreground truncate">{value}</div>
     </div>
   );
 }
@@ -227,11 +227,13 @@ function FilterBtn({ active, children, onClick }: { active: boolean, children: R
       onClick={onClick}
       className={`px-3 py-1.5 text-xs font-medium rounded-lg whitespace-nowrap transition-colors ${
         active 
-          ? "bg-[#1E1E2D] text-white" 
-          : "bg-gray-50 text-gray-600 hover:bg-gray-100 border border-gray-200"
+          ? "bg-primary text-primary-foreground shadow-sm" 
+          : "bg-background text-muted-foreground hover:bg-secondary border border-border/60"
       }`}
     >
       {children}
     </button>
   );
 }
+
+

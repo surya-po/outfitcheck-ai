@@ -56,7 +56,7 @@ function ToastContainer({ toasts, onDismiss }: { toasts: Toast[]; onDismiss: (id
       {toasts.map((toast) => (
         <div
           key={toast.id}
-          className={`animate-fade-in-up p-4 rounded-2xl shadow-lg border backdrop-blur-xl flex items-start gap-3 cursor-pointer transition-all duration-300 hover:scale-[1.02] ${
+          className={`animate-fade-in-up p-4 rounded-[var(--radius-card)] shadow-sm border backdrop-blur-xl flex items-start gap-3 cursor-pointer transition-all duration-300 hover:scale-[1.02] ${
             toast.type === "success"
               ? "bg-emerald-50/90 border-emerald-200 text-emerald-800"
               : "bg-red-50/90 border-red-200 text-red-700"
@@ -137,7 +137,7 @@ function PasswordStrength({ password }: { password: string }) {
             </div>
             <span
               className={`text-xs transition-colors duration-300 ${
-                check.met ? "text-emerald-600" : "text-[#C4A0AE]"
+                check.met ? "text-emerald-600" : "text-muted-foreground"
               }`}
             >
               {check.label}
@@ -230,7 +230,7 @@ export function RegisterForm() {
       <div className="animate-scale-in">
         {/* Logo & Tagline */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-[#F7A8B8] via-[#E88CA0] to-[#D86A84] shadow-lg shadow-[#F7A8B8]/30 mb-4 animate-float">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-[var(--radius-card)] bg-gradient-to-br from-[#F7A8B8] via-[#E88CA0] to-[#D86A84] shadow-sm shadow-[#F7A8B8]/30 mb-4 animate-float">
             <svg
               width="32"
               height="32"
@@ -259,7 +259,7 @@ export function RegisterForm() {
               />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-[#2D1F24] font-[family-name:var(--font-poppins)] tracking-tight">
+          <h1 className="text-2xl font-bold text-foreground font-[family-name:var(--font-poppins)] tracking-tight">
             OutfitCheck
             <span className="bg-gradient-to-r from-[#D86A84] to-[#E88CA0] bg-clip-text text-transparent">
               {" "}AI
@@ -271,8 +271,8 @@ export function RegisterForm() {
         </div>
 
         {/* Card */}
-        <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl shadow-[#F7A8B8]/10 border border-[#F7A8B8]/20 p-8">
-          <h2 className="text-xl font-semibold text-[#2D1F24] font-[family-name:var(--font-poppins)] mb-1">
+        <div className="bg-white/80 backdrop-blur-xl rounded-[var(--radius-card)] shadow-xl shadow-[#F7A8B8]/10 border border-[#F7A8B8]/20 p-8">
+          <h2 className="text-xl font-semibold text-foreground font-[family-name:var(--font-poppins)] mb-1">
             Create your account
           </h2>
           <p className="text-sm text-[#8C6B78] mb-6">
@@ -287,7 +287,7 @@ export function RegisterForm() {
                 Full Name
               </label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#C4A0AE] group-focus-within:text-[#D86A84] transition-colors">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-muted-foreground group-focus-within:text-[#D86A84] transition-colors">
                   <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                   </svg>
@@ -299,8 +299,8 @@ export function RegisterForm() {
                   disabled={isLoading}
                   placeholder="Jane Doe"
                   {...register("fullName")}
-                  className={`w-full pl-11 pr-4 py-3 rounded-xl bg-[#FFF5F7] border text-[#2D1F24] placeholder:text-[#C4A0AE] text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#F7A8B8] focus:border-[#E88CA0] focus:bg-white hover:border-[#E88CA0] disabled:opacity-50 disabled:cursor-not-allowed ${
-                    errors.fullName ? "border-red-300 focus:ring-red-200" : "border-[#F0D0D8]"
+                  className={`w-full pl-12 pr-4 py-3 rounded-[var(--radius-button)] bg-background border text-foreground placeholder:text-muted-foreground text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:bg-white hover:border-primary disabled:opacity-50 disabled:cursor-not-allowed ${
+                    errors.fullName ? "border-red-300 focus:ring-red-200" : "border-border"
                   }`}
                 />
               </div>
@@ -315,7 +315,7 @@ export function RegisterForm() {
                 Email
               </label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#C4A0AE] group-focus-within:text-[#D86A84] transition-colors">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-muted-foreground group-focus-within:text-[#D86A84] transition-colors">
                   <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                   </svg>
@@ -327,8 +327,8 @@ export function RegisterForm() {
                   disabled={isLoading}
                   placeholder="you@example.com"
                   {...register("email")}
-                  className={`w-full pl-11 pr-4 py-3 rounded-xl bg-[#FFF5F7] border text-[#2D1F24] placeholder:text-[#C4A0AE] text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#F7A8B8] focus:border-[#E88CA0] focus:bg-white hover:border-[#E88CA0] disabled:opacity-50 disabled:cursor-not-allowed ${
-                    errors.email ? "border-red-300 focus:ring-red-200" : "border-[#F0D0D8]"
+                  className={`w-full pl-12 pr-4 py-3 rounded-[var(--radius-button)] bg-background border text-foreground placeholder:text-muted-foreground text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:bg-white hover:border-primary disabled:opacity-50 disabled:cursor-not-allowed ${
+                    errors.email ? "border-red-300 focus:ring-red-200" : "border-border"
                   }`}
                 />
               </div>
@@ -343,7 +343,7 @@ export function RegisterForm() {
                 Password
               </label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#C4A0AE] group-focus-within:text-[#D86A84] transition-colors">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-muted-foreground group-focus-within:text-[#D86A84] transition-colors">
                   <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
                   </svg>
@@ -355,8 +355,8 @@ export function RegisterForm() {
                   disabled={isLoading}
                   placeholder="••••••••"
                   {...register("password")}
-                  className={`w-full pl-11 pr-4 py-3 rounded-xl bg-[#FFF5F7] border text-[#2D1F24] placeholder:text-[#C4A0AE] text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#F7A8B8] focus:border-[#E88CA0] focus:bg-white hover:border-[#E88CA0] disabled:opacity-50 disabled:cursor-not-allowed ${
-                    errors.password ? "border-red-300 focus:ring-red-200" : "border-[#F0D0D8]"
+                  className={`w-full pl-12 pr-4 py-3 rounded-[var(--radius-button)] bg-background border text-foreground placeholder:text-muted-foreground text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:bg-white hover:border-primary disabled:opacity-50 disabled:cursor-not-allowed ${
+                    errors.password ? "border-red-300 focus:ring-red-200" : "border-border"
                   }`}
                 />
               </div>
@@ -372,7 +372,7 @@ export function RegisterForm() {
                 Confirm Password
               </label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#C4A0AE] group-focus-within:text-[#D86A84] transition-colors">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-muted-foreground group-focus-within:text-[#D86A84] transition-colors">
                   <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -384,8 +384,8 @@ export function RegisterForm() {
                   disabled={isLoading}
                   placeholder="••••••••"
                   {...register("confirmPassword")}
-                  className={`w-full pl-11 pr-4 py-3 rounded-xl bg-[#FFF5F7] border text-[#2D1F24] placeholder:text-[#C4A0AE] text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#F7A8B8] focus:border-[#E88CA0] focus:bg-white hover:border-[#E88CA0] disabled:opacity-50 disabled:cursor-not-allowed ${
-                    errors.confirmPassword ? "border-red-300 focus:ring-red-200" : "border-[#F0D0D8]"
+                  className={`w-full pl-12 pr-4 py-3 rounded-[var(--radius-button)] bg-background border text-foreground placeholder:text-muted-foreground text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:bg-white hover:border-primary disabled:opacity-50 disabled:cursor-not-allowed ${
+                    errors.confirmPassword ? "border-red-300 focus:ring-red-200" : "border-border"
                   }`}
                 />
               </div>
@@ -404,7 +404,7 @@ export function RegisterForm() {
                     {...register("terms")}
                     className="peer sr-only"
                   />
-                  <div className="w-4.5 h-4.5 rounded-md border border-[#F0D0D8] bg-[#FFF5F7] peer-checked:bg-gradient-to-br peer-checked:from-[#F7A8B8] peer-checked:to-[#D86A84] peer-checked:border-transparent transition-all duration-300 group-hover:border-[#E88CA0]" />
+                  <div className="w-4.5 h-4.5 rounded-md border border-border bg-background peer-checked:bg-gradient-to-br peer-checked:from-[#F7A8B8] peer-checked:to-[#D86A84] peer-checked:border-transparent transition-all duration-300 group-hover:border-primary" />
                   <svg
                     className="absolute inset-0 w-4.5 h-4.5 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"
                     fill="none"
@@ -441,7 +441,7 @@ export function RegisterForm() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 px-4 rounded-xl text-white font-semibold text-sm bg-gradient-to-r from-[#E88CA0] via-[#D86A84] to-[#C4506C] shadow-lg shadow-[#D86A84]/25 transition-all duration-300 hover:shadow-xl hover:shadow-[#D86A84]/30 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-lg relative overflow-hidden group mt-2"
+              className="w-full py-3 px-4 rounded-[var(--radius-button)] text-white font-semibold text-sm bg-gradient-to-r from-[#E88CA0] via-[#D86A84] to-[#C4506C] shadow-sm shadow-[#D86A84]/25 transition-all duration-300 hover:shadow-xl hover:shadow-[#D86A84]/30 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-sm relative overflow-hidden group mt-2"
             >
               <span className={`flex items-center justify-center gap-2 ${isSubmitting ? "opacity-0" : ""}`}>
                 Create Account
@@ -459,7 +459,7 @@ export function RegisterForm() {
           {/* Divider */}
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-[#F0D0D8]" />
+              <div className="w-full border-t border-border" />
             </div>
             <div className="relative flex justify-center text-xs">
               <span className="px-3 bg-white/80 text-[#8C6B78] tracking-wider uppercase">
@@ -473,10 +473,10 @@ export function RegisterForm() {
             onClick={handleGoogleSignUp}
             disabled={isLoading}
             type="button"
-            className="w-full py-3 px-4 rounded-xl bg-white border border-[#F0D0D8] text-[#2D1F24] font-medium text-sm transition-all duration-300 hover:border-[#E88CA0] hover:shadow-md hover:shadow-[#F7A8B8]/10 hover:scale-[1.01] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-3 relative overflow-hidden"
+            className="w-full py-3 px-4 rounded-[var(--radius-button)] bg-white border border-border text-foreground font-medium text-sm transition-all duration-300 hover:border-primary hover:shadow-sm hover:shadow-[#F7A8B8]/10 hover:scale-[1.01] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-3 relative overflow-hidden"
           >
             {isGooglePending ? (
-              <div className="w-5 h-5 border-2 border-[#E88CA0]/30 border-t-[#D86A84] rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-primary/30 border-t-[#D86A84] rounded-full animate-spin" />
             ) : (
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path
@@ -515,3 +515,6 @@ export function RegisterForm() {
     </>
   );
 }
+
+
+

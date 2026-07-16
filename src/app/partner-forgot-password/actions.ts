@@ -6,7 +6,9 @@ import { headers } from "next/headers";
 export async function resetPasswordForPartnerEmail(email: string) {
   const supabase = await createClient();
   const headersList = await headers();
-  const origin = headersList.get("origin") || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const host = headersList.get("x-forwarded-host") || headersList.get("host") || "localhost:3000";
+  const proto = headersList.get("x-forwarded-proto") || "http";
+  const origin = `${proto}://${host}`;
 
   if (!email) {
     return { error: "Email is required." };

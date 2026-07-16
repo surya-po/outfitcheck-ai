@@ -269,12 +269,12 @@ export default function ProductForm({ categories, initialData }: Props) {
       </div>
 
       {/* Floating Action Bar */}
-      <div className="fixed bottom-0 left-0 right-0 lg:left-64 p-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-t border-[#FDF2F8] dark:border-gray-800 flex justify-end items-center gap-4 z-50">
+      <div className="fixed bottom-0 left-0 right-0 lg:left-64 p-4 bg-white/80 dark:bg-secondary/20 backdrop-blur-md border-t border-border/60 border-border/60 flex justify-end items-center gap-4 z-50">
         
         {isProcessing && uploadProgress > 0 && uploadProgress < 100 && (
           <div className="flex items-center gap-3 mr-auto pl-4">
             <div className="w-48 h-2 bg-gray-200 rounded-full overflow-hidden">
-              <div className="h-full bg-[#EC4899] transition-all duration-300" style={{ width: `${uploadProgress}%` }} />
+              <div className="h-full bg-primary transition-all duration-300" style={{ width: `${uploadProgress}%` }} />
             </div>
             <span className="text-xs font-semibold text-gray-600">{uploadProgress}% diunggah</span>
           </div>
@@ -285,7 +285,7 @@ export default function ProductForm({ categories, initialData }: Props) {
             <ArrowLeft className="w-4 h-4 mr-2" /> Kembali
           </Button>
         </Link>
-        <Button type="submit" disabled={isProcessing} className="bg-gradient-to-r from-[#EC4899] to-[#8B5CF6] text-white px-8 shadow-md hover:shadow-lg">
+        <Button type="submit" disabled={isProcessing} className="bg-gradient-to-r from-[#EC4899] to-[#8B5CF6] text-white px-8 shadow-sm hover:shadow-sm">
           {isProcessing ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
           {isProcessing ? "Memproses..." : "Simpan Produk"}
         </Button>
@@ -293,3 +293,6 @@ export default function ProductForm({ categories, initialData }: Props) {
     </form>
   );
 }
+
+
+

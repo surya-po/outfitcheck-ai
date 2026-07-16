@@ -17,8 +17,8 @@ export function HeightBadge({ isActive, estimatedHeight, isEstimating }: HeightB
           : "opacity-0 -translate-y-2 pointer-events-none"
       }`}
     >
-      <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-black/50 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/20">
-        <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-[#EC4899]/20 text-[#F472B6]">
+      <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-[var(--radius-card)] bg-black/50 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/20">
+        <div className="flex items-center justify-center w-8 h-8 rounded-[var(--radius-button)] bg-[#EC4899]/20 text-[#F472B6]">
           <Ruler className="w-4 h-4" />
         </div>
         <div className="flex flex-col">
@@ -41,3 +41,5 @@ export function HeightBadge({ isActive, estimatedHeight, isEstimating }: HeightB
     </div>
   );
 }
+
+

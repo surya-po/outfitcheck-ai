@@ -34,3 +34,6 @@ export default async function EditProductPage({ params }: Props) {
     </div>
   );
 }
+
+
+

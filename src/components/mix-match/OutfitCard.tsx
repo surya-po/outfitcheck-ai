@@ -63,8 +63,7 @@ function ProductSlot({
 }) {
   return (
     <div className="flex items-start gap-3 py-3 border-b last:border-0 border-gray-100 dark:border-gray-800">
-      {/* Thumbnail */}
-      <div className="w-14 h-14 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800 shrink-0 border border-gray-200 dark:border-gray-700">
+      <div className="w-14 h-14 rounded-[var(--radius-button)] overflow-hidden bg-muted shrink-0 border border-border/60">
         {product.thumbnail ? (
           <img
             src={product.thumbnail}
@@ -79,15 +78,15 @@ function ProductSlot({
       </div>
 
       {/* Info */}
-      <div className="flex-1 min-w-0">
-        <span className="text-[10px] font-bold uppercase tracking-wider text-[#EC4899] dark:text-[#FBCFE8]">
+      <div className="flex-1 min-w-0 py-1">
+        <span className="text-[10px] font-bold uppercase tracking-wider text-primary">
           {label}
         </span>
-        <p className="text-sm font-semibold text-gray-900 dark:text-white line-clamp-1 mt-0.5">
+        <p className="text-sm font-heading font-semibold text-foreground line-clamp-1 mt-0.5">
           {product.name}
         </p>
         <div className="flex items-center gap-2 mt-1">
-          <span className="text-xs font-bold text-gray-800 dark:text-gray-200">
+          <span className="text-xs font-bold text-foreground">
             {formatPrice(product.price)}
           </span>
           {product.boutiqueName && (
@@ -150,8 +149,8 @@ export function OutfitCard({ outfit, rank }: Props) {
   };
 
   const RANK_STYLES: Record<number, string> = {
-    0: "from-[#EC4899] to-[#8B5CF6]",
-    1: "from-[#8B5CF6] to-[#6366F1]",
+    0: "from-primary to-[#E14D72]",
+    1: "from-[#E14D72] to-secondary",
     2: "from-[#6366F1] to-[#3B82F6]",
     3: "from-[#3B82F6] to-[#06B6D4]",
     4: "from-[#06B6D4] to-[#10B981]",
@@ -160,7 +159,7 @@ export function OutfitCard({ outfit, rank }: Props) {
   const gradientClass = RANK_STYLES[rank] || RANK_STYLES[4];
 
   return (
-    <Card className="overflow-hidden border-[#FDF2F8] dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow">
+    <Card className="overflow-hidden border-border/60 bg-card shadow-sm hover:shadow-sm transition-shadow">
       {/* Header */}
       <div className={`bg-gradient-to-r ${gradientClass} p-4 text-white`}>
         <div className="flex justify-between items-start">
@@ -168,7 +167,7 @@ export function OutfitCard({ outfit, rank }: Props) {
             <span className="text-xs font-bold uppercase tracking-widest opacity-80">
               {outfit.outfitLabel}
             </span>
-            <h3 className="text-lg font-bold mt-0.5">{outfit.style} Outfit</h3>
+            <h3 className="text-lg font-heading font-bold mt-0.5">{outfit.style} Outfit</h3>
           </div>
           {/* Score Ring */}
           <div className="flex flex-col items-center">
@@ -208,11 +207,10 @@ export function OutfitCard({ outfit, rank }: Props) {
         </div>
       </div>
 
-      {/* AI Explanation */}
       <div className="px-4 pt-4 pb-2">
-        <div className="flex items-start gap-2 p-3 bg-[#FFF7FB] dark:bg-[#EC4899]/5 border border-[#FDF2F8] dark:border-[#EC4899]/20 rounded-xl">
-          <Sparkles className="w-4 h-4 text-[#EC4899] shrink-0 mt-0.5" />
-          <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">
+        <div className="flex items-start gap-2 p-3 bg-primary/5 border border-primary/20 rounded-[var(--radius-card)]">
+          <Sparkles className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+          <p className="text-xs text-muted-foreground leading-relaxed">
             {outfit.explanation}
           </p>
         </div>
@@ -221,7 +219,7 @@ export function OutfitCard({ outfit, rank }: Props) {
       {/* Product Slots */}
       <div className="px-4 pt-2">
         <button
-          className="w-full flex items-center justify-between text-sm font-semibold text-gray-700 dark:text-gray-200 py-2"
+          className="w-full flex items-center justify-between text-sm font-semibold text-foreground py-2"
           onClick={() => setShowDetail(!showDetail)}
         >
           <span>Produk Digunakan ({allSlotEntries.length} item)</span>
@@ -247,10 +245,9 @@ export function OutfitCard({ outfit, rank }: Props) {
 
       {/* Footer */}
       <div className="p-4 border-t border-gray-100 dark:border-gray-800 flex flex-col gap-3">
-        {/* Total Price */}
         <div className="flex justify-between items-center text-sm">
-          <span className="text-gray-500 dark:text-gray-400">Estimasi Total</span>
-          <span className="font-bold text-gray-900 dark:text-white">
+          <span className="text-muted-foreground">Estimasi Total</span>
+          <span className="font-bold text-foreground">
             {formatPrice(totalPrice)}
           </span>
         </div>
@@ -261,10 +258,10 @@ export function OutfitCard({ outfit, rank }: Props) {
             onClick={handleSave}
             disabled={isPending || isSaved}
             size="sm"
-            className={`flex-1 ${
+            className={`flex-1 rounded-[var(--radius-button)] ${
               isSaved
-                ? "bg-green-500 hover:bg-green-500 text-white"
-                : "bg-gradient-to-r from-[#EC4899] to-[#8B5CF6] text-white hover:shadow-md"
+                ? "bg-green-500 hover:bg-green-600 text-white"
+                : "bg-primary hover:bg-primary/90 text-primary-foreground hover:shadow-sm"
             }`}
           >
             {isSaved ? (
@@ -280,7 +277,7 @@ export function OutfitCard({ outfit, rank }: Props) {
           </Button>
 
           <Link href="/collection" className="shrink-0">
-            <Button size="sm" variant="outline" className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700">
+            <Button size="sm" variant="outline" className="rounded-[var(--radius-button)] border-border/60">
               <ShoppingBag className="w-4 h-4" />
             </Button>
           </Link>
@@ -290,7 +287,7 @@ export function OutfitCard({ outfit, rank }: Props) {
               href={`/marketplace?boutique=${outfit.slots.top.boutiqueId}`}
               className="shrink-0"
             >
-              <Button size="sm" variant="outline" className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700">
+              <Button size="sm" variant="outline" className="rounded-[var(--radius-button)] border-border/60">
                 <Store className="w-4 h-4" />
               </Button>
             </Link>
@@ -304,7 +301,7 @@ export function OutfitCard({ outfit, rank }: Props) {
               <Link
                 key={`link-${slot}`}
                 href={`/marketplace/${product.id}`}
-                className="flex items-center gap-1 text-[10px] font-medium text-[#8B5CF6] hover:underline"
+                className="flex items-center gap-1 text-[10px] font-medium text-secondary hover:underline"
               >
                 <ExternalLink className="w-3 h-3" />
                 {SLOT_LABELS[slot] || slot}
@@ -316,3 +313,5 @@ export function OutfitCard({ outfit, rank }: Props) {
     </Card>
   );
 }
+
+

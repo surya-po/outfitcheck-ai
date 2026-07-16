@@ -13,7 +13,7 @@ const tips = [
 
 export function ScanTips() {
   return (
-    <div className="rounded-2xl border border-[#FDF2F8] bg-white p-5">
+    <div className="rounded-[var(--radius-card)] border border-[#FDF2F8] bg-white p-6">
       <div className="flex items-center gap-2 mb-4">
         <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-50 text-amber-500">
           <Lightbulb className="w-4 h-4" />
@@ -40,3 +40,5 @@ export function ScanTips() {
     </div>
   );
 }
+
+

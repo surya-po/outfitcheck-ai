@@ -19,8 +19,8 @@ export function OutfitGrid({ outfits, profile }: Props) {
       {/* Best Match — full width */}
       <div>
         <div className="flex items-center gap-2 mb-4">
-          <div className="h-1 w-6 rounded-full bg-gradient-to-r from-[#EC4899] to-[#8B5CF6]" />
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+          <div className="h-1 w-6 rounded-full bg-gradient-to-r from-primary to-[#E14D72]" />
+          <h2 className="text-lg font-heading font-bold text-foreground">
             Best Match
           </h2>
         </div>
@@ -33,8 +33,8 @@ export function OutfitGrid({ outfits, profile }: Props) {
       {alternatives.length > 0 && (
         <div>
           <div className="flex items-center gap-2 mb-4">
-            <div className="h-1 w-6 rounded-full bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6]" />
-            <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+            <div className="h-1 w-6 rounded-full bg-gradient-to-r from-[#E14D72] to-secondary" />
+            <h2 className="text-lg font-heading font-bold text-foreground">
               Alternatif Outfit
             </h2>
           </div>
@@ -53,3 +53,5 @@ export function OutfitGrid({ outfits, profile }: Props) {
     </div>
   );
 }
+
+

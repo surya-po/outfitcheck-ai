@@ -39,7 +39,7 @@ export function SettingsSelect({ storageKey, label, options, defaultValue }: Set
     return (
       <div className="flex items-center justify-between py-3">
         <label className="text-sm font-medium text-gray-900 opacity-50">{label}</label>
-        <div className="w-[180px] h-10 bg-gray-100 rounded-xl animate-pulse" />
+        <div className="w-[180px] h-10 bg-gray-100 rounded-[var(--radius-button)] animate-pulse" />
       </div>
     );
   }
@@ -48,10 +48,10 @@ export function SettingsSelect({ storageKey, label, options, defaultValue }: Set
     <div className="flex items-center justify-between py-3">
       <label className="text-sm font-medium text-gray-900">{label}</label>
       <Select value={value} onValueChange={handleChange}>
-        <SelectTrigger className="w-[180px] rounded-xl bg-white border-gray-200">
+        <SelectTrigger className="w-[180px] rounded-[var(--radius-button)] bg-white border-gray-200">
           <SelectValue placeholder="Pilih opsi..." />
         </SelectTrigger>
-        <SelectContent className="rounded-xl border-gray-100 shadow-sm">
+        <SelectContent className="rounded-[var(--radius-button)] border-gray-100 shadow-sm">
           {options.map((opt) => (
             <SelectItem key={opt.value} value={opt.value} className="rounded-lg cursor-pointer hover:bg-gray-50 focus:bg-gray-50">
               {opt.label}
@@ -62,3 +62,5 @@ export function SettingsSelect({ storageKey, label, options, defaultValue }: Set
     </div>
   );
 }
+
+

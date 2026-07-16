@@ -39,10 +39,29 @@ export function parseGeminiResponse(rawText: string): GeminiVisionResponse {
     // Ensure fashionPersona defaults to Unknown if missing
     const validPersonas = [
       "Minimalist", "Elegant", "Casual", "Chic", "Feminine",
-      "Streetwear", "Smart Casual", "Relaxed", "Contemporary", "Classic", "Unknown"
+      "Streetwear", "Smart Casual", "Relaxed", "Contemporary", "Classic", 
+      "Modest Fashion", "Elegant Casual", "Office Wear", "Unknown"
     ];
     if (!validPersonas.includes(data.fashionPersona)) {
       data.fashionPersona = "Unknown";
+    }
+
+    // Ensure fashionPreference defaults to STANDARD
+    const validPreferences = [
+      "MODEST", "STANDARD", "TRENDY", "SMART CASUAL", "MINIMALIST", "ELEGANT", "OFFICE", "STREETWEAR"
+    ];
+    if (!validPreferences.includes(data.fashionPreference)) {
+      data.fashionPreference = "STANDARD";
+    }
+
+    // Ensure isWearingHijab is boolean
+    if (typeof data.isWearingHijab !== "boolean") {
+      data.isWearingHijab = false;
+    }
+
+    // Modest override
+    if (data.isWearingHijab) {
+      data.fashionPreference = "MODEST";
     }
 
     return data as GeminiVisionResponse;

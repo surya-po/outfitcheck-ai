@@ -39,18 +39,18 @@ export function Sidebar() {
       {/* Logo */}
       <div className="flex h-16 shrink-0 items-center px-6 border-b border-border">
         <Link href="/dashboard" className="flex items-center gap-2 group">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#EC4899] to-[#F472B6] text-white shadow-sm transition-transform group-hover:scale-105">
+          <div className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-button)] bg-gradient-to-br from-primary to-[#E14D72] text-primary-foreground shadow-sm transition-transform group-hover:scale-105">
             <Sparkles className="h-4 w-4" />
           </div>
-          <span className="font-bold text-xl tracking-tight text-foreground">
-            OutfitCheck <span className="text-[#EC4899]">AI</span>
+          <span className="font-heading font-bold text-xl tracking-tight text-foreground">
+            OutfitCheck <span className="text-primary">AI</span>
           </span>
         </Link>
       </div>
 
       {/* Navigation */}
       <div className="flex flex-1 flex-col overflow-y-auto px-4 py-6">
-        <nav className="flex-1 space-y-1">
+        <nav className="flex-1 space-y-2">
           {navigation.map((item) => {
             const isActive = pathname === item.href;
             return (
@@ -58,10 +58,10 @@ export function Sidebar() {
                 key={item.name}
                 href={item.href}
                 className={cn(
-                  "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
+                  "group flex items-center gap-3 rounded-[var(--radius-button)] px-3 py-2.5 text-sm font-medium transition-all duration-200",
                   isActive
                     ? "bg-secondary text-primary"
-                    : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
+                    : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground hover:translate-x-1"
                 )}
               >
                 <item.icon
@@ -84,7 +84,7 @@ export function Sidebar() {
           <form action={signOut}>
             <button
               type="submit"
-              className="group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-all duration-200 hover:bg-destructive/10 hover:text-destructive"
+              className="group flex w-full items-center gap-3 rounded-[var(--radius-button)] px-3 py-2.5 text-sm font-medium text-muted-foreground transition-all duration-200 hover:bg-destructive/10 hover:text-destructive hover:translate-x-1"
             >
               <LogOut className="h-5 w-5 shrink-0 text-muted-foreground/70 group-hover:text-destructive transition-colors" />
               Keluar
@@ -95,3 +95,5 @@ export function Sidebar() {
     </div>
   );
 }
+
+

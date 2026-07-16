@@ -118,3 +118,5 @@ export function ProductInformationCard({ formData, onChange, categories, isProce
     </Card>
   );
 }
+
+

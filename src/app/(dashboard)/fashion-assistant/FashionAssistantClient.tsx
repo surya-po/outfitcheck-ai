@@ -132,8 +132,8 @@ export function FashionAssistantClient({ user, scanSummary, initialMessages }: F
   if (!scanSummary) {
     return (
       <div className="max-w-4xl mx-auto pb-12 px-4 sm:px-6 lg:px-8 animate-in fade-in-50 duration-500">
-        <div className="flex flex-col items-center justify-center text-center mt-20 p-8 rounded-3xl bg-white/60 backdrop-blur-xl border border-white shadow-xl shadow-[#EC4899]/5">
-          <div className="w-20 h-20 bg-gradient-to-br from-[#EC4899] to-[#D946EF] rounded-full flex items-center justify-center mb-6 shadow-lg">
+        <div className="flex flex-col items-center justify-center text-center mt-20 p-8 rounded-[var(--radius-card)] bg-white/60 backdrop-blur-xl border border-white shadow-xl shadow-[#EC4899]/5">
+          <div className="w-20 h-20 bg-gradient-to-br from-[#EC4899] to-[#D946EF] rounded-full flex items-center justify-center mb-6 shadow-sm">
             <Sparkles className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-4">Halo {firstName} 👋</h1>
@@ -144,7 +144,7 @@ export function FashionAssistantClient({ user, scanSummary, initialMessages }: F
           </p>
           <Button 
             onClick={() => router.push("/body-scan")}
-            className="rounded-full bg-[#EC4899] hover:bg-[#D946EF] text-white px-8 py-6 text-lg shadow-md hover:shadow-lg transition-all"
+            className="rounded-full bg-[#EC4899] hover:bg-[#D946EF] text-white px-8 py-6 text-lg shadow-sm hover:shadow-sm transition-all"
           >
             Mulai Body Scan <ChevronRight className="ml-2 w-5 h-5" />
           </Button>
@@ -160,7 +160,7 @@ export function FashionAssistantClient({ user, scanSummary, initialMessages }: F
       <div className="flex flex-col md:flex-row gap-4 mb-6 shrink-0">
         
         {/* GREETING CARD */}
-        <div className="flex-1 rounded-3xl bg-white/70 backdrop-blur-xl border border-white p-6 shadow-lg shadow-gray-100/50 flex flex-col justify-center">
+        <div className="flex-1 rounded-[var(--radius-card)] bg-white/70 backdrop-blur-xl border border-white p-6 shadow-sm shadow-gray-100/50 flex flex-col justify-center">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[#EC4899] to-[#D946EF] flex items-center justify-center">
               <Bot className="w-5 h-5 text-white" />
@@ -173,7 +173,7 @@ export function FashionAssistantClient({ user, scanSummary, initialMessages }: F
         </div>
 
         {/* SCAN SUMMARY CARD */}
-        <div className="w-full md:w-72 rounded-3xl bg-gradient-to-br from-gray-900 to-gray-800 p-6 shadow-xl text-white flex flex-col justify-between relative overflow-hidden">
+        <div className="w-full md:w-72 rounded-[var(--radius-card)] bg-gradient-to-br from-gray-900 to-gray-800 p-6 shadow-xl text-white flex flex-col justify-between relative overflow-hidden">
           <div className="absolute top-0 right-0 p-4 opacity-10">
             <Activity className="w-24 h-24" />
           </div>
@@ -205,7 +205,7 @@ export function FashionAssistantClient({ user, scanSummary, initialMessages }: F
       </div>
 
       {/* CHAT AREA */}
-      <div className="flex-1 overflow-hidden flex flex-col bg-white/50 backdrop-blur-md rounded-3xl border border-white shadow-lg relative">
+      <div className="flex-1 overflow-hidden flex flex-col bg-white/50 backdrop-blur-md rounded-[var(--radius-card)] border border-white shadow-sm relative">
         
         {messages.length === 0 ? (
           <div className="flex-1 overflow-y-auto p-6 scroll-smooth">
@@ -220,7 +220,7 @@ export function FashionAssistantClient({ user, scanSummary, initialMessages }: F
                   <button
                     key={idx}
                     onClick={() => handleSuggestionClick(q.text)}
-                    className="flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-gray-100 shadow-sm hover:border-[#EC4899] hover:text-[#EC4899] hover:shadow-md transition-all text-sm font-medium text-gray-700"
+                    className="flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-gray-100 shadow-sm hover:border-[#EC4899] hover:text-[#EC4899] hover:shadow-sm transition-all text-sm font-medium text-gray-700"
                   >
                     <span>{q.icon}</span>
                     <span>{q.text}</span>
@@ -247,7 +247,7 @@ export function FashionAssistantClient({ user, scanSummary, initialMessages }: F
 
                 {/* Message Bubble */}
                 <div className={`flex flex-col max-w-[80%] ${msg.role === "user" ? "items-end" : "items-start"}`}>
-                  <div className={`px-5 py-3.5 rounded-2xl text-[15px] ${
+                  <div className={`px-5 py-3.5 rounded-[var(--radius-card)] text-[15px] ${
                     msg.role === "user"
                       ? "bg-[#1E1E2D] text-white rounded-tr-sm"
                       : "bg-white border border-gray-100 shadow-sm text-gray-800 rounded-tl-sm"
@@ -267,7 +267,7 @@ export function FashionAssistantClient({ user, scanSummary, initialMessages }: F
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#EC4899] to-[#D946EF] text-white flex items-center justify-center shrink-0 shadow-sm">
                   <Bot className="w-5 h-5" />
                 </div>
-                <div className="bg-white border border-gray-100 shadow-sm rounded-2xl rounded-tl-sm px-5 py-4 flex items-center gap-1.5">
+                <div className="bg-white border border-gray-100 shadow-sm rounded-[var(--radius-card)] rounded-tl-sm px-5 py-4 flex items-center gap-1.5">
                   <div className="w-2 h-2 bg-[#EC4899] rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></div>
                   <div className="w-2 h-2 bg-[#EC4899] rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></div>
                   <div className="w-2 h-2 bg-[#EC4899] rounded-full animate-bounce" style={{ animationDelay: "300ms" }}></div>
@@ -287,7 +287,7 @@ export function FashionAssistantClient({ user, scanSummary, initialMessages }: F
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Tanya rekomendasi outfit, gaya, atau ukuran..."
-              className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-2xl focus:ring-[#EC4899] focus:border-[#EC4899] block p-3.5 pr-12 resize-none shadow-inner"
+              className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-[var(--radius-card)] focus:ring-[#EC4899] focus:border-[#EC4899] block p-3.5 pr-12 resize-none shadow-inner"
               rows={1}
               style={{ minHeight: "52px", maxHeight: "150px" }}
               disabled={isLoading}
@@ -295,7 +295,7 @@ export function FashionAssistantClient({ user, scanSummary, initialMessages }: F
             <button
               onClick={() => handleSend(inputValue)}
               disabled={!inputValue.trim() || isLoading}
-              className="absolute right-2 bottom-2 p-2 rounded-xl bg-[#EC4899] text-white hover:bg-[#D946EF] disabled:opacity-50 disabled:hover:bg-[#EC4899] transition-colors"
+              className="absolute right-2 bottom-2 p-2 rounded-[var(--radius-button)] bg-[#EC4899] text-white hover:bg-[#D946EF] disabled:opacity-50 disabled:hover:bg-[#EC4899] transition-colors"
             >
               <Send className="w-4 h-4" />
             </button>
@@ -308,3 +308,5 @@ export function FashionAssistantClient({ user, scanSummary, initialMessages }: F
     </div>
   );
 }
+
+

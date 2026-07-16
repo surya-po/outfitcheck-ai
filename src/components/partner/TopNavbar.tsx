@@ -47,7 +47,7 @@ export function PartnerTopNavbar({ user }: PartnerTopNavbarProps) {
     <header
       className={`sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 px-4 sm:gap-x-6 sm:px-6 lg:px-8 transition-all duration-200 ${
         isScrolled
-          ? "bg-white/80 backdrop-blur-md border-b border-[#FDF2F8] shadow-sm dark:bg-gray-900/80 dark:border-gray-800"
+          ? "bg-background/80 backdrop-blur-md border-b border-border/60 shadow-sm"
           : "bg-transparent"
       }`}
     >
@@ -78,11 +78,11 @@ export function PartnerTopNavbar({ user }: PartnerTopNavbarProps) {
 
           {/* Profile dropdown */}
           <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center gap-x-3 outline-none rounded-full ring-offset-2 focus-visible:ring-2 focus-visible:ring-[#EC4899]">
+            <DropdownMenuTrigger className="flex items-center gap-x-3 outline-none rounded-full ring-offset-2 focus-visible:ring-2 focus-visible:ring-primary">
               <span className="sr-only">Buka menu pengguna</span>
-              <Avatar className="h-9 w-9 border border-[#FDF2F8] dark:border-gray-700">
+              <Avatar className="h-9 w-9 border border-border/60">
                 <AvatarImage src={user.avatarUrl} alt={user.fullName || user.email} />
-                <AvatarFallback className="bg-[#FFF7FB] text-[#EC4899] font-medium text-xs dark:bg-gray-800">
+                <AvatarFallback className="bg-primary/5 text-primary font-medium text-xs">
                   {initials}
                 </AvatarFallback>
               </Avatar>
@@ -95,30 +95,30 @@ export function PartnerTopNavbar({ user }: PartnerTopNavbarProps) {
                 </span>
               </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 mt-2 rounded-xl border-[#FDF2F8] dark:border-gray-800 p-2 shadow-lg shadow-[#EC4899]/5">
+            <DropdownMenuContent align="end" className="w-56 mt-2 rounded-[var(--radius-card)] border-border/60 p-2 shadow-sm">
               <DropdownMenuLabel className="font-normal px-2 py-1.5">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none text-gray-900 dark:text-gray-100">
+                  <p className="text-sm font-heading font-medium leading-none text-foreground">
                     {user.fullName || "Partner"}
                   </p>
-                  <p className="text-xs leading-none text-gray-500 truncate dark:text-gray-400">
+                  <p className="text-xs leading-none text-muted-foreground truncate">
                     {user.email}
                   </p>
                 </div>
               </DropdownMenuLabel>
-              <DropdownMenuSeparator className="bg-[#FDF2F8] dark:bg-gray-800" />
-              <DropdownMenuItem asChild className="rounded-lg cursor-pointer focus:bg-[#FFF7FB] focus:text-[#EC4899] dark:focus:bg-gray-800">
+              <DropdownMenuSeparator className="bg-border/60" />
+              <DropdownMenuItem asChild className="rounded-[var(--radius-button)] cursor-pointer focus:bg-primary/5 focus:text-primary">
                 <Link href="/partner/profile">Profil Butik</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild className="rounded-lg cursor-pointer focus:bg-[#FFF7FB] focus:text-[#EC4899] dark:focus:bg-gray-800">
+              <DropdownMenuItem asChild className="rounded-[var(--radius-button)] cursor-pointer focus:bg-primary/5 focus:text-primary">
                 <Link href="/partner/settings">Pengaturan</Link>
               </DropdownMenuItem>
-              <DropdownMenuSeparator className="bg-[#FDF2F8] dark:bg-gray-800" />
-              <DropdownMenuItem asChild className="rounded-lg cursor-pointer focus:bg-[#FFF7FB] focus:text-[#EC4899] dark:focus:bg-gray-800">
+              <DropdownMenuSeparator className="bg-border/60" />
+              <DropdownMenuItem asChild className="rounded-[var(--radius-button)] cursor-pointer focus:bg-primary/5 focus:text-primary">
                 <Link href="/dashboard">Kembali ke App Utama</Link>
               </DropdownMenuItem>
-              <DropdownMenuSeparator className="bg-[#FDF2F8] dark:bg-gray-800" />
-              <DropdownMenuItem asChild className="rounded-lg cursor-pointer focus:bg-red-50 focus:text-red-600 dark:focus:bg-red-950/30">
+              <DropdownMenuSeparator className="bg-border/60" />
+              <DropdownMenuItem asChild className="rounded-[var(--radius-button)] cursor-pointer focus:bg-destructive/10 focus:text-destructive">
                 <form action={signOut} className="w-full">
                   <button type="submit" className="w-full text-left">
                     Keluar
@@ -132,3 +132,5 @@ export function PartnerTopNavbar({ user }: PartnerTopNavbarProps) {
     </header>
   );
 }
+
+

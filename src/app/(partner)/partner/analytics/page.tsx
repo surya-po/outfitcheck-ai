@@ -97,7 +97,7 @@ export default async function PartnerAnalyticsPage() {
     <div className="space-y-6 max-w-6xl mx-auto animate-in fade-in duration-500">
       <div className="flex flex-col gap-2">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-          <BarChart3 className="w-6 h-6 text-[#EC4899]" />
+          <BarChart3 className="w-6 h-6 text-primary" />
           Analisis Performa
         </h1>
         <p className="text-gray-500 dark:text-gray-400">
@@ -107,8 +107,8 @@ export default async function PartnerAnalyticsPage() {
 
       {/* Overview Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="p-6 border-[#FDF2F8] dark:border-gray-800 shadow-sm flex items-center gap-6 bg-gradient-to-br from-white to-[#FDF2F8] dark:from-gray-900 dark:to-gray-900/50">
-          <div className="p-4 bg-[#EC4899]/10 rounded-2xl text-[#EC4899]">
+        <Card className="p-6 border-border/60 border-border/60 shadow-sm flex items-center gap-6 bg-gradient-to-br from-white to-[#FDF2F8] dark:from-gray-900 dark:to-gray-900/50">
+          <div className="p-4 bg-primary/10 rounded-[var(--radius-card)] text-primary">
             <Star className="w-8 h-8" />
           </div>
           <div>
@@ -117,8 +117,8 @@ export default async function PartnerAnalyticsPage() {
           </div>
         </Card>
 
-        <Card className="p-6 border-[#FDF2F8] dark:border-gray-800 shadow-sm flex items-center gap-6 bg-gradient-to-br from-white to-[#F5F3FF] dark:from-gray-900 dark:to-gray-900/50">
-          <div className="p-4 bg-[#8B5CF6]/10 rounded-2xl text-[#8B5CF6]">
+        <Card className="p-6 border-border/60 border-border/60 shadow-sm flex items-center gap-6 bg-gradient-to-br from-white to-[#F5F3FF] dark:from-gray-900 dark:to-gray-900/50">
+          <div className="p-4 bg-primary/10 rounded-[var(--radius-card)] text-primary">
             <Bookmark className="w-8 h-8" />
           </div>
           <div>
@@ -130,9 +130,9 @@ export default async function PartnerAnalyticsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
         {/* Top Recommended Products */}
-        <Card className="p-6 border-[#FDF2F8] dark:border-gray-800 shadow-sm">
+        <Card className="p-6 border-border/60 border-border/60 shadow-sm">
           <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-            <Star className="w-5 h-5 text-[#EC4899]" />
+            <Star className="w-5 h-5 text-primary" />
             Top 5 Paling Direkomendasikan
           </h2>
           
@@ -146,7 +146,7 @@ export default async function PartnerAnalyticsPage() {
                     <span className="font-medium text-gray-900 dark:text-white truncate max-w-[70%]">
                       {index + 1}. {product.name}
                     </span>
-                    <span className="font-bold text-[#EC4899]">{product._count.productRecommendations} kali</span>
+                    <span className="font-bold text-primary">{product._count.productRecommendations} kali</span>
                   </div>
                   <div className="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-2.5 overflow-hidden">
                     <div 
@@ -165,9 +165,9 @@ export default async function PartnerAnalyticsPage() {
         </Card>
 
         {/* Top Saved Products */}
-        <Card className="p-6 border-[#FDF2F8] dark:border-gray-800 shadow-sm">
+        <Card className="p-6 border-border/60 border-border/60 shadow-sm">
           <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-            <Bookmark className="w-5 h-5 text-[#8B5CF6]" />
+            <Bookmark className="w-5 h-5 text-primary" />
             Top 5 Paling Banyak Disimpan
           </h2>
           
@@ -181,7 +181,7 @@ export default async function PartnerAnalyticsPage() {
                     <span className="font-medium text-gray-900 dark:text-white truncate max-w-[70%]">
                       {index + 1}. {product.name}
                     </span>
-                    <span className="font-bold text-[#8B5CF6]">{product._count.savedOutfits} kali</span>
+                    <span className="font-bold text-primary">{product._count.savedOutfits} kali</span>
                   </div>
                   <div className="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-2.5 overflow-hidden">
                     <div 
@@ -202,3 +202,6 @@ export default async function PartnerAnalyticsPage() {
     </div>
   );
 }
+
+
+

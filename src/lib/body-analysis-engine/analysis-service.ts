@@ -50,25 +50,26 @@ export class FashionAnalysisService {
     const sizing = estimateClothingSize(measurements, shape, proportion);
 
     // Build the initial profile (without recommendation yet)
-    const profileWithoutRecommendation: FashionAnalysisProfile = {
+    const profile: FashionAnalysisProfile = {
+      id: `analysis-${Date.now()}`,
       measurements,
-      shape,
-      proportion,
-      sizing,
-      colorAnalysis,
-      analyzedAt: Date.now(),
-      // Fashion Profile fields — Single Source of Truth
       gender: detectedGender,
       genderConfidence,
       fashionPersona,
+      fashionPreference: colorAnalysis.fashionPreference,
       isWearingHijab,
+      shape,
+      proportion,
+      clothingSize: sizing,
+      colorAnalysis,
+      analyzedAt: Date.now(),
     } as Omit<FashionAnalysisProfile, "recommendation">;
 
     // Run Category C (Recommendation Engine) — receives full profile including gender
-    const recommendation = fashionRecommendationEngine.generate(profileWithoutRecommendation as FashionAnalysisProfile);
+    const recommendation = fashionRecommendationEngine.generate(profile as FashionAnalysisProfile);
 
     return {
-      ...profileWithoutRecommendation,
+      ...profile,
       recommendation,
     };
   }

@@ -49,7 +49,9 @@ export const CameraPreview = forwardRef<CameraPreviewHandle, CameraPreviewProps>
       if (stream) {
         video.srcObject = stream;
         video.play().catch((err) => {
-          console.error("[CameraPreview] Failed to play video:", err);
+          if (err.name !== 'AbortError') {
+            console.error("[CameraPreview] Failed to play video:", err);
+          }
         });
       } else {
         video.srcObject = null;
@@ -57,7 +59,7 @@ export const CameraPreview = forwardRef<CameraPreviewHandle, CameraPreviewProps>
     }, [stream]);
 
     return (
-      <div className="relative w-full aspect-[3/4] sm:aspect-[4/5] max-h-[520px] rounded-2xl overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800">
+      <div className="relative w-full aspect-[3/4] sm:aspect-[4/5] max-h-[520px] rounded-[var(--radius-card)] overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800">
         {/* Video element */}
         <video
           ref={videoRef}
@@ -121,3 +123,5 @@ export const CameraPreview = forwardRef<CameraPreviewHandle, CameraPreviewProps>
     );
   }
 );
+
+
