@@ -6,7 +6,7 @@ export function createClient() {
 
   if (!url || !key){
     console.error(
-      "[OutfitCheck] Supabase environment variables are missing or invalid.\n" +
+      "[Fitcheck] Supabase environment variables are missing or invalid.\n" +
       `  NEXT_PUBLIC_SUPABASE_URL: ${url ? "✓ set" : "✗ MISSING"}\n` +
       `  NEXT_PUBLIC_SUPABASE_ANON_KEY: ${key ? (key.startsWith("eyJ") ? "✓ valid JWT" : `✗ INVALID (starts with "${key.substring(0, 15)}...")`) : "✗ MISSING"}\n` +
       "  → Get your keys from: Supabase Dashboard → Settings → API"

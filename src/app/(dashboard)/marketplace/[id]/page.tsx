@@ -10,7 +10,7 @@ import { MarketplaceProductCard } from "@/components/marketplace/MarketplaceProd
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  return { title: `Detail Produk ${id} | OutfitCheck AI` };
+  return { title: `Detail Produk ${id} | Fitcheck AI` };
 }
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {

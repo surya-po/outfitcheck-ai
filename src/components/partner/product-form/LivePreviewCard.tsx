@@ -11,14 +11,16 @@ interface Props {
   categories: { id: string; name: string; [key: string]: any }[]; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
+const rupiahFormatter = new Intl.NumberFormat("id-ID", {
+  style: "currency",
+  currency: "IDR",
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
+});
+
 export function LivePreviewCard({ formData, thumbnailUrl, categories }: Props) {
   const formatRupiah = (num: number) => {
-    return new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(num || 0);
+    return rupiahFormatter.format(num || 0);
   };
 
   const categoryName = categories.find(c => c.id === formData.categoryId)?.name || "Kategori";

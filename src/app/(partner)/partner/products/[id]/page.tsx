@@ -115,7 +115,7 @@ export default async function PreviewProductPage({ params }: Props) {
           AI Matching Data
         </h3>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
-          Sistem OutfitCheck AI akan menggunakan parameter di bawah ini untuk mencocokkan produk dengan profil pengguna. Semakin detail, semakin tinggi tingkat akurasi kecocokan (*Compatibility Score*).
+          Sistem Fitcheck AI akan menggunakan parameter di bawah ini untuk mencocokkan produk dengan profil pengguna. Semakin detail, semakin tinggi tingkat akurasi kecocokan (*Compatibility Score*).
         </p>
         
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">

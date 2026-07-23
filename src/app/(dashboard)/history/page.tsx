@@ -5,7 +5,7 @@ import { Metadata } from "next";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Riwayat Scan - OutfitCheck AI",
+  title: "Riwayat Scan - Fitcheck AI",
   description: "Lihat riwayat scan tubuh dan rekomendasi fashion AI Anda",
 };
 

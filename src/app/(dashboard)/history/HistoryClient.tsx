@@ -6,6 +6,16 @@ import { Search, Trash2, Calendar, Activity, Info, Shirt } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HistoryCard } from "@/components/body-scan/history/HistoryCard";
 import { deleteAllScanHistory, deleteScanHistory, toggleFavorite } from "@/app/actions/history";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 interface HistoryClientProps {
   initialData: ScanHistory[];
 }
@@ -17,6 +27,7 @@ export default function HistoryClient({ initialData }: HistoryClientProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState<FilterOption>("all");
   const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | "all" | null>(null);
 
   // Compute Stats
   const stats = useMemo(() => {
@@ -102,8 +113,10 @@ export default function HistoryClient({ initialData }: HistoryClientProps) {
   }, [data, filter, searchQuery]);
 
 
-  const handleDeleteAll = async () => {
-    if (confirm("Apakah Anda yakin ingin menghapus SEMUA riwayat scan? Ini tidak dapat dibatalkan.")) {
+  const confirmDeleteAction = async () => {
+    if (!deleteConfirmId) return;
+    
+    if (deleteConfirmId === "all") {
       setIsDeleting(true);
       try {
         await deleteAllScanHistory();
@@ -112,18 +125,23 @@ export default function HistoryClient({ initialData }: HistoryClientProps) {
         alert("Gagal menghapus.");
       }
       setIsDeleting(false);
-    }
-  };
-
-  const handleDelete = async (id: string) => {
-    if (confirm("Hapus scan ini?")) {
+    } else {
       try {
-        await deleteScanHistory(id);
-        setData(data.filter(s => s.id !== id));
+        await deleteScanHistory(deleteConfirmId);
+        setData(data.filter(s => s.id !== deleteConfirmId));
       } catch {
         alert("Gagal menghapus.");
       }
     }
+    setDeleteConfirmId(null);
+  };
+
+  const handleDeleteAll = () => {
+    setDeleteConfirmId("all");
+  };
+
+  const handleDelete = (id: string) => {
+    setDeleteConfirmId(id);
   };
 
   const handleToggleFav = async (id: string, current: boolean) => {
@@ -204,6 +222,25 @@ export default function HistoryClient({ initialData }: HistoryClientProps) {
           <p className="text-muted-foreground text-sm">Coba sesuaikan filter atau kata kunci pencarian Anda.</p>
         </div>
       )}
+
+      <AlertDialog open={deleteConfirmId !== null} onOpenChange={(open) => !open && setDeleteConfirmId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Konfirmasi Penghapusan</AlertDialogTitle>
+            <AlertDialogDescription>
+              {deleteConfirmId === "all" 
+                ? "Apakah Anda yakin ingin menghapus SEMUA riwayat scan? Tindakan ini tidak dapat dibatalkan dan semua data scan Anda akan hilang permanen." 
+                : "Apakah Anda yakin ingin menghapus scan ini? Data yang dihapus tidak dapat dikembalikan."}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Batal</AlertDialogCancel>
+            <AlertDialogAction variant="destructive" onClick={confirmDeleteAction}>
+              Ya, Hapus
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

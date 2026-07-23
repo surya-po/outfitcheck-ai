@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpWithEmail, signUpWithGoogle } from "./actions";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 // ============================================
 // Validation Schema
@@ -230,37 +231,17 @@ export function RegisterForm() {
       <div className="animate-scale-in">
         {/* Logo & Tagline */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-[var(--radius-card)] bg-gradient-to-br from-[#F7A8B8] via-[#E88CA0] to-[#D86A84] shadow-sm shadow-[#F7A8B8]/30 mb-4 animate-float">
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 32 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M16 2C14.5 2 13.2 2.8 12.5 4L8 11.5C7.3 12.7 7.3 14.3 8 15.5L12.5 23C13.2 24.2 14.5 25 16 25C17.5 25 18.8 24.2 19.5 23L24 15.5C24.7 14.3 24.7 12.7 24 11.5L19.5 4C18.8 2.8 17.5 2 16 2Z"
-                fill="white"
-                fillOpacity="0.9"
-              />
-              <circle cx="16" cy="13.5" r="3" fill="#D86A84" />
-              <path
-                d="M12 19C12 19 13.5 22 16 22C18.5 22 20 19 20 19"
-                stroke="#D86A84"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-              <path
-                d="M10 28L12 25H20L22 28"
-                stroke="white"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeOpacity="0.7"
-              />
-            </svg>
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-[var(--radius-card)] shadow-sm shadow-[#F7A8B8]/30 mb-4 animate-float overflow-hidden bg-background">
+          <Image 
+            src="/logo.jpg" 
+            alt="Fitcheck Logo" 
+            width={64} 
+            height={64} 
+            className="w-full h-full object-cover" 
+          />
           </div>
           <h1 className="text-2xl font-bold text-foreground font-[family-name:var(--font-poppins)] tracking-tight">
-            OutfitCheck
+            Fitcheck
             <span className="bg-gradient-to-r from-[#D86A84] to-[#E88CA0] bg-clip-text text-transparent">
               {" "}AI
             </span>

@@ -153,13 +153,13 @@ export default function ProductForm({ categories, initialData }: Props) {
         const filePath = `products/${fileName}`;
 
         const { error: uploadError } = await supabase.storage
-          .from('outfitcheck-images')
+          .from('Fitcheck-images')
           .upload(filePath, file);
 
         if (uploadError) throw uploadError;
 
         const { data: { publicUrl } } = supabase.storage
-          .from('outfitcheck-images')
+          .from('Fitcheck-images')
           .getPublicUrl(filePath);
           
         uploadedUrls.push(publicUrl);

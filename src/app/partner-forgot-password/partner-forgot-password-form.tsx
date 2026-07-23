@@ -110,7 +110,7 @@ export function PartnerForgotPasswordForm() {
         </div>
 
         <p className="text-center text-xs text-gray-600 mt-6">
-          &copy; 2025 OutfitCheck AI. Seluruh hak dilindungi.
+          &copy; 2025 Fitcheck AI. Seluruh hak dilindungi.
         </p>
       </div>
     </div>

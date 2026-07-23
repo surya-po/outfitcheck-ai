@@ -1,5 +1,6 @@
 import { BodyMeasurementResult } from "@/lib/body-measurements/types";
 import { FashionAnalysisProfile, GenderType, FashionPersonaType } from "./analysis-types";
+import { UserStylePreference } from "@/lib/fashion-recommendation-engine/recommendation-types";
 import { determineBodyShape } from "./bodyShape";
 import { analyzeProportions } from "./bodyProportion";
 import { estimateClothingSize } from "./clothingSize";
@@ -16,12 +17,16 @@ export class FashionAnalysisService {
    * - Drive fashion recommendations
    * - Set fashion persona
    *
+   * userStylePreference (optional) — collected from user BEFORE body scan —
+   * is passed through to the recommendation engine as the lowest priority layer.
+   *
    * The resulting FashionAnalysisProfile is the Single Source of Truth
    * for all downstream features.
    */
   public async analyze(
     measurements: BodyMeasurementResult,
-    imageBase64: string
+    imageBase64: string,
+    userStylePreference?: UserStylePreference
   ): Promise<FashionAnalysisProfile> {
 
     // Format measurements into absolute JSON format for Gemini
@@ -63,10 +68,29 @@ export class FashionAnalysisService {
       clothingSize: sizing,
       colorAnalysis,
       analyzedAt: Date.now(),
-    } as Omit<FashionAnalysisProfile, "recommendation">;
+      
+      // Flattened Fashion Profile as requested
+      fashionProfile: {
+        gender: detectedGender,
+        primaryShape: shape.primaryShape,
+        secondaryShape: shape.secondaryShape,
+        primaryConfidence: shape.primaryConfidence,
+        secondaryConfidence: shape.secondaryConfidence,
+        bodyProportion: proportion.proportions,
+        shoulderWidth: measurements.measurements?.shoulderWidth?.value,
+        waistDefinition: shape.ratios.waistToHip < 0.75 ? "Defined" : "Average",
+        hipWidth: measurements.measurements?.hipWidth?.value,
+      },
+      
+      // Attach user preference to the profile for downstream access
+      userStylePreference,
+    } as unknown as Omit<FashionAnalysisProfile, "recommendation">;
 
-    // Run Category C (Recommendation Engine) — receives full profile including gender
-    const recommendation = fashionRecommendationEngine.generate(profile as FashionAnalysisProfile);
+    // Run Category C (Recommendation Engine) — receives full profile + user preference
+    const recommendation = fashionRecommendationEngine.generate(
+      profile as FashionAnalysisProfile,
+      userStylePreference
+    );
 
     return {
       ...profile,

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
@@ -39,11 +40,15 @@ export function Sidebar() {
       {/* Logo */}
       <div className="flex h-16 shrink-0 items-center px-6 border-b border-border">
         <Link href="/dashboard" className="flex items-center gap-2 group">
-          <div className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-button)] bg-gradient-to-br from-primary to-[#E14D72] text-primary-foreground shadow-sm transition-transform group-hover:scale-105">
-            <Sparkles className="h-4 w-4" />
-          </div>
+          <Image 
+            src="/logo.jpg" 
+            alt="Fitcheck Logo" 
+            width={32} 
+            height={32} 
+            className="rounded-[var(--radius-button)] shadow-sm transition-transform group-hover:scale-105" 
+          />
           <span className="font-heading font-bold text-xl tracking-tight text-foreground">
-            OutfitCheck <span className="text-primary">AI</span>
+            Fitcheck <span className="text-primary">AI</span>
           </span>
         </Link>
       </div>

@@ -72,16 +72,6 @@ export default async function ProfilePage() {
   return (
     <div className="max-w-7xl mx-auto pb-12 animate-in fade-in-50 duration-500 space-y-8">
       
-      {/* Page Header */}
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#1E1E2D] tracking-tight flex items-center gap-2">
-          <User className="w-6 h-6 text-[#EC4899]" /> Profil Pengguna
-        </h1>
-        <p className="text-sm text-gray-500 mt-1">
-          Ringkasan informasi akun dan statistik aktivitas Anda.
-        </p>
-      </div>
-
       {/* Main Info Grid */}
       <EditableProfileForm
         profile={profile}

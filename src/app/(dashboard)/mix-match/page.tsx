@@ -3,7 +3,7 @@ import { generateOutfitCombinations } from "@/app/actions/mix-match";
 import { MixMatchClient } from "@/components/mix-match/MixMatchClient";
 
 export const metadata: Metadata = {
-  title: "AI Mix & Match - OutfitCheck AI",
+  title: "AI Mix & Match - Fitcheck AI",
   description:
     "Biarkan AI menyusun kombinasi outfit lengkap yang cocok untuk bentuk tubuh dan skin tone Anda dari katalog Boutique Partner.",
 };

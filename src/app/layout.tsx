@@ -17,7 +17,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "OutfitCheck AI — AI Personal Fashion Assistant",
+  title: "Fitcheck AI — AI Personal Fashion Assistant",
   description:
     "Get AI-powered body analysis and personalized outfit recommendations. Your intelligent fashion companion.",
   keywords: ["fashion", "AI", "body analysis", "outfit", "style", "personal assistant"],

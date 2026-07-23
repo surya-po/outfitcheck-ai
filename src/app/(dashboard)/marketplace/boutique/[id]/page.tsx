@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const boutique = await getBoutiqueProfile(id);
-  return { title: boutique ? `${boutique.name} | OutfitCheck AI` : "Boutique Not Found" };
+  return { title: boutique ? `${boutique.name} | Fitcheck AI` : "Boutique Not Found" };
 }
 
 export default async function BoutiqueProfilePage(

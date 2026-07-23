@@ -25,7 +25,7 @@ function validateEnvVars() {
 
   if (errors.length > 0) {
     console.error(
-      "\n⚠️  [OutfitCheck AI] Supabase configuration error:\n" +
+      "\n⚠️  [Fitcheck AI] Supabase configuration error:\n" +
       errors.map((e) => `   → ${e}`).join("\n") +
       "\n"
     );

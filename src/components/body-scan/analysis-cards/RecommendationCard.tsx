@@ -52,6 +52,37 @@ export function RecommendationCard({ result, products = [], savedProductIds = ne
         </div>
       </div>
 
+      {/* ── Your Fashion Preference ── */}
+      {((result.preferredStyles && result.preferredStyles.length > 0) || result.preferredOccasion) && (
+        <div className="bg-gradient-to-r from-primary/10 to-[#E14D72]/10 border border-primary/20 rounded-[var(--radius-card)] p-4 mb-6">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-base">✨</span>
+            <span className="text-sm font-bold text-primary uppercase tracking-wider">Your Fashion Preference</span>
+          </div>
+          <div className="flex flex-wrap gap-2 mb-2">
+            {result.preferredStyles && result.preferredStyles.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {result.preferredStyles.map((s) => (
+                  <span key={s} className="text-xs px-3 py-1 bg-primary/20 text-primary rounded-full font-semibold border border-primary/30">
+                    {s}
+                  </span>
+                ))}
+              </div>
+            )}
+            {result.preferredOccasion && (
+              <span className="text-xs px-3 py-1 bg-[#E14D72]/15 text-[#E14D72] rounded-full font-semibold border border-[#E14D72]/30">
+                📍 {result.preferredOccasion}
+              </span>
+            )}
+          </div>
+          {result.preferenceExplanation && (
+            <p className="text-xs text-muted-foreground leading-relaxed mt-2 border-t border-primary/10 pt-2">
+              {result.preferenceExplanation}
+            </p>
+          )}
+        </div>
+      )}
+
       <div className="bg-primary/10 border border-primary/20 rounded-[var(--radius-card)] p-4 mb-6">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">

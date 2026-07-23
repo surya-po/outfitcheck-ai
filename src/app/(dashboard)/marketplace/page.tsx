@@ -8,7 +8,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata = {
-  title: "Marketplace | OutfitCheck AI",
+  title: "Marketplace | Fitcheck AI",
 };
 
 export default async function MarketplacePage(

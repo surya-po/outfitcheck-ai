@@ -52,9 +52,9 @@ export const maleShapeStyleMap: Record<MaleBodyShapeType, { primary: string; alt
 export const femaleClothingRules: Record<
   FemaleBodyShapeType,
   {
-    tops: { type: string; style: string; fit: string; reason: string }[];
-    bottoms: { type: string; style: string; fit: string; reason: string }[];
-    outers: { type: string; style: string; fit: string; reason: string }[];
+    tops: { type: string; style: string; fit: string; reason: string; weight?: number }[];
+    bottoms: { type: string; style: string; fit: string; reason: string; weight?: number }[];
+    outers: { type: string; style: string; fit: string; reason: string; weight?: number }[];
   }
 > = {
   Hourglass: {
@@ -390,9 +390,9 @@ export const femaleClothingRules: Record<
 export const maleClothingRules: Record<
   MaleBodyShapeType,
   {
-    tops: { type: string; style: string; fit: string; reason: string }[];
-    bottoms: { type: string; style: string; fit: string; reason: string }[];
-    outers: { type: string; style: string; fit: string; reason: string }[];
+    tops: { type: string; style: string; fit: string; reason: string; weight?: number }[];
+    bottoms: { type: string; style: string; fit: string; reason: string; weight?: number }[];
+    outers: { type: string; style: string; fit: string; reason: string; weight?: number }[];
   }
 > = {
   Rectangle: {

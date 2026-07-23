@@ -179,7 +179,7 @@ export function ProductDetailDialog({ product, onClose }: ProductDetailDialogPro
 
               {!product.storeInfo.isPartner && (
                 <div className="mt-4 pt-4 border-t border-white/5 text-center">
-                  <p className="text-xs text-white/50 italic">Status: Belum menjadi Mitra OutfitCheck AI</p>
+                  <p className="text-xs text-white/50 italic">Status: Belum menjadi Mitra Fitcheck AI</p>
                 </div>
               )}
             </div>

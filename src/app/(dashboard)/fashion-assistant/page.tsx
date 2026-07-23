@@ -6,7 +6,7 @@ import { Metadata } from "next";
 import { AssistantMessage } from "@/lib/fashion-assistant/assistant-types";
 
 export const metadata: Metadata = {
-  title: "Fashion Assistant | OutfitCheck AI",
+  title: "Fashion Assistant | Fitcheck AI",
   description: "AI Personal Stylist Anda",
 };
 

@@ -94,7 +94,7 @@ export async function findBestMatchingProducts(profile: FashionAnalysisProfile):
       recommendationReason: sp.recommendationReason,
       storeInfo: {
         isPartner: true,
-        name: original?.boutique?.name || "OutfitCheck AI Partner",
+        name: original?.boutique?.name || "Fitcheck AI Partner",
         instagram: original?.boutique?.instagram || undefined,
         website: original?.boutique?.website || undefined,
         phone: original?.boutique?.phone || undefined,

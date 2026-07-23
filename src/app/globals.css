@@ -55,7 +55,7 @@
   --radius-modal: var(--radius-modal);
   --radius-image: var(--radius-image);
 
-  /* OutfitCheck AI brand colors - Deprecated but kept for transition */
+  /* Fitcheck AI brand colors - Deprecated but kept for transition */
   --color-brand-primary: #F26B8A;
   --color-brand-secondary: #FFB8C9;
   --color-brand-accent: #FFDCE5;
@@ -161,7 +161,7 @@
 }
 
 /* ============================================
-   OutfitCheck AI - Custom Animations
+   Fitcheck AI - Custom Animations
    ============================================ */
 
 @keyframes float {

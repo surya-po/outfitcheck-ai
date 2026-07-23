@@ -47,9 +47,18 @@ export type MaleBodyShapeType =
 export type BodyShapeType = FemaleBodyShapeType | MaleBodyShapeType;
 
 export interface BodyShapeResult {
-  shape: BodyShapeType;
-  confidence: number;
+  primaryShape: string;
+  secondaryShape?: string;
+  confidence: number; // overall or primary
+  primaryConfidence: number;
+  secondaryConfidence?: number;
+  ratios: {
+    shoulderToHip: number;
+    waistToHip: number;
+    waistToShoulder: number;
+  };
   details: string;
+  status?: "SUCCESS" | "LOW_CONFIDENCE";
 }
 
 export type BodyProportionType =
@@ -124,7 +133,7 @@ export interface ColorAnalysisResult {
 // FULL ENGINE RESULT — Fashion Profile (Single Source of Truth)
 // ==========================================
 
-import { FashionRecommendationProfile } from "../fashion-recommendation-engine/recommendation-types";
+import { FashionRecommendationProfile, UserStylePreference } from "../fashion-recommendation-engine/recommendation-types";
 
 export interface FashionAnalysisProfile {
   measurements: BodyMeasurementResult;
@@ -140,4 +149,21 @@ export interface FashionAnalysisProfile {
   fashionPersona?: FashionPersonaType;
   fashionPreference?: string;
   isWearingHijab?: boolean;
+
+  // Flattened fashion profile for easy consumption by Recommendation Engine
+  fashionProfile: {
+    gender: string;
+    primaryShape: string;
+    secondaryShape?: string;
+    primaryConfidence: number;
+    secondaryConfidence?: number;
+    bodyScale?: string;
+    bodyProportion: string[];
+    shoulderWidth?: number;
+    waistDefinition?: string;
+    hipWidth?: number;
+  };
+
+  // User Style Preference — captured before Body Scan
+  userStylePreference?: UserStylePreference;
 }

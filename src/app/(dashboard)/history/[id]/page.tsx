@@ -51,11 +51,13 @@ export default async function HistoryDetailPage(props: { params: Promise<{ id: s
   const timeStr = format(d, "HH:mm", { locale: localeId });
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const shape = (scan.fashionAnalysisJson as any).shape;
+  const analysisData = scan.fashionAnalysisJson as any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const proportion = (scan.fashionAnalysisJson as any).proportion;
+  const shape = analysisData.shape;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const sizing = (scan.fashionAnalysisJson as any).sizing;
+  const proportion = analysisData.proportion;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const sizing = analysisData.sizing;
 
   const profile = {
     shape,
@@ -141,9 +143,8 @@ export default async function HistoryDetailPage(props: { params: Promise<{ id: s
             <SectionHeader icon={Shirt} title="Outfit Suggestions" description="Inspirasi kombinasi gaya yang menonjolkan fitur terbaik Anda." />
             <OutfitRecommendationCard 
               outfits={generateOutfitRecommendations(
-                profile.shape.shape, 
-                profile.colorAnalysis?.gender, 
-                profile.colorAnalysis?.isWearingHijab
+                analysisData.fashionProfile || analysisData,
+                analysisData.isWearingHijab
               )}
             />
           </>

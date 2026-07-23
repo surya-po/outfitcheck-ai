@@ -10,15 +10,19 @@ import { CameraControls } from "@/components/body-scan/CameraControls";
 import { PoseStatusPanel } from "@/components/body-scan/PoseStatusPanel";
 import { MeasurementPanel } from "@/components/body-scan/MeasurementPanel";
 import { usePoseLandmarker } from "@/hooks/usePoseLandmarker";
+import { useScanSession } from "@/hooks/useScanSession";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { BodyMeasurementResult } from "@/lib/body-measurements/types";
+import { StylePreferenceSelector } from "@/components/body-scan/StylePreferenceSelector";
+import { UserStylePreference } from "@/lib/fashion-recommendation-engine/recommendation-types";
 
 // New Fashion Analysis Engine imports
 import { FashionAnalysisProfile } from "@/lib/body-analysis-engine/analysis-types";
 import { fashionAnalysisService } from "@/lib/body-analysis-engine/analysis-service";
 import { BodyShapeCard } from "@/components/body-scan/analysis-cards/BodyShapeCard";
 import { ProportionsCard } from "@/components/body-scan/analysis-cards/ProportionsCard";
+import { ShapeDebugPanel } from "@/components/body-scan/analysis-cards/ShapeDebugPanel";
 
 import { AiVisionCard } from "@/components/body-scan/analysis-cards/AiVisionCard";
 import { RecommendationCard } from "@/components/body-scan/analysis-cards/RecommendationCard";
@@ -39,33 +43,53 @@ import { calculatePixelScale } from "@/lib/body-analysis-engine/calibration/pixe
 import { calculateAllMeasurements } from "@/lib/body-analysis-engine/measurement/measurement-engine";
 
 export default function BodyScanPage() {
-  const [scanMode, setScanMode] = useState<"quick" | "accurate">("quick");
+  // ─── Session persistence (survives navigation within the tab) ────────
+  const { session, isHydrated, updateSession, resetSession } = useScanSession();
+
+  // ─── Derived from session (persisted) ──────────────────────────────
+  const scanMode          = session.scanMode;
+  const viewStep          = session.viewStep;
+  const capturedImage     = session.capturedImage;
+  const capturedMeasurements = session.capturedMeasurements;
+  const analysisProfile   = session.analysisProfile;
+  const matchedProducts   = session.matchedProducts;
+  const scanMetadata      = session.scanMetadata;
+  const userStylePreference = session.userStylePreference;
+
+  // Shorthand setters that sync to sessionStorage
+  const setScanMode     = (v: "quick" | "accurate") => updateSession({ scanMode: v });
+  const setViewStep     = (v: "preference" | "scan" | "result") => updateSession({ viewStep: v });
+  const setCapturedImage = (v: string | null) => updateSession({ capturedImage: v });
+  const setCapturedMeasurements = (v: BodyMeasurementResult | null) => updateSession({ capturedMeasurements: v });
+  const setAnalysisProfile = (v: typeof analysisProfile) => updateSession({ analysisProfile: v });
+  const setMatchedProducts = (v: typeof matchedProducts) => updateSession({ matchedProducts: v });
+  const setScanMetadata = (v: Record<string, unknown>) => updateSession({ scanMetadata: v });
+  const setUserStylePreference = (v: UserStylePreference) => updateSession({ userStylePreference: v });
+
+  // ─── Transient UI state (not persisted — ok to lose on navigation) ─────
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const router = useRouter();
-  
-  // Capture States
   const [hasCaptured, setHasCaptured] = useState(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
-  const [capturedImage, setCapturedImage] = useState<string | null>(null);
-  const [capturedMeasurements, setCapturedMeasurements] = useState<BodyMeasurementResult | null>(null);
-
-  // Analysis Engine States
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisStep, setAnalysisStep] = useState("");
-  const [analysisProfile, setAnalysisProfile] = useState<FashionAnalysisProfile | null>(null);
-  const [matchedProducts, setMatchedProducts] = useState<Product[]>([]);
   const [savedProductIds, setSavedProductIds] = useState<Set<string>>(new Set());
 
-  // Extracted Metadata for History
-  const [scanMetadata, setScanMetadata] = useState<any>({});
+  const router = useRouter();
 
   const [videoElement, setVideoElement] = useState<HTMLVideoElement | null>(null);
   const [canvasElement, setCanvasElement] = useState<HTMLCanvasElement | null>(null);
 
   const streamCleanupRef = useRef<MediaStream | null>(null);
   const cameraRef = useRef<CameraPreviewHandle>(null);
+
+  // Restore hasCaptured from session after hydration
+  useEffect(() => {
+    if (isHydrated && session.capturedImage && session.viewStep === "result") {
+      setHasCaptured(true);
+    }
+  }, [isHydrated]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const poseState = usePoseLandmarker({
     videoElement,
@@ -126,6 +150,9 @@ export default function BodyScanPage() {
   };
 
   const startCamera = useCallback(async () => {
+    // Reset results when starting a new scan
+    resetSession();
+    setHasCaptured(false);
     setIsLoading(true);
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia({
@@ -135,11 +162,6 @@ export default function BodyScanPage() {
       setStream(mediaStream);
       streamCleanupRef.current = mediaStream;
       setIsCameraActive(true);
-      setHasCaptured(false);
-      setCapturedImage(null);
-      setCapturedMeasurements(null);
-      setAnalysisProfile(null);
-      setMatchedProducts([]);
       
       if (scanMode === "accurate") {
         setAnalysisStep("Loading Computer Vision...");
@@ -151,7 +173,7 @@ export default function BodyScanPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [scanMode]);
+  }, [scanMode, resetSession]);
 
   const stopCamera = useCallback(() => {
     if (streamCleanupRef.current) {
@@ -228,12 +250,14 @@ export default function BodyScanPage() {
     stopCamera();
 
     setCapturedMeasurements(finalMeasurements);
-    setScanMetadata(metadata);
+    setScanMetadata(metadata as Record<string, unknown>);
+    // Transition to result step — persisted so navigating back restores results
+    setViewStep("result");
     setAnalysisStep("5/5: Menganalisis Fashion (AI)...");
     
     if (finalMeasurements) {
       fashionAnalysisService
-        .analyze(finalMeasurements, frameData)
+        .analyze(finalMeasurements, frameData, userStylePreference)
         .then(async (profile) => {
           setAnalysisProfile(profile);
           if (profile) {
@@ -278,6 +302,7 @@ export default function BodyScanPage() {
       }
 
       alert("Analisis berhasil disimpan!");
+      resetSession(); // Clear persisted session after successful save
       router.push("/history");
     } catch (error: any) {
       alert("Gagal menyimpan analisis: " + (error?.message || "Terjadi kesalahan yang tidak diketahui."));
@@ -286,17 +311,51 @@ export default function BodyScanPage() {
     }
   };
 
-  // ─── RESULT SCREEN (After Capture) ──────────────────────
-  if (hasCaptured && capturedImage) {
+  // ─── Guard: wait for sessionStorage hydration before rendering ──────
+  if (!isHydrated) {
+    return (
+      <div className="flex items-center justify-center min-h-[300px]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+      </div>
+    );
+  }
+
+  // ─── PREFERENCE STEP (Step 1 + 2: Style & Occasion) ──────
+  if (viewStep === "preference") {
+    return (
+      <div className="animate-in fade-in-50 duration-500">
+        <StylePreferenceSelector
+          onComplete={(pref) => {
+            setUserStylePreference(pref);
+            setViewStep("scan");
+          }}
+        />
+      </div>
+    );
+  }
+
+  // ─── RESULT SCREEN (After Capture / Restored from session) ────
+  if ((hasCaptured || session.viewStep === "result") && capturedImage) {
     return (
       <div className="animate-in fade-in-50 duration-500">
         <div className="mb-6">
-          <h1 className="text-xl sm:text-2xl font-heading font-bold text-foreground tracking-tight">
-            Analisis Selesai
-          </h1>
-          <p className="text-sm text-gray-500 mt-0.5">
-            Tinjau hasil pengukuran scan tubuh AI dan profil fashion Anda di bawah ini.
-          </p>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <h1 className="text-xl sm:text-2xl font-heading font-bold text-foreground tracking-tight">
+                Analisis Selesai
+              </h1>
+              <p className="text-sm text-gray-500 mt-0.5">
+                Tinjau hasil pengukuran scan tubuh AI dan profil fashion Anda di bawah ini.
+              </p>
+            </div>
+            {/* Restored session indicator — shows when user navigated away and came back */}
+            {!hasCaptured && session.viewStep === "result" && (
+              <div className="flex items-center gap-1.5 text-xs text-emerald-600 bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1.5 whitespace-nowrap shrink-0">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                Hasil tersimpan
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
@@ -321,9 +380,17 @@ export default function BodyScanPage() {
                   {isSaving ? "Menyimpan..." : "Simpan Analisis"}
                 </Button>
                 <div className="flex gap-3">
-                  <Button variant="outline" onClick={startCamera} className="flex-1 rounded-[var(--radius-button)] h-11 border-border/60">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      // Reset session and go back to preference step for a fresh scan
+                      resetSession();
+                      setHasCaptured(false);
+                    }}
+                    className="flex-1 rounded-[var(--radius-button)] h-11 border-border/60"
+                  >
                     <RefreshCcw className="w-4 h-4 mr-2" />
-                    Ulangi
+                    Scan Baru
                   </Button>
                   <Link href="/history" className="flex-1">
                     <Button variant="secondary" className="w-full rounded-[var(--radius-button)] h-11">
@@ -345,6 +412,10 @@ export default function BodyScanPage() {
               <div className="absolute top-0 right-0 w-80 h-80 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
               
               <h2 className="text-foreground font-heading font-bold text-xl sm:text-2xl mb-6">Profil Fashion AI</h2>
+              
+              {process.env.NODE_ENV === 'development' && analysisProfile?.shape && (
+                <ShapeDebugPanel result={analysisProfile.shape} />
+              )}
               
               {isAnalyzing ? (
                 <div className="py-24 text-center text-muted-foreground flex flex-col items-center justify-center min-h-[400px]">
@@ -375,9 +446,9 @@ export default function BodyScanPage() {
                     <div className="sm:col-span-2">
                       <OutfitRecommendationCard 
                         outfits={generateOutfitRecommendations(
-                          analysisProfile.shape.shape, 
-                          analysisProfile.colorAnalysis?.gender, 
-                          analysisProfile.colorAnalysis?.isWearingHijab
+                          analysisProfile,
+                          userStylePreference.preferredStyles,
+                          userStylePreference.preferredOccasion
                         )}
                       />
                     </div>

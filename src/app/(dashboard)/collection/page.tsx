@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
-  title: "Digital Wardrobe - OutfitCheck AI",
+  title: "Digital Wardrobe - Fitcheck AI",
 };
 
 export default async function CollectionPage() {

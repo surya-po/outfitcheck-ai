@@ -27,6 +27,8 @@ export default async function RecommendationsPage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const shape = scan?.fashionAnalysisJson ? (scan.fashionAnalysisJson as any).shape : null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const analysis = scan?.fashionAnalysisJson as any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const matchedProducts = scan?.matchedProductsJson as any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const gemini = scan?.geminiAnalysisJson as any;
@@ -74,7 +76,7 @@ export default async function RecommendationsPage() {
 
           {shape && (
             <OutfitRecommendationCard 
-              outfits={generateOutfitRecommendations(shape.shape, gemini?.gender, gemini?.isWearingHijab)}
+              outfits={generateOutfitRecommendations(analysis, gemini?.isWearingHijab)}
             />
           )}
         </div>

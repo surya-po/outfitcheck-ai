@@ -3,7 +3,7 @@ import NotificationClient from "./NotificationClient";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Notifikasi - OutfitCheck AI",
+  title: "Notifikasi - Fitcheck AI",
 };
 
 export default async function NotificationsPage() {

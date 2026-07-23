@@ -18,6 +18,16 @@ import { SettingsDangerZone } from "@/components/settings/SettingsDangerZone";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 
 import { deleteAllScanHistory } from "@/app/actions/history";
@@ -32,6 +42,7 @@ export function SettingsClient({ user, profile, stats, isEmailUser = true }: any
   const [dialogContent, setDialogContent] = useState({ title: "", description: "" });
   
   const [isClearingHistory, setIsClearingHistory] = useState(false);
+  const [clearHistoryAlertOpen, setClearHistoryAlertOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   // Change Password States
@@ -56,9 +67,8 @@ export function SettingsClient({ user, profile, stats, isEmailUser = true }: any
     window.location.reload();
   };
 
-  const handleClearHistory = async () => {
-    if (!confirm("Apakah Anda yakin ingin menghapus semua riwayat scan? Tindakan ini tidak dapat dibatalkan.")) return;
-    
+  const confirmClearHistory = async () => {
+    setClearHistoryAlertOpen(false);
     setIsClearingHistory(true);
     try {
       await deleteAllScanHistory();
@@ -69,6 +79,10 @@ export function SettingsClient({ user, profile, stats, isEmailUser = true }: any
     } finally {
       setIsClearingHistory(false);
     }
+  };
+
+  const handleClearHistory = () => {
+    setClearHistoryAlertOpen(true);
   };
 
   const handleLogout = async () => {
@@ -111,7 +125,7 @@ export function SettingsClient({ user, profile, stats, isEmailUser = true }: any
 
   const fullName = profile?.firstName || profile?.lastName 
     ? `${profile.firstName || ""} ${profile.lastName || ""}`.trim() 
-    : "Pengguna OutfitCheck";
+    : "Pengguna Fitcheck";
 
   const memberSince = user?.createdAt 
     ? format(new Date(user.createdAt), "MMMM yyyy", { locale: localeId }) 
@@ -167,7 +181,20 @@ export function SettingsClient({ user, profile, stats, isEmailUser = true }: any
             </div>
           </SettingsSection>
 
-
+          {/* 3. PREFERENSI */}
+          <SettingsSection title="Preferensi" description="Pengaturan tampilan dan bahasa aplikasi." icon={Globe}>
+            <div className="divide-y divide-gray-50">
+              <SettingsSelect
+                storageKey="language"
+                label="Bahasa Aplikasi"
+                defaultValue="id"
+                options={[
+                  { label: "Bahasa Indonesia", value: "id" },
+                  { label: "Bahasa Inggris (English)", value: "en" }
+                ]}
+              />
+            </div>
+          </SettingsSection>
 
           {/* 5. PRIVASI */}
           <SettingsSection title="Privasi" description="Kontrol data dan privasi Anda." icon={Shield}>
@@ -321,6 +348,23 @@ export function SettingsClient({ user, profile, stats, isEmailUser = true }: any
           </form>
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={clearHistoryAlertOpen} onOpenChange={setClearHistoryAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Hapus Semua Riwayat</AlertDialogTitle>
+            <AlertDialogDescription>
+              Apakah Anda yakin ingin menghapus semua riwayat scan? Tindakan ini tidak dapat dibatalkan dan data Anda akan hilang permanen.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Batal</AlertDialogCancel>
+            <AlertDialogAction variant="destructive" onClick={confirmClearHistory}>
+              Ya, Hapus Semua
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

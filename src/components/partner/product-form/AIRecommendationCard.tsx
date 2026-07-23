@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Sparkles } from "lucide-react";
 
 interface Props {
-  formData: unknown;
+  formData: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   onMultiSelectChange: (name: string, value: string) => void;
   isProcessing?: boolean;
 }
@@ -22,7 +22,7 @@ export function AIRecommendationCard({ formData, onMultiSelectChange, isProcessi
         </h3>
       </div>
       <p className="text-xs text-blue-600/80 dark:text-blue-300/80 mt-1 mb-4">
-        Atribut ini digunakan oleh OutfitCheck AI untuk merekomendasikan produk ini ke pengguna yang tepat. (Opsional)
+        Atribut ini digunakan oleh Fitcheck AI untuk merekomendasikan produk ini ke pengguna yang tepat. (Opsional)
       </p>
 
       <div className="space-y-6">

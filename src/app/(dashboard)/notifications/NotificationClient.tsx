@@ -9,6 +9,16 @@ import { Notification, NotificationType, NotificationPriority } from "@prisma/cl
 import { markAsRead, markAllAsRead, deleteNotification, deleteAllNotifications } from "@/app/actions/notification";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 
 interface Props {
@@ -18,6 +28,7 @@ interface Props {
 export default function NotificationClient({ initialNotifications }: Props) {
   const [notifications, setNotifications] = useState<Notification[]>(initialNotifications);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showClearAlert, setShowClearAlert] = useState(false);
 
   const unreadCount = notifications.filter((n) => !n.isRead).length;
   const readCount = notifications.length - unreadCount;
@@ -51,8 +62,8 @@ export default function NotificationClient({ initialNotifications }: Props) {
     setIsProcessing(false);
   };
 
-  const handleDeleteAll = async () => {
-    if (!window.confirm("Apakah Anda yakin ingin menghapus semua notifikasi?")) return;
+  const confirmDeleteAll = async () => {
+    setShowClearAlert(false);
     setIsProcessing(true);
     const res = await deleteAllNotifications();
     if (res.success) {
@@ -60,6 +71,10 @@ export default function NotificationClient({ initialNotifications }: Props) {
       toast.success("Semua notifikasi dihapus");
     }
     setIsProcessing(false);
+  };
+
+  const handleDeleteAll = () => {
+    setShowClearAlert(true);
   };
 
   const getIcon = (type: NotificationType) => {
@@ -93,7 +108,7 @@ export default function NotificationClient({ initialNotifications }: Props) {
           <BellOff className="w-full h-full" strokeWidth={1} />
         </div>
         <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Belum ada notifikasi.</h3>
-        <p className="text-gray-500 dark:text-gray-400 max-w-sm">Seluruh aktivitas OutfitCheck AI akan muncul di sini.</p>
+        <p className="text-gray-500 dark:text-gray-400 max-w-sm">Seluruh aktivitas Fitcheck AI akan muncul di sini.</p>
       </div>
     );
   }
@@ -192,6 +207,23 @@ export default function NotificationClient({ initialNotifications }: Props) {
           );
         })}
       </div>
+
+      <AlertDialog open={showClearAlert} onOpenChange={setShowClearAlert}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Hapus Semua Notifikasi</AlertDialogTitle>
+            <AlertDialogDescription>
+              Apakah Anda yakin ingin menghapus semua notifikasi? Data yang dihapus tidak dapat dikembalikan.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Batal</AlertDialogCancel>
+            <AlertDialogAction variant="destructive" onClick={confirmDeleteAll}>
+              Ya, Hapus Semua
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

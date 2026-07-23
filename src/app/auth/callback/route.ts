@@ -13,6 +13,7 @@ export async function GET(request: Request) {
   if (code) {
     const supabase = await createClient();
     const { data: authData, error } = await supabase.auth.exchangeCodeForSession(code);
+    
     if (!error) {
       // Ensure user exists in Prisma
       if (authData?.user) {
@@ -31,9 +32,12 @@ export async function GET(request: Request) {
         }
       }
       return NextResponse.redirect(`${appOrigin}${next}`);
+    } else {
+      console.error("Supabase Auth Callback Error:", error.message);
+      return NextResponse.redirect(`${appOrigin}/login?error=auth_callback_error&details=${encodeURIComponent(error.message)}`);
     }
   }
 
   // Return the user to login with an error
-  return NextResponse.redirect(`${appOrigin}/login?error=auth_callback_error`);
+  return NextResponse.redirect(`${appOrigin}/login?error=no_code_provided`);
 }

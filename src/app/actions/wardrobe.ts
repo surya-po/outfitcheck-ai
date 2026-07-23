@@ -108,7 +108,7 @@ export async function getSavedOutfits() {
       recommendationReason: saved.recommendationReason || "",
       storeInfo: {
         isPartner: true,
-        name: dbProduct.boutique?.name || "OutfitCheck AI Partner",
+        name: dbProduct.boutique?.name || "Fitcheck AI Partner",
         instagram: dbProduct.boutique?.instagram || undefined,
         website: dbProduct.boutique?.website || undefined,
         phone: dbProduct.boutique?.phone || undefined,

@@ -138,7 +138,7 @@ export function FashionAssistantClient({ user, scanSummary, initialMessages }: F
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-4">Halo {firstName} 👋</h1>
           <p className="text-gray-600 max-w-lg mb-8 leading-relaxed">
-            Saya adalah <b>Fashion Assistant OutfitCheck AI</b>. Saya dapat membantu memilih outfit, warna pakaian, ukuran pakaian, hingga styling berdasarkan bentuk tubuh Anda.
+            Saya adalah <b>Fashion Assistant Fitcheck AI</b>. Saya dapat membantu memilih outfit, warna pakaian, ukuran pakaian, hingga styling berdasarkan bentuk tubuh Anda.
             <br /><br />
             Namun saya melihat Anda belum memiliki hasil Body Scan. Silakan lakukan Body Scan terlebih dahulu agar saya dapat memberikan rekomendasi yang lebih akurat.
           </p>

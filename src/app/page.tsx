@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Sparkles, Shirt, Camera } from "lucide-react";
 
 export default function Home() {
@@ -7,9 +8,9 @@ export default function Home() {
       {/* Navigation */}
       <nav className="flex items-center justify-between p-6 lg:px-12 backdrop-blur-md bg-white/70 dark:bg-black/70 sticky top-0 z-50 border-b border-zinc-200 dark:border-zinc-800">
         <div className="flex items-center gap-2">
-          <Sparkles className="w-6 h-6 text-primary" />
+          <Image src="/logo.jpg" alt="Fitcheck Logo" width={32} height={32} className="rounded-lg shadow-sm" />
           <span className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-            OutfitCheck AI
+            Fitcheck AI
           </span>
         </div>
         <div className="flex items-center gap-4 font-medium text-sm">

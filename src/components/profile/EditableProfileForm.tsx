@@ -108,23 +108,34 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
 
   return (
     <>
-      {/* Global Edit Button & Messages */}
-      <div className="flex flex-col md:flex-row md:justify-end mb-4 gap-2">
-        {error && <div className="text-sm font-medium text-red-500 bg-red-50 px-3 py-1.5 rounded-lg border border-red-100 mr-auto self-center">{error}</div>}
-        {success && <div className="text-sm font-medium text-emerald-500 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-100 mr-auto self-center">{success}</div>}
-        
-        {!isEditing ? (
-          <Button onClick={() => setIsEditing(true)} className="bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-[var(--radius-button)] shadow-sm">
-            Edit Profil
-          </Button>
-        ) : (
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={handleCancel} disabled={isSaving} className="rounded-[var(--radius-button)]">Batal</Button>
-            <Button onClick={handleSave} disabled={isSaving} className="bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-[var(--radius-button)] shadow-sm">
-              {isSaving ? "Menyimpan..." : "Simpan Perubahan"}
+      {/* Header and Global Edit Button & Messages */}
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#1E1E2D] tracking-tight flex items-center gap-2">
+            <User className="w-6 h-6 text-[#EC4899]" /> Profil Pengguna
+          </h1>
+          <p className="text-sm text-gray-500 mt-1">
+            Ringkasan informasi akun dan statistik aktivitas Anda.
+          </p>
+        </div>
+
+        <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+          {error && <div className="text-sm font-medium text-red-500 bg-red-50 px-3 py-1.5 rounded-lg border border-red-100">{error}</div>}
+          {success && <div className="text-sm font-medium text-emerald-500 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-100">{success}</div>}
+          
+          {!isEditing ? (
+            <Button onClick={() => setIsEditing(true)} className="bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-[var(--radius-button)] shadow-sm w-full md:w-auto">
+              Edit Profil
             </Button>
-          </div>
-        )}
+          ) : (
+            <div className="flex gap-2 w-full md:w-auto">
+              <Button variant="outline" onClick={handleCancel} disabled={isSaving} className="rounded-[var(--radius-button)] flex-1 md:flex-none">Batal</Button>
+              <Button onClick={handleSave} disabled={isSaving} className="bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-[var(--radius-button)] shadow-sm flex-1 md:flex-none">
+                {isSaving ? "Menyimpan..." : "Simpan"}
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -143,7 +154,7 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
             </div>
             
             <h2 className="font-bold text-xl text-gray-900 truncate w-full px-2">
-              {currentFullName !== "-" ? currentFullName : "Pengguna OutfitCheck"}
+              {currentFullName !== "-" ? currentFullName : "Pengguna Fitcheck"}
             </h2>
             <p className="text-sm text-gray-500 truncate w-full px-2 mb-4">{userEmail}</p>
             

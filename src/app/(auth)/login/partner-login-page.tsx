@@ -13,7 +13,7 @@ export default function PartnerLoginPage() {
   const [remember, setRemember] = useState(false);
 
   useEffect(() => {
-    const savedEmail = localStorage.getItem("outfitcheck_partner_remembered_email");
+    const savedEmail = localStorage.getItem("Fitcheck_partner_remembered_email");
     if (savedEmail) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setEmail(savedEmail);
@@ -25,9 +25,9 @@ export default function PartnerLoginPage() {
     setError(null);
     const submittedEmail = formData.get("email") as string;
     if (remember) {
-      localStorage.setItem("outfitcheck_partner_remembered_email", submittedEmail);
+      localStorage.setItem("Fitcheck_partner_remembered_email", submittedEmail);
     } else {
-      localStorage.removeItem("outfitcheck_partner_remembered_email");
+      localStorage.removeItem("Fitcheck_partner_remembered_email");
     }
     startTransition(async () => {
       const result = await signInAsPartner(formData);
@@ -57,7 +57,7 @@ export default function PartnerLoginPage() {
             </div>
             <div className="inline-flex items-center gap-1.5 bg-pink-500/10 border border-pink-400/20 text-pink-300 text-xs px-3 py-1.5 rounded-full">
               <span className="w-1.5 h-1.5 bg-pink-400 rounded-full animate-pulse" />
-              OutfitCheck AI — Partner Program
+              Fitcheck AI — Partner Program
             </div>
           </div>
 
@@ -164,7 +164,7 @@ export default function PartnerLoginPage() {
         </div>
 
         <p className="text-center text-xs text-gray-600 mt-6">
-          &copy; 2025 OutfitCheck AI. Seluruh hak dilindungi.
+          &copy; 2025 Fitcheck AI. Seluruh hak dilindungi.
         </p>
       </div>
     </div>

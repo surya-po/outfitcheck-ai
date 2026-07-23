@@ -1,3 +1,14 @@
+// ============================================================
+// USER STYLE PREFERENCE — Input from user before Body Scan
+// ============================================================
+
+export interface UserStylePreference {
+  /** Up to 3 styles chosen by user (e.g. ["Formal", "Minimalist"]) */
+  preferredStyles: string[];
+  /** Single occasion chosen by user (e.g. "Office") */
+  preferredOccasion?: string;
+}
+
 export interface OutfitRecommendationItem {
   category: "top" | "bottom" | "shoes" | "accessory" | "outer";
   type: string;
@@ -25,4 +36,18 @@ export interface FashionRecommendationProfile {
   avoidColors: { name: string; hex: string }[];
   tips: string[];
   summary: string;
+
+  // ── Style Preference Context (from user input) ──
+  preferredStyles?: string[];
+  preferredOccasion?: string;
+  /** AI-generated explanation of how style preference was applied */
+  preferenceExplanation?: string;
+
+  debug?: {
+    primaryShape: string;
+    secondaryShape?: string;
+    primaryConfidence: number;
+    secondaryConfidence: number;
+    isBlendingEnabled: boolean;
+  };
 }

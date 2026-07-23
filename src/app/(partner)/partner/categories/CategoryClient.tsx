@@ -9,6 +9,16 @@ import { Input } from "@/components/ui/input";
 import { Plus, Edit2, Trash2, Search, X } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface Props {
   initialCategories: Category[];
@@ -22,6 +32,7 @@ export default function CategoryClient({ initialCategories }: Props) {
   const [isCreating, setIsCreating] = useState(false);
   const [newName, setNewName] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
 
   const filteredCategories = categories.filter(c => 
     c.name.toLowerCase().includes(search.toLowerCase())
@@ -62,17 +73,22 @@ export default function CategoryClient({ initialCategories }: Props) {
     setIsProcessing(false);
   };
 
-  const handleDelete = async (id: string) => {
-    if (!window.confirm("Yakin ingin menghapus kategori ini?")) return;
+  const confirmDelete = async () => {
+    if (!deleteConfirmId) return;
     setIsProcessing(true);
-    const res = await deleteCategory(id);
+    const res = await deleteCategory(deleteConfirmId);
     if (res.success) {
-      setCategories(categories.filter(c => c.id !== id));
+      setCategories(categories.filter(c => c.id !== deleteConfirmId));
       toast.success("Kategori berhasil dihapus");
     } else {
       toast.error(res.error || "Gagal menghapus kategori");
     }
     setIsProcessing(false);
+    setDeleteConfirmId(null);
+  };
+
+  const handleDelete = (id: string) => {
+    setDeleteConfirmId(id);
   };
 
   return (
@@ -193,6 +209,23 @@ export default function CategoryClient({ initialCategories }: Props) {
           </table>
         </div>
       </Card>
+
+      <AlertDialog open={deleteConfirmId !== null} onOpenChange={(open) => !open && setDeleteConfirmId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Hapus Kategori</AlertDialogTitle>
+            <AlertDialogDescription>
+              Apakah Anda yakin ingin menghapus kategori ini? Data yang dihapus tidak dapat dikembalikan.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Batal</AlertDialogCancel>
+            <AlertDialogAction variant="destructive" onClick={confirmDelete}>
+              Ya, Hapus
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
