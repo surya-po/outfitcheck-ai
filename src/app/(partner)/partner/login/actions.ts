@@ -42,13 +42,13 @@ export async function signInAsPartner(formData: FormData) {
 
   // Also check if they have a boutique, if not create one
   const boutique = await prisma.boutique.findFirst({
-    where: { ownerId: authData.user.id },
+    where: { ownerId: data.user.id },
   });
 
   if (!boutique) {
     await prisma.boutique.create({
       data: {
-        ownerId: authData.user.id,
+        ownerId: data.user.id,
         name: "My Boutique",
         status: "PENDING",
       }

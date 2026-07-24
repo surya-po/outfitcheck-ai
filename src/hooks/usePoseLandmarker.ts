@@ -1,5 +1,18 @@
 "use client";
 
+// Next.js intercepts console.error and shows a red overlay. 
+// MediaPipe/TFLite logs harmless initialization INFO to stderr (which maps to console.error).
+// We suppress this specific string to prevent the annoying Dev Overlay.
+if (typeof window !== "undefined") {
+  const originalError = console.error;
+  console.error = (...args: any[]) => {
+    if (typeof args[0] === "string" && args[0].includes("Created TensorFlow Lite XNNPACK delegate for CPU")) {
+      return; // Ignore
+    }
+    originalError.apply(console, args);
+  };
+}
+
 import { useRef, useCallback, useEffect, useState } from "react";
 import {
   PoseLandmarker,
@@ -23,6 +36,7 @@ export interface PoseDetectionState {
   statusMessage: string;
   result: PoseLandmarkerResult | null;
   measurements: BodyMeasurementResult | null;
+  detectedGesture: string | null;
 }
 
 interface UsePoseLandmarkerOptions {
@@ -76,6 +90,7 @@ export function usePoseLandmarker({
     statusMessage: "Waiting for camera...",
     result: null,
     measurements: null,
+    detectedGesture: null,
   });
 
   const [measurementEngine] = useState(() => new BodyMeasurementEngine());
@@ -98,22 +113,24 @@ export function usePoseLandmarker({
         "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
       );
       
-      console.log("[MediaPipe] Creating PoseLandmarker...");
-      const landmarker = await PoseLandmarker.createFromOptions(vision, {
-        baseOptions: {
-          modelAssetPath:
-            "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/latest/pose_landmarker_full.task",
-          delegate: "GPU",
-        },
-        runningMode: "VIDEO",
-        numPoses: 1,
-        minPoseDetectionConfidence: 0.5,
-        minPosePresenceConfidence: 0.5,
-        minTrackingConfidence: 0.5,
-      });
+      console.log("[MediaPipe] Creating AI Models...");
+      const [landmarker] = await Promise.all([
+        PoseLandmarker.createFromOptions(vision, {
+          baseOptions: {
+            modelAssetPath:
+              "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/latest/pose_landmarker_full.task",
+            delegate: "GPU",
+          },
+          runningMode: "VIDEO",
+          numPoses: 1,
+          minPoseDetectionConfidence: 0.5,
+          minPosePresenceConfidence: 0.5,
+          minTrackingConfidence: 0.5,
+        })
+      ]);
 
       landmarkerRef.current = landmarker;
-      console.log("[MediaPipe] PoseLandmarker created successfully.");
+      console.log("[MediaPipe] AI Models created successfully.");
 
       setState((prev) => ({
         ...prev,
@@ -260,10 +277,26 @@ export function usePoseLandmarker({
 
       try {
         const result = landmarker.detectForVideo(videoElement, now);
+        
+        let detectedGesture: string | null = null;
         lastTimestampRef.current = now;
-
+        
         if (result.landmarks && result.landmarks.length > 0) {
           const landmarks = result.landmarks[0];
+          
+          // Heuristic for "Raised Hand": Wrist is higher (lower Y) than the nose
+          const nose = landmarks[0];
+          const leftWrist = landmarks[15];
+          const rightWrist = landmarks[16];
+
+          if (nose && (nose.visibility ?? 0) > 0.5) {
+            const isLeftHandRaised = leftWrist && (leftWrist.visibility ?? 0) > 0.5 && leftWrist.y < nose.y;
+            const isRightHandRaised = rightWrist && (rightWrist.visibility ?? 0) > 0.5 && rightWrist.y < nose.y;
+            
+            if (isLeftHandRaised || isRightHandRaised) {
+              detectedGesture = "Raised_Hand";
+            }
+          }
 
           // Count visible landmarks
           const visibleCount = landmarks.filter(
@@ -306,6 +339,7 @@ export function usePoseLandmarker({
             statusMessage,
             result,
             measurements,
+            detectedGesture,
           }));
         } else {
           clearCanvas();
@@ -319,6 +353,7 @@ export function usePoseLandmarker({
             statusMessage: "No person detected",
             result: null,
             measurements: null,
+            detectedGesture: null,
           }));
         }
       } catch (err) {
@@ -368,6 +403,7 @@ export function usePoseLandmarker({
             statusMessage: "Waiting for camera...",
             result: null,
             measurements: null,
+            detectedGesture: null,
           }));
         }, 0);
       }

@@ -5,6 +5,7 @@ import { useRef, useEffect, forwardRef, useImperativeHandle } from "react";
 export interface CameraPreviewHandle {
   getVideoElement: () => HTMLVideoElement | null;
   getCanvasElement: () => HTMLCanvasElement | null;
+  getSnapshotCanvas: () => HTMLCanvasElement | null;
   captureFrame: () => string | null;
 }
 
@@ -21,6 +22,19 @@ export const CameraPreview = forwardRef<CameraPreviewHandle, CameraPreviewProps>
     useImperativeHandle(ref, () => ({
       getVideoElement: () => videoRef.current,
       getCanvasElement: () => canvasRef.current,
+      getSnapshotCanvas: () => {
+        const video = videoRef.current;
+        if (!video || !isActive) return null;
+
+        const canvas = document.createElement("canvas");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return null;
+
+        ctx.drawImage(video, 0, 0);
+        return canvas;
+      },
       captureFrame: () => {
         const video = videoRef.current;
         if (!video || !isActive) return null;

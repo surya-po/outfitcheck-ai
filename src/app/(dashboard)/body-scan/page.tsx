@@ -75,6 +75,7 @@ export default function BodyScanPage() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisStep, setAnalysisStep] = useState("");
   const [savedProductIds, setSavedProductIds] = useState<Set<string>>(new Set());
+  const [countdown, setCountdown] = useState<number | null>(null);
 
   const router = useRouter();
 
@@ -103,16 +104,24 @@ export default function BodyScanPage() {
   }, [poseState.measurements]);
 
   useEffect(() => {
-    if (isCameraActive && cameraRef.current) {
-      const timer = setTimeout(() => {
-        setVideoElement(cameraRef.current?.getVideoElement() ?? null);
-        setCanvasElement(cameraRef.current?.getCanvasElement() ?? null);
-      }, 200);
-      return () => clearTimeout(timer);
+    let timer: NodeJS.Timeout;
+    if (isCameraActive) {
+      const checkElements = () => {
+        const video = cameraRef.current?.getVideoElement();
+        const canvas = cameraRef.current?.getCanvasElement();
+        if (video && canvas) {
+          setVideoElement(video);
+          setCanvasElement(canvas);
+        } else {
+          timer = setTimeout(checkElements, 100);
+        }
+      };
+      checkElements();
     } else {
       setVideoElement(null);
       setCanvasElement(null);
     }
+    return () => clearTimeout(timer);
   }, [isCameraActive]);
 
   useEffect(() => {
@@ -153,6 +162,7 @@ export default function BodyScanPage() {
     // Reset results when starting a new scan
     resetSession();
     setHasCaptured(false);
+    setCountdown(null);
     setIsLoading(true);
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia({
@@ -194,25 +204,25 @@ export default function BodyScanPage() {
     if (scanMode === "accurate") {
       try {
         const landmarks = poseState.result?.landmarks?.[0];
-        const canvas = cameraRef.current?.getCanvasElement();
+        const snapshotCanvas = cameraRef.current?.getSnapshotCanvas();
         
-        if (!landmarks || !canvas) throw new Error("Gagal mendapatkan data postur tubuh.");
+        if (!landmarks || !snapshotCanvas) throw new Error("Gagal mendapatkan data postur tubuh.");
         
         const poseValidation = validatePose(landmarks);
         if (!poseValidation.isValid) throw new Error(poseValidation.messages[0]);
 
-        const quality = calculateImageQuality(canvas);
+        const quality = calculateImageQuality(snapshotCanvas);
         metadata.qualityScore = quality.score;
         if (!quality.isValid) throw new Error(quality.messages[0]);
 
-        const cardResult = detectReferenceCard(canvas);
+        const cardResult = detectReferenceCard(snapshotCanvas);
         metadata.referenceCardDetected = cardResult.detected;
         metadata.referenceCardConfidence = cardResult.confidence;
         if (!cardResult.detected) throw new Error("Kartu referensi tidak terdeteksi. Pastikan kartu terlihat jelas.");
 
         const scale = calculatePixelScale(cardResult.pixelWidth, cardResult.confidence);
         metadata.pixelScale = scale.cmPerPixel;
-        const absMeas = calculateAllMeasurements(landmarks, canvas.width, canvas.height, scale);
+        const absMeas = calculateAllMeasurements(landmarks, snapshotCanvas.width, snapshotCanvas.height, scale);
         
         metadata.measurementConfidence = absMeas.overallConfidence;
         metadata.heightMethod = "Segmented Addition";
@@ -273,6 +283,46 @@ export default function BodyScanPage() {
       setIsAnalyzing(false);
     }
   }, [stopCamera, scanMode, poseState.result, startCamera]);
+
+  const captureFrameRef = useRef(captureFrame);
+  useEffect(() => {
+    captureFrameRef.current = captureFrame;
+  }, [captureFrame]);
+
+  // Auto-capture countdown timer effect
+  useEffect(() => {
+    if (countdown === null) return;
+    
+    if (countdown > 0) {
+      const timer = setTimeout(() => setCountdown(c => (c !== null ? c - 1 : null)), 1000);
+      return () => clearTimeout(timer);
+    } else if (countdown === 0) {
+      captureFrameRef.current();
+      setCountdown(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [countdown]);
+
+  // Gesture detection effect
+  useEffect(() => {
+    let cancelTimer: NodeJS.Timeout;
+
+    if (!isCameraActive || hasCaptured || poseState.status !== "tracking") {
+      setCountdown(null);
+      return;
+    }
+
+    if (poseState.detectedGesture === "Raised_Hand") {
+      setCountdown(prev => (prev === null ? 3 : prev));
+    } else {
+      // Cancel countdown if hand is lowered for more than 500ms (debouncing flickers)
+      cancelTimer = setTimeout(() => {
+        setCountdown(null);
+      }, 500);
+    }
+
+    return () => clearTimeout(cancelTimer);
+  }, [poseState.detectedGesture, isCameraActive, hasCaptured, poseState.status]);
 
   const handleSave = async () => {
     if (!analysisProfile || !capturedImage || !capturedMeasurements) return;
@@ -526,6 +576,16 @@ export default function BodyScanPage() {
                   estimatedHeight={poseState.measurements?.measurements?.estimatedHeight.value ? Math.round(poseState.measurements.measurements.estimatedHeight.value) : undefined}
                 />
               )}
+              {countdown !== null && (
+                <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none bg-black/20">
+                  <span className="text-9xl font-bold text-white drop-shadow-[0_0_15px_rgba(236,72,153,0.8)] animate-pulse">
+                    {countdown > 0 ? countdown : ""}
+                  </span>
+                </div>
+              )}
+              {countdown === 0 && (
+                <div className="absolute inset-0 bg-white z-20 animate-in fade-out duration-700 pointer-events-none" />
+              )}
             </div>
 
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
@@ -552,7 +612,7 @@ export default function BodyScanPage() {
                     <div className="absolute inset-0 w-2 h-2 rounded-full bg-emerald-500 animate-ping opacity-75" />
                   )}
                 </div>
-                {analysisStep || poseState.statusMessage}
+                {poseState.detectedGesture === "Open_Palm" ? "Gestur Tangan Terdeteksi!" : analysisStep || poseState.statusMessage}
               </div>
               <CameraControls
                 isCameraActive={isCameraActive}
