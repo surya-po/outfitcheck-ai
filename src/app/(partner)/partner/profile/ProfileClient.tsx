@@ -37,13 +37,13 @@ export default function ProfileClient({ initialData }: Props) {
       const filePath = `boutiques/${initialData.id}/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
-        .from('Fitcheck-images')
+        .from('outfitcheck-images')
         .upload(filePath, file);
 
       if (uploadError) throw uploadError;
 
       const { data: { publicUrl } } = supabase.storage
-        .from('Fitcheck-images')
+        .from('outfitcheck-images')
         .getPublicUrl(filePath);
 
       setFormData(prev => ({ ...prev, [field]: publicUrl }));

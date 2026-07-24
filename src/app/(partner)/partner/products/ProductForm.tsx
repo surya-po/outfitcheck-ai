@@ -153,7 +153,7 @@ export default function ProductForm({ categories, initialData }: Props) {
         const filePath = `products/${fileName}`;
 
         const { error: uploadError } = await supabase.storage
-          .from('Fitcheck-images')
+          .from('outfitcheck-images')
           .upload(filePath, file);
 
         if (uploadError) {
@@ -161,7 +161,7 @@ export default function ProductForm({ categories, initialData }: Props) {
           uploadedUrls.push(`https://via.placeholder.com/600x800?text=${encodeURIComponent(file.name)}`);
         } else {
           const { data: { publicUrl } } = supabase.storage
-            .from('Fitcheck-images')
+            .from('outfitcheck-images')
             .getPublicUrl(filePath);
             
           uploadedUrls.push(publicUrl);
