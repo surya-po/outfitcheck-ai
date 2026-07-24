@@ -376,6 +376,9 @@ export default function ProductListClient({ initialProducts }: Props) {
                         <Link href={`/partner/products/${product.id}`} className="p-2 text-gray-400 hover:text-blue-500 transition-colors bg-white dark:bg-gray-900 rounded-md shadow-sm border border-gray-100 border-border/60" title="Preview">
                           <Eye className="w-4 h-4" />
                         </Link>
+                        <Link href={`/partner/products/${product.id}/edit`} className="p-2 text-gray-400 hover:text-orange-500 transition-colors bg-white dark:bg-gray-900 rounded-md shadow-sm border border-gray-100 border-border/60" title="Edit">
+                          <Edit2 className="w-4 h-4" />
+                        </Link>
                         <button 
                           onClick={() => confirmDelete(product.id)}
                           disabled={isProcessing}
