@@ -38,9 +38,20 @@ export function runMatchingEngine(
     };
   });
 
-  // 4. Filter out products with 0 score (if we want to be strict, but keeping it simple to just take Top 10)
+  // 4. Strict Filtering
+  // Do NOT recommend products with explicit gender mismatch or negative/zero score
+  const eligibleProducts = scoredProducts.filter(p => {
+    // If it's explicitly evaluated as a gender mismatch (male vs female), drop it completely
+    if (p.matchedAttributes.gender === false) return false;
+    
+    // If score is 0 or less, it's not a match at all
+    if (p.compatibilityScore <= 0) return false;
+
+    return true;
+  });
+
   // 5. Sort the products
-  const sorted = sortMatchedProducts(scoredProducts);
+  const sorted = sortMatchedProducts(eligibleProducts);
 
   // 6. Return Top N
   return sorted.slice(0, limit);
