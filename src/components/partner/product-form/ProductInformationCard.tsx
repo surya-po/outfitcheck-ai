@@ -41,22 +41,6 @@ export function ProductInformationCard({ formData, onChange, categories, isProce
 
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Brand (Merek) <span className="text-gray-400 text-xs">(Opsional)</span>
-          </label>
-          <div className="relative">
-            <Input 
-              name="brand" 
-              value={formData.brand || ""} 
-              onChange={onChange} 
-              placeholder="Contoh: ZARA, H&M, dll" 
-              maxLength={50}
-              disabled={isProcessing}
-            />
-          </div>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Deskripsi <span className="text-red-500">*</span>
           </label>
           <div className="relative">

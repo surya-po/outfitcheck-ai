@@ -22,59 +22,6 @@ export function AttributesCard({ formData, onChange, onMultiSelectChange, isProc
         Atribut Produk
       </h3>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Style <span className="text-gray-400 text-xs">(Misal: Casual, Formal)</span>
-          </label>
-          <Input 
-            name="style" 
-            value={formData.style} 
-            onChange={onChange} 
-            placeholder="Casual" 
-            disabled={isProcessing}
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Fit <span className="text-gray-400 text-xs">(Misal: Oversized, Regular)</span>
-          </label>
-          <Input 
-            name="fit" 
-            value={formData.fit} 
-            onChange={onChange} 
-            placeholder="Regular" 
-            disabled={isProcessing}
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Material <span className="text-gray-400 text-xs">(Misal: Cotton, Denim)</span>
-          </label>
-          <Input 
-            name="material" 
-            value={formData.material} 
-            onChange={onChange} 
-            placeholder="Cotton" 
-            disabled={isProcessing}
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Season <span className="text-gray-400 text-xs">(Misal: Summer, All Season)</span>
-          </label>
-          <Input 
-            name="season" 
-            value={formData.season} 
-            onChange={onChange} 
-            placeholder="All Season" 
-            disabled={isProcessing}
-          />
-        </div>
-      </div>
 
       <div className="pt-4 border-t border-[#FDF2F8] dark:border-gray-800">
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">

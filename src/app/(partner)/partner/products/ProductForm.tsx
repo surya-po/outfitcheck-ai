@@ -13,7 +13,6 @@ import { ImageUploader, ImageFile, UploadedImage } from "@/components/partner/pr
 import { ProductInformationCard } from "@/components/partner/product-form/ProductInformationCard";
 import { PricingCard } from "@/components/partner/product-form/PricingCard";
 import { AttributesCard } from "@/components/partner/product-form/AttributesCard";
-import { AIRecommendationCard } from "@/components/partner/product-form/AIRecommendationCard";
 import { LivePreviewCard } from "@/components/partner/product-form/LivePreviewCard";
 import { UnsavedChangesWarning } from "@/components/partner/product-form/UnsavedChangesWarning";
 
@@ -33,7 +32,6 @@ export default function ProductForm({ categories, initialData }: Props) {
 
   // Parse existing images
   // For backward compatibility, if images array is empty but image/thumbnail exists, use that.
-  // @ts-expect-error - initialData from db contains string dates - Prisma types might not have images yet if generate failed, but DB has it.
   const existingDbImages: string[] = initialData?.images || [];
   
   let parsedExistingImages: UploadedImage[] = [];
@@ -65,8 +63,8 @@ export default function ProductForm({ categories, initialData }: Props) {
     categoryId: initialData?.categoryId || (categories.length > 0 ? categories[0].id : ""),
     description: initialData?.description || "",
     gender: initialData?.gender || "Wanita",
-    style: initialData?.style || "",
-    fit: initialData?.fit || "",
+    style: initialData?.style || "General",
+    fit: initialData?.fit || "General",
     material: initialData?.material || "",
     season: initialData?.season || "",
     price: initialData?.price || "",
@@ -246,11 +244,7 @@ export default function ProductForm({ categories, initialData }: Props) {
             isProcessing={isProcessing}
           />
 
-          <AIRecommendationCard 
-            formData={formData} 
-            onMultiSelectChange={handleMultiSelectChange}
-            isProcessing={isProcessing}
-          />
+
 
           <ImageUploader 
             existingImages={existingImages}
