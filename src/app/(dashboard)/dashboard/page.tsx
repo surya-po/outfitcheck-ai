@@ -85,7 +85,7 @@ export default async function DashboardPage() {
         
         <div className="relative z-10 flex flex-col sm:flex-row gap-3 mt-4 md:mt-0">
           <Link href="/body-scan">
-            <Button className="w-full sm:w-auto bg-white text-[#EC4899] hover:bg-white/90 shadow-sm border-0 font-semibold rounded-[var(--radius-button)] h-11 px-6 transition-all duration-300 hover:scale-105 hover:shadow-xl">
+            <Button className="w-full sm:w-auto bg-white text-primary hover:bg-white/90 shadow-sm border-0 font-semibold rounded-[var(--radius-button)] h-11 px-6 transition-all duration-300 hover:scale-105 hover:shadow-xl">
               Mulai Scan Tubuh
             </Button>
           </Link>
@@ -125,10 +125,10 @@ export default async function DashboardPage() {
         
         <div className="lg:col-span-2 space-y-8">
           {/* 2. AI Body Scan Card */}
-          <Card className="border-[#FDF2F8] shadow-sm hover:shadow-sm transition-shadow overflow-hidden group">
-            <CardHeader className="border-b border-[#FFF7FB] bg-[#FFF7FB]/50">
+          <Card className="shadow-sm hover:shadow-sm transition-shadow overflow-hidden group">
+            <CardHeader className="border-b bg-primary/5">
               <CardTitle className="text-xl flex items-center gap-2">
-                <ScanFace className="h-5 w-5 text-[#EC4899]" />
+                <ScanFace className="h-5 w-5 text-primary" />
                 Analisis Tubuh AI
               </CardTitle>
             </CardHeader>
@@ -138,12 +138,12 @@ export default async function DashboardPage() {
                   <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-green-600 mb-4 shadow-sm">
                     <ScanFace className="h-8 w-8" />
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">Analisis Selesai!</h3>
-                  <p className="text-gray-500 text-sm mb-6 max-w-md mx-auto">
+                  <h3 className="text-xl font-semibold text-foreground mb-2">Analisis Selesai!</h3>
+                  <p className="text-muted-foreground text-sm mb-6 max-w-md mx-auto">
                     Profil bentuk tubuh Anda telah dianalisis. Anda siap menerima rekomendasi gaya berpakaian dari AI.
                   </p>
                   <Link href="/history">
-                    <Button className="bg-white border-2 border-[#EC4899] text-[#EC4899] hover:bg-[#FFF7FB] rounded-[var(--radius-button)] px-8 h-11 font-medium transition-all hover:scale-105">
+                    <Button variant="outline" className="border-2 border-primary text-primary hover:bg-primary/10 rounded-[var(--radius-button)] px-8 h-11 font-medium transition-all hover:scale-105">
                       Lihat Hasil
                     </Button>
                   </Link>
@@ -155,7 +155,7 @@ export default async function DashboardPage() {
                   description="Mulai scan tubuh Anda untuk mendapatkan rekomendasi pakaian yang dipersonalisasi khusus untuk Anda."
                   action={
                     <Link href="/body-scan">
-                      <Button className="bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-[var(--radius-button)] px-8 h-11 shadow-sm shadow-[#EC4899]/25 transition-all hover:scale-105 mt-2">
+                      <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-[var(--radius-button)] px-8 h-11 shadow-sm transition-all hover:scale-105 mt-2">
                         Mulai Scan <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </Link>
@@ -167,36 +167,36 @@ export default async function DashboardPage() {
           </Card>
 
           {/* 3. Outfit Recommendation Card */}
-          <Card className="border-[#FDF2F8] shadow-sm hover:shadow-sm transition-shadow">
-            <CardHeader className="border-b border-[#FFF7FB] bg-[#FFF7FB]/50">
+          <Card className="shadow-sm hover:shadow-sm transition-shadow">
+            <CardHeader className="border-b bg-primary/5">
               <CardTitle className="text-xl flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-[#EC4899]" />
-                Rekomendasi Pakaian
+                <Sparkles className="h-5 w-5 text-primary" />
+                Rekomendasi Hari Ini
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-8 pb-8 text-center">
               {latestScan ? (
                 <>
-                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#FFF7FB] text-[#EC4899] mb-4">
+                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary mb-4">
                     <Sparkles className="h-6 w-6" />
                   </div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">Siap untuk penataan gaya</h3>
-                  <p className="text-gray-500 text-sm mb-6 max-w-md mx-auto">
-                    Kami telah menyiapkan rekomendasi pakaian yang akan membuat Anda tampil memukau.
+                  <h3 className="text-lg font-semibold text-foreground mb-2">Belum Ada Rekomendasi</h3>
+                  <p className="text-muted-foreground text-sm mb-6 text-center">
+                    Cek rekomendasi pintar berdasarkan gaya personal, cuaca hari ini, dan pakaian di lemari digital Anda.
                   </p>
-                  <Link href="/recommendations">
-                    <Button className="bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-[var(--radius-button)] px-8 h-11 shadow-sm hover:scale-105 transition-all">
+                  <Link href="/recommendation" className="w-full">
+                    <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-[var(--radius-button)] px-8 h-11 shadow-sm hover:scale-105 transition-all w-full">
                       Lihat Rekomendasi
                     </Button>
                   </Link>
                 </>
               ) : (
                 <>
-                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-gray-400 mb-4">
+                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-muted text-muted-foreground mb-4">
                     <Sparkles className="h-6 w-6" />
                   </div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">Selesaikan scan tubuh terlebih dahulu</h3>
-                  <p className="text-gray-500 text-sm mb-6 max-w-md mx-auto">
+                  <h3 className="text-lg font-medium text-foreground mb-2">Selesaikan scan tubuh terlebih dahulu</h3>
+                  <p className="text-muted-foreground text-sm mb-6 max-w-md mx-auto">
                     Kami perlu menganalisis bentuk tubuh Anda terlebih dahulu untuk memberikan rekomendasi yang akurat.
                   </p>
                   <Button disabled className="rounded-[var(--radius-button)] px-8">
@@ -208,11 +208,11 @@ export default async function DashboardPage() {
           </Card>
 
           {/* 3.5 AI Fashion Assistant Card */}
-          <Card className="border-[#FDF2F8] shadow-sm hover:shadow-sm transition-shadow overflow-hidden group">
-            <CardHeader className="border-b border-[#FFF7FB] bg-[#FFF7FB]/50">
+          <Card className="shadow-sm hover:shadow-sm transition-shadow overflow-hidden group">
+            <CardHeader className="border-b bg-primary/5">
               <CardTitle className="text-xl flex items-center gap-2">
-                <Bot className="h-5 w-5 text-[#EC4899]" />
-                Tanya Fashion Assistant
+                <Bot className="h-5 w-5 text-primary" />
+                Asisten Fashion AI
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
@@ -222,8 +222,8 @@ export default async function DashboardPage() {
                 description="Dapatkan rekomendasi gaya, warna, dan kombinasi pakaian yang paling cocok dengan bentuk tubuh Anda."
                 action={
                   <Link href="/fashion-assistant">
-                    <Button className="bg-[#EC4899] hover:bg-[#D946EF] text-white rounded-[var(--radius-button)] px-8 h-11 shadow-sm shadow-[#EC4899]/25 transition-all hover:scale-105 mt-2">
-                      Mulai Ngobrol <ArrowRight className="ml-2 h-4 w-4" />
+                    <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-[var(--radius-button)] px-8 h-11 shadow-sm transition-all hover:scale-105 mt-2">
+                      Tanya Asisten <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
                 }
@@ -234,23 +234,23 @@ export default async function DashboardPage() {
         </div>
 
         <div className="space-y-8">
-          {/* 5. Profile Card */}
-          <Card className="border-[#FDF2F8] shadow-sm hover:shadow-sm transition-shadow">
+          {/* 4. Profile Snapshot */}
+          <Card className="shadow-sm hover:shadow-sm transition-shadow">
             <CardHeader className="pb-4">
               <CardTitle className="text-lg">Profil Saya</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-col items-center text-center">
-                <Avatar className="h-24 w-24 border-4 border-[#FFF7FB] shadow-sm mb-4">
+                <Avatar className="h-24 w-24 border-4 border-background shadow-sm mb-4">
                   <AvatarImage src={avatarUrl} alt={fullName} />
-                  <AvatarFallback className="bg-[#FDF2F8] text-[#EC4899] text-2xl font-bold">
+                  <AvatarFallback className="bg-primary/10 text-primary text-2xl font-bold">
                     {initials}
                   </AvatarFallback>
                 </Avatar>
-                <h3 className="text-xl font-bold text-[#1E1E2D]">{fullName}</h3>
-                <p className="text-gray-500 text-sm mb-6">{user.email}</p>
+                <h3 className="text-xl font-bold text-foreground">{fullName}</h3>
+                <p className="text-muted-foreground text-sm mb-6">{user.email}</p>
                 <Link href="/profile" className="w-full">
-                  <Button variant="outline" className="w-full rounded-[var(--radius-button)] border-[#EC4899]/20 text-[#EC4899] hover:bg-[#FFF7FB] hover:text-[#EC4899]">
+                  <Button variant="outline" className="w-full rounded-[var(--radius-button)] border-primary/20 text-primary hover:bg-primary/10 hover:text-primary">
                     Edit Profil
                   </Button>
                 </Link>
@@ -258,58 +258,82 @@ export default async function DashboardPage() {
             </CardContent>
           </Card>
 
-          {/* 4. Collection Card */}
-          <Card className="border-[#FDF2F8] shadow-sm hover:shadow-sm transition-shadow">
-            <CardHeader className="pb-2">
+          {/* 5. Quick Actions / Links */}
+          <Card className="shadow-sm hover:shadow-sm transition-shadow">
+            <CardHeader className="pb-4">
               <CardTitle className="text-lg flex items-center gap-2">
-                <Heart className="h-5 w-5 text-[#EC4899]" />
-                Pakaian Disimpan
+                <Heart className="h-5 w-5 text-primary" />
+                Akses Cepat
               </CardTitle>
             </CardHeader>
+            <CardContent className="space-y-3">
+              <Link href="/collection" className="block">
+                <div className="flex items-center gap-4 p-3 rounded-[var(--radius-card)] border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-colors group">
+                  <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-3">
+                    <Shirt className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors">Lemari Digital</h4>
+                    <p className="text-xs text-muted-foreground mt-0.5">Kelola pakaian Anda</p>
+                  </div>
+                </div>
+              </Link>
+              
+              <Link href="/history" className="block">
+                <div className="flex items-center gap-4 p-3 rounded-[var(--radius-card)] border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-colors group">
+                  <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-3">
+                    <Calendar className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors">Riwayat Scan</h4>
+                    <p className="text-xs text-muted-foreground mt-0.5">Lihat hasil analisis sebelumnya</p>
+                  </div>
+                </div>
+              </Link>
+            </CardContent>
+          </Card>
+
+          {/* Tips Section */}
+          <Card className="shadow-sm hover:shadow-sm transition-shadow border-none bg-primary/5">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg">Tips Gaya Hari Ini</CardTitle>
+            </CardHeader>
             <CardContent>
-              {savedLooksCount > 0 ? (
-                <div className="flex flex-col items-center justify-center py-6 text-center">
-                  <div className="h-12 w-12 rounded-full bg-[#FFF7FB] flex items-center justify-center text-[#EC4899] mb-3">
-                    <Heart className="h-6 w-6" fill="currentColor" />
+              <ul className="space-y-3 text-sm">
+                <li className="flex gap-3">
+                  <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <span className="font-semibold text-sm">1</span>
                   </div>
-                  <p className="text-sm font-medium text-gray-900 mb-1">Anda memiliki {savedLooksCount} pakaian tersimpan!</p>
-                  <p className="text-xs text-gray-500 mb-4">Terus temukan gaya baru yang menarik.</p>
-                  <Link href="/collection">
-                    <Button variant="secondary" className="rounded-[var(--radius-button)] w-full bg-[#FFF7FB] text-[#EC4899] hover:bg-[#FDF2F8]">
-                      Lihat Koleksi
-                    </Button>
-                  </Link>
-                </div>
-              ) : (
-                <div className="flex flex-col items-center justify-center py-6 text-center">
-                  <div className="h-12 w-12 rounded-full bg-[#FFF7FB] flex items-center justify-center text-[#EC4899] mb-3">
-                    <Heart className="h-6 w-6" />
+                  <span className="text-foreground leading-relaxed pt-1">
+                    Pastikan pencahayaan cukup saat melakukan scan tubuh agar hasilnya akurat.
+                  </span>
+                </li>
+                <li className="flex gap-3">
+                  <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <span className="font-semibold text-sm">2</span>
                   </div>
-                  <p className="text-sm text-gray-500 mb-4">Anda belum menyimpan pakaian apa pun.</p>
-                  <Link href="/collection">
-                    <Button variant="secondary" className="rounded-[var(--radius-button)] w-full bg-gray-100 hover:bg-gray-200 text-gray-900">
-                      Lihat Koleksi
-                    </Button>
-                  </Link>
-                </div>
-              )}
+                  <span className="text-foreground leading-relaxed pt-1">
+                    Gunakan pakaian ketat saat scan untuk rekomendasi ukuran yang pas.
+                  </span>
+                </li>
+              </ul>
             </CardContent>
           </Card>
 
           {/* 7. Recent Activity */}
-          <Card className="border-[#FDF2F8] shadow-sm hover:shadow-sm transition-shadow">
+          <Card className="shadow-sm hover:shadow-sm transition-shadow">
             <CardHeader className="pb-4">
               <CardTitle className="text-lg">Aktivitas Terakhir</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
                 <div className="flex gap-4">
-                  <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#FFF7FB] text-[#EC4899]">
+                  <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
                     <LogOut className="h-4 w-4" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-900">Login Terakhir</p>
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-sm font-medium text-foreground">Login Terakhir</p>
+                    <p className="text-xs text-muted-foreground mt-1">
                       {new Date(user.last_sign_in_at || user.created_at).toLocaleDateString("en-US", {
                         month: "long",
                         day: "numeric",
