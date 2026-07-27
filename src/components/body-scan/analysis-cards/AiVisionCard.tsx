@@ -61,7 +61,7 @@ export function AiVisionCard({ result }: { result: ColorAnalysisResult }) {
         <div className="flex items-center justify-end gap-2 text-xs text-muted-foreground">
           <span>Tingkat Keyakinan AI:</span>
           <span className="text-foreground font-medium">
-            {result.confidence ? `${(result.confidence * 100).toFixed(0)}%` : "Tidak diketahui"}
+            {result.confidence ? `${result.confidence.toFixed(0)}%` : "Tidak diketahui"}
           </span>
         </div>
 
