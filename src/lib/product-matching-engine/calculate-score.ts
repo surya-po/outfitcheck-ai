@@ -30,10 +30,10 @@ export function calculateCompatibilityScore(
     let profileGender = profile.gender.toLowerCase();
 
     // Normalize Indonesian/English gender terms
-    if (productGender === "wanita" || productGender === "perempuan") productGender = "female";
-    if (productGender === "pria" || productGender === "laki-laki") productGender = "male";
-    if (profileGender === "wanita" || profileGender === "perempuan") profileGender = "female";
-    if (profileGender === "pria" || profileGender === "laki-laki") profileGender = "male";
+    if (["wanita", "perempuan", "female", "womenswear", "women", "cewek"].includes(productGender)) productGender = "female";
+    if (["pria", "laki-laki", "male", "menswear", "men", "cowok"].includes(productGender)) productGender = "male";
+    if (["wanita", "perempuan", "female", "womenswear", "women", "cewek"].includes(profileGender)) profileGender = "female";
+    if (["pria", "laki-laki", "male", "menswear", "men", "cowok"].includes(profileGender)) profileGender = "male";
 
     if (!productGender || productGender === "unisex" || productGender === "") {
       // Unisex or unspecified — fine for everyone, give partial credit
