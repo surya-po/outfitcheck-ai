@@ -359,7 +359,7 @@ export default function BodyScanPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
-          {/* Left Column: Image, Measurements, and Vision AI */}
+          {/* Left Column: Image and Measurements */}
           <div className="lg:col-span-5 space-y-6">
             <div className="rounded-[var(--radius-card)] border border-border/60 bg-card p-4 shadow-sm">
               <div className="relative w-full aspect-[3/4] max-h-[500px] rounded-[var(--radius-card)] overflow-hidden bg-muted flex items-center justify-center">
@@ -403,13 +403,10 @@ export default function BodyScanPage() {
 
             <div className="hidden lg:block space-y-6">
               <MeasurementPanel result={capturedMeasurements} />
-              {!isAnalyzing && analysisProfile?.colorAnalysis && (
-                <AiVisionCard result={analysisProfile.colorAnalysis} />
-              )}
             </div>
           </div>
 
-          {/* Right Column: AI Analysis & Recommendations */}
+          {/* Right Column: AI Analysis */}
           <div className="lg:col-span-7 space-y-6">
             <div className="rounded-[var(--radius-card)] bg-gradient-to-br from-card to-muted p-6 sm:p-8 shadow-sm relative overflow-hidden h-full border border-border/60">
               <div className="absolute top-0 right-0 w-80 h-80 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
@@ -430,16 +427,17 @@ export default function BodyScanPage() {
                   <BodyShapeCard result={analysisProfile.shape} />
                   <ProportionsCard result={analysisProfile.proportion} />
 
-                  {/* Removed recommendations from here */}
+                  {!isAnalyzing && analysisProfile?.colorAnalysis && (
+                    <div className="sm:col-span-2">
+                      <AiVisionCard result={analysisProfile.colorAnalysis} />
+                    </div>
+                  )}
                 </div>
               ) : null}
             </div>
 
             <div className="block lg:hidden space-y-6">
               <MeasurementPanel result={capturedMeasurements} />
-              {!isAnalyzing && analysisProfile?.colorAnalysis && (
-                <AiVisionCard result={analysisProfile.colorAnalysis} />
-              )}
             </div>
           </div>
         </div>
