@@ -1,48 +1,49 @@
 "use client";
 
 import { useState } from "react";
-import { Sparkles, ArrowRight, CheckCircle2 } from "lucide-react";
+import { 
+  Sparkles, ArrowRight, CheckCircle2, 
+  Shirt, Coffee, Briefcase, Crown, Hexagon, 
+  Glasses, Gem, Zap, Dumbbell, Radio, Flower2, 
+  Moon, Layers, Palette, Users, Heart, 
+  PartyPopper, Plane, Map, Camera, Book, Building2
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { UserStylePreference } from "@/lib/fashion-recommendation-engine/recommendation-types";
 
 // ── Style Options ──────────────────────────────────────────
-const STYLE_OPTIONS: { label: string; emoji: string; desc: string }[] = [
-  { label: "Casual",           emoji: "👕", desc: "Santai & nyaman sehari-hari" },
-  { label: "Smart Casual",     emoji: "🧥", desc: "Rapi namun tetap santai" },
-  { label: "Business Casual",  emoji: "👔", desc: "Semi-formal untuk meeting" },
-  { label: "Formal",           emoji: "🤵", desc: "Profesional & elegan" },
-  { label: "Office Wear",      emoji: "💼", desc: "Pilihan terbaik untuk kantor" },
-  { label: "Old Money",        emoji: "👒", desc: "Klasik, timeless, berkelas" },
-  { label: "Minimalist",       emoji: "⬜", desc: "Bersih, simpel, esensial" },
-  { label: "Elegant",          emoji: "✨", desc: "Anggun & sophisticated" },
-  { label: "Chic",             emoji: "💅", desc: "Stylish & modern" },
-  { label: "Luxury",           emoji: "💎", desc: "Premium & eksklusif" },
-  { label: "Streetwear",       emoji: "🧢", desc: "Urban & ekspresif" },
-  { label: "Sporty",           emoji: "⚡", desc: "Aktif & atletis" },
-  { label: "Vintage",          emoji: "📻", desc: "Retro & nostalgik" },
-  { label: "Feminine",         emoji: "🌸", desc: "Lembut & feminin" },
-  { label: "Masculine",        emoji: "🔷", desc: "Maskulin & berkarakter" },
-  { label: "Modest",           emoji: "🌙", desc: "Tertutup & anggun" },
-  { label: "Monochrome",       emoji: "🖤", desc: "Satu palet, maksimal kesan" },
-  { label: "Korean Inspired",  emoji: "🇰🇷", desc: "K-style modern & chic" },
-  { label: "Japanese Inspired",emoji: "🗾", desc: "Minimalis & bersih" },
+const STYLE_OPTIONS = [
+  { label: "Casual",           icon: Shirt,      desc: "Santai & nyaman sehari-hari" },
+  { label: "Smart Casual",     icon: Coffee,     desc: "Rapi namun tetap santai" },
+  { label: "Business Casual",  icon: Briefcase,  desc: "Semi-formal untuk meeting" },
+  { label: "Formal",           icon: Building2,  desc: "Profesional & elegan" },
+  { label: "Old Money",        icon: Crown,      desc: "Klasik, timeless, berkelas" },
+  { label: "Minimalist",       icon: Hexagon,    desc: "Bersih, simpel, esensial" },
+  { label: "Elegant",          icon: Sparkles,   desc: "Anggun & sophisticated" },
+  { label: "Chic",             icon: Glasses,    desc: "Stylish & modern" },
+  { label: "Luxury",           icon: Gem,        desc: "Premium & eksklusif" },
+  { label: "Streetwear",       icon: Zap,        desc: "Urban & ekspresif" },
+  { label: "Sporty",           icon: Dumbbell,   desc: "Aktif & atletis" },
+  { label: "Vintage",          icon: Radio,      desc: "Retro & nostalgik" },
+  { label: "Feminine",         icon: Flower2,    desc: "Lembut & feminin" },
+  { label: "Masculine",        icon: Layers,     desc: "Maskulin & berkarakter" },
+  { label: "Modest",           icon: Moon,       desc: "Tertutup & anggun" },
+  { label: "Monochrome",       icon: Palette,    desc: "Satu palet, maksimal kesan" },
 ];
 
 // ── Occasion Options ───────────────────────────────────────
-const OCCASION_OPTIONS: { label: string; emoji: string }[] = [
-  { label: "Daily",        emoji: "🌅" },
-  { label: "Campus",       emoji: "🎓" },
-  { label: "Office",       emoji: "💼" },
-  { label: "Meeting",      emoji: "📊" },
-  { label: "Wedding",      emoji: "💍" },
-  { label: "Formal Event", emoji: "🎩" },
-  { label: "Party",        emoji: "🎉" },
-  { label: "Date",         emoji: "🌹" },
-  { label: "Travel",       emoji: "✈️" },
-  { label: "Vacation",     emoji: "🏖️" },
-  { label: "Weekend",      emoji: "☀️" },
-  { label: "Photoshoot",   emoji: "📸" },
-  { label: "Gym",          emoji: "💪" },
+const OCCASION_OPTIONS = [
+  { label: "Daily",        icon: Coffee },
+  { label: "Campus",       icon: Book },
+  { label: "Office",       icon: Briefcase },
+  { label: "Meeting",      icon: Users },
+  { label: "Wedding",      icon: Heart },
+  { label: "Party",        icon: PartyPopper },
+  { label: "Date",         icon: Flower2 },
+  { label: "Travel",       icon: Plane },
+  { label: "Vacation",     icon: Map },
+  { label: "Photoshoot",   icon: Camera },
+  { label: "Gym",          icon: Dumbbell },
 ];
 
 const MAX_STYLES = 3;
@@ -87,7 +88,7 @@ export function StylePreferenceSelector({ onComplete }: StylePreferenceSelectorP
   };
 
   return (
-    <div className="animate-in fade-in-50 duration-500">
+    <div className="animate-in fade-in-50 duration-500 max-w-4xl mx-auto">
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-4">
@@ -111,7 +112,7 @@ export function StylePreferenceSelector({ onComplete }: StylePreferenceSelectorP
               <div
                 className={`flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold transition-all duration-300 ${
                   s === step
-                    ? "bg-primary text-primary-foreground shadow-sm scale-110"
+                    ? "bg-primary text-primary-foreground shadow-md scale-110"
                     : s < step
                     ? "bg-primary/20 text-primary"
                     : "bg-muted text-muted-foreground"
@@ -128,10 +129,10 @@ export function StylePreferenceSelector({ onComplete }: StylePreferenceSelectorP
         </div>
       </div>
 
-      {/* ── STEP 1: Style Selection ── */}
+      {/* ⭐ STEP 1: Style Selection ⭐ */}
       {step === 1 && (
-        <div>
-          <div className="flex items-start justify-between mb-5">
+        <div className="animate-in slide-in-from-right-4 duration-500">
+          <div className="flex items-start justify-between mb-6">
             <div>
               <h2 className="text-lg font-bold text-foreground">
                 Gaya apa yang Anda sukai?
@@ -140,13 +141,13 @@ export function StylePreferenceSelector({ onComplete }: StylePreferenceSelectorP
                 Pilih hingga <span className="font-semibold text-primary">{MAX_STYLES} gaya</span> yang paling mencerminkan selera Anda.
               </p>
             </div>
-            <span className="text-sm font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full">
+            <span className="text-sm font-semibold text-primary bg-primary/10 px-3 py-1.5 rounded-full shadow-sm">
               {selectedStyles.length}/{MAX_STYLES}
             </span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-8">
-            {STYLE_OPTIONS.map(({ label, emoji, desc }) => {
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-10">
+            {STYLE_OPTIONS.map(({ label, icon: Icon, desc }) => {
               const isSelected = selectedStyles.includes(label);
               const isDisabled = !isSelected && selectedStyles.length >= MAX_STYLES;
               return (
@@ -154,40 +155,51 @@ export function StylePreferenceSelector({ onComplete }: StylePreferenceSelectorP
                   key={label}
                   onClick={() => toggleStyle(label)}
                   disabled={isDisabled}
-                  className={`relative group flex flex-col items-center text-center p-4 rounded-[var(--radius-card)] border-2 transition-all duration-200 cursor-pointer select-none ${
+                  className={`relative group flex flex-col items-center text-center p-5 rounded-2xl border transition-all duration-300 cursor-pointer select-none overflow-hidden ${
                     isSelected
-                      ? "border-primary bg-primary/10 shadow-md scale-[1.02]"
+                      ? "border-primary bg-primary/5 shadow-md scale-[1.02] ring-1 ring-primary/20"
                       : isDisabled
-                      ? "border-border/30 bg-muted/40 opacity-50 cursor-not-allowed"
-                      : "border-border/60 bg-card hover:border-primary/50 hover:bg-primary/5 hover:shadow-sm hover:scale-[1.01]"
+                      ? "border-border/30 bg-muted/20 opacity-50 cursor-not-allowed"
+                      : "border-border bg-card hover:border-primary/40 hover:bg-muted/50 hover:shadow-sm hover:-translate-y-1"
                   }`}
                 >
+                  {/* Subtle background glow for selected items */}
                   {isSelected && (
-                    <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-primary-foreground" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent pointer-events-none" />
+                  )}
+                  
+                  {isSelected && (
+                    <div className="absolute top-2.5 right-2.5">
+                      <CheckCircle2 className="w-4 h-4 text-primary" />
                     </div>
                   )}
-                  <span className="text-2xl mb-2 leading-none">{emoji}</span>
-                  <span className={`text-sm font-semibold leading-tight mb-1 ${isSelected ? "text-primary" : "text-foreground"}`}>
+                  
+                  <div className={`p-3 rounded-full mb-3 transition-colors duration-300 ${
+                    isSelected ? "bg-primary text-primary-foreground shadow-sm" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"
+                  }`}>
+                    <Icon className="w-6 h-6" strokeWidth={isSelected ? 2.5 : 2} />
+                  </div>
+                  
+                  <span className={`text-sm font-semibold leading-tight mb-1.5 transition-colors ${isSelected ? "text-primary" : "text-foreground"}`}>
                     {label}
                   </span>
-                  <span className="text-[11px] text-muted-foreground leading-tight">{desc}</span>
+                  <span className="text-[11px] text-muted-foreground leading-snug">{desc}</span>
                 </button>
               );
             })}
           </div>
 
-          <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center justify-between gap-4 pt-4 border-t border-border">
             <button
               onClick={handleSkip}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors underline-offset-4 hover:underline"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors underline-offset-4 hover:underline"
             >
               Lewati langkah ini
             </button>
             <Button
               onClick={handleNext}
               disabled={selectedStyles.length === 0}
-              className="rounded-[var(--radius-button)] h-11 px-6 font-semibold shadow-sm"
+              className="rounded-xl h-12 px-8 font-semibold shadow-sm transition-all hover:scale-105 active:scale-95"
             >
               Lanjut <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
@@ -195,10 +207,10 @@ export function StylePreferenceSelector({ onComplete }: StylePreferenceSelectorP
         </div>
       )}
 
-      {/* ── STEP 2: Occasion Selection ── */}
+      {/* ⭐ STEP 2: Occasion Selection ⭐ */}
       {step === 2 && (
-        <div>
-          <div className="mb-5">
+        <div className="animate-in slide-in-from-right-4 duration-500">
+          <div className="mb-6">
             <h2 className="text-lg font-bold text-foreground">
               Apa acara utama Anda?
             </h2>
@@ -209,30 +221,34 @@ export function StylePreferenceSelector({ onComplete }: StylePreferenceSelectorP
 
           {/* Selected styles recap */}
           {selectedStyles.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-6 p-3 rounded-[var(--radius-card)] bg-primary/5 border border-primary/20">
-              <span className="text-xs text-primary font-semibold mr-1">Gaya dipilih:</span>
+            <div className="flex flex-wrap items-center gap-2 mb-8 p-4 rounded-xl bg-card border border-border shadow-sm">
+              <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider mr-1">Gaya Dipilih:</span>
               {selectedStyles.map((s) => (
-                <span key={s} className="text-xs px-2 py-0.5 bg-primary/15 text-primary rounded-full font-medium">
+                <span key={s} className="text-xs px-3 py-1 bg-primary/10 text-primary border border-primary/20 rounded-full font-semibold">
                   {s}
                 </span>
               ))}
             </div>
           )}
 
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 mb-8">
-            {OCCASION_OPTIONS.map(({ label, emoji }) => {
+          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4 mb-10">
+            {OCCASION_OPTIONS.map(({ label, icon: Icon }) => {
               const isSelected = selectedOccasion === label;
               return (
                 <button
                   key={label}
                   onClick={() => setSelectedOccasion(isSelected ? undefined : label)}
-                  className={`flex flex-col items-center text-center p-3 sm:p-4 rounded-[var(--radius-card)] border-2 transition-all duration-200 cursor-pointer select-none ${
+                  className={`group flex flex-col items-center justify-center text-center p-4 rounded-2xl border transition-all duration-300 cursor-pointer select-none overflow-hidden ${
                     isSelected
-                      ? "border-primary bg-primary/10 shadow-md scale-[1.02]"
-                      : "border-border/60 bg-card hover:border-primary/50 hover:bg-primary/5 hover:shadow-sm hover:scale-[1.01]"
+                      ? "border-primary bg-primary/5 shadow-md scale-[1.02] ring-1 ring-primary/20"
+                      : "border-border bg-card hover:border-primary/40 hover:bg-muted/50 hover:shadow-sm hover:-translate-y-1"
                   }`}
                 >
-                  <span className="text-2xl mb-1.5 leading-none">{emoji}</span>
+                  <div className={`mb-3 transition-colors duration-300 ${
+                    isSelected ? "text-primary scale-110" : "text-muted-foreground group-hover:text-primary group-hover:scale-110"
+                  }`}>
+                    <Icon className="w-7 h-7" strokeWidth={isSelected ? 2.5 : 2} />
+                  </div>
                   <span className={`text-xs font-semibold leading-tight ${isSelected ? "text-primary" : "text-foreground"}`}>
                     {label}
                   </span>
@@ -241,26 +257,26 @@ export function StylePreferenceSelector({ onComplete }: StylePreferenceSelectorP
             })}
           </div>
 
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-border">
+            <div className="flex items-center gap-4 w-full sm:w-auto">
               <button
                 onClick={() => setStep(1)}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
               >
                 ← Kembali
               </button>
               <button
                 onClick={handleSkip}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors underline-offset-4 hover:underline"
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors underline-offset-4 hover:underline"
               >
                 Lewati
               </button>
             </div>
             <Button
               onClick={handleNext}
-              className="rounded-[var(--radius-button)] h-12 px-8 font-bold text-base shadow-md bg-gradient-to-r from-primary to-[#E14D72] hover:opacity-90 transition-opacity"
+              className="w-full sm:w-auto rounded-xl h-14 px-8 font-bold text-base shadow-lg bg-gradient-to-r from-primary to-[#E14D72] hover:opacity-90 transition-all hover:scale-105 active:scale-95 text-white border-0"
             >
-              <Sparkles className="w-4 h-4 mr-2" />
+              <Sparkles className="w-5 h-5 mr-2" />
               Mulai Body Scan
             </Button>
           </div>
