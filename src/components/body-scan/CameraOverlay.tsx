@@ -72,8 +72,6 @@ export function CameraOverlay({ isActive }: CameraOverlayProps) {
         <path d="M 270 30 L 270 60 M 270 30 L 240 30" stroke="#EC4899" strokeWidth="2" strokeOpacity="0.5" strokeLinecap="round" />
         {/* Corner brackets - bottom-left */}
         <path d="M 30 470 L 30 440 M 30 470 L 60 470" stroke="#EC4899" strokeWidth="2" strokeOpacity="0.5" strokeLinecap="round" />
-        {/* Corner brackets - bottom-right */}
-        <path d="M 270 470 L 270 440 M 270 470 L 240 470" stroke="#EC4899" strokeWidth="2" strokeOpacity="0.5" strokeLinecap="round" />
       </svg>
     </div>
   );

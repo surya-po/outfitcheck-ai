@@ -33,14 +33,9 @@ import { findBestMatchingProducts } from "@/app/actions/product";
 import { getSavedOutfitProductIds, toggleFavoriteOutfit } from "@/app/actions/wardrobe";
 import { Product } from "@/lib/product-matching-engine/product-types";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
-// Absolute Measurement Modules
-import { validatePose } from "@/lib/body-analysis-engine/validation/pose-validation";
-import { calculateImageQuality } from "@/lib/body-analysis-engine/validation/quality-score";
-import { loadOpenCV } from "@/lib/body-analysis-engine/calibration/reference-card-utils";
-import { detectReferenceCard } from "@/lib/body-analysis-engine/calibration/reference-card-detector";
-import { calculatePixelScale } from "@/lib/body-analysis-engine/calibration/pixel-scale";
-import { calculateAllMeasurements } from "@/lib/body-analysis-engine/measurement/measurement-engine";
+// (Absolute Measurement Modules removed for quick-only mode)
 
 export default function BodyScanPage() {
   // ─── Session persistence (survives navigation within the tab) ────────
@@ -148,7 +143,7 @@ export default function BodyScanPage() {
     try {
       await toggleFavoriteOutfit(product.id, product.compatibilityScore, product.recommendationReason);
     } catch (err: any) {
-      alert("Gagal menambahkan ke wardrobe");
+      toast.error("Gagal menambahkan ke wardrobe");
       setSavedProductIds((prev) => {
         const next = new Set(prev);
         if (next.has(product.id)) next.delete(product.id);
@@ -159,8 +154,14 @@ export default function BodyScanPage() {
   };
 
   const startCamera = useCallback(async () => {
-    // Reset results when starting a new scan
-    resetSession();
+    // Reset results when starting a new scan, but preserve preferences and viewStep
+    updateSession({
+      capturedImage: null,
+      capturedMeasurements: null,
+      analysisProfile: null,
+      matchedProducts: [],
+      scanMetadata: {},
+    });
     setHasCaptured(false);
     setCountdown(null);
     setIsLoading(true);
@@ -173,13 +174,9 @@ export default function BodyScanPage() {
       streamCleanupRef.current = mediaStream;
       setIsCameraActive(true);
       
-      if (scanMode === "accurate") {
-        setAnalysisStep("Loading Computer Vision...");
-        await loadOpenCV();
-        setAnalysisStep("");
-      }
+      // Accurate mode and OpenCV loading removed.
     } catch (err: any) {
-      alert("Gagal mengakses kamera.");
+      toast.error("Gagal mengakses kamera.");
     } finally {
       setIsLoading(false);
     }
@@ -199,60 +196,7 @@ export default function BodyScanPage() {
     if (!frameData) return;
     
     let finalMeasurements = latestMeasurementsRef.current;
-    const metadata: any = { scanMode };
-
-    if (scanMode === "accurate") {
-      try {
-        const landmarks = poseState.result?.landmarks?.[0];
-        const snapshotCanvas = cameraRef.current?.getSnapshotCanvas();
-        
-        if (!landmarks || !snapshotCanvas) throw new Error("Gagal mendapatkan data postur tubuh.");
-        
-        const poseValidation = validatePose(landmarks);
-        if (!poseValidation.isValid) throw new Error(poseValidation.messages[0]);
-
-        const quality = calculateImageQuality(snapshotCanvas);
-        metadata.qualityScore = quality.score;
-        if (!quality.isValid) throw new Error(quality.messages[0]);
-
-        const cardResult = detectReferenceCard(snapshotCanvas);
-        metadata.referenceCardDetected = cardResult.detected;
-        metadata.referenceCardConfidence = cardResult.confidence;
-        if (!cardResult.detected) throw new Error("Kartu referensi tidak terdeteksi. Pastikan kartu terlihat jelas.");
-
-        const scale = calculatePixelScale(cardResult.pixelWidth, cardResult.confidence);
-        metadata.pixelScale = scale.cmPerPixel;
-        const absMeas = calculateAllMeasurements(landmarks, snapshotCanvas.width, snapshotCanvas.height, scale);
-        
-        metadata.measurementConfidence = absMeas.overallConfidence;
-        metadata.heightMethod = "Segmented Addition";
-
-        if (absMeas.overallConfidence < 75) {
-          alert("Peringatan: Confidence pengukuran rendah (" + absMeas.overallConfidence + "%). Hasil mungkin kurang akurat.");
-        }
-
-        finalMeasurements = {
-          measurements: {
-            estimatedHeight: { value: absMeas.height.cm, confidence: absMeas.height.confidence, timestamp: Date.now() },
-            shoulderWidth: { value: absMeas.shoulderWidth.cm, confidence: absMeas.shoulderWidth.confidence, timestamp: Date.now() },
-            hipWidth: { value: absMeas.hipWidth.cm, confidence: absMeas.hipWidth.confidence, timestamp: Date.now() },
-            waistWidth: { value: absMeas.hipWidth.cm * 0.8, confidence: absMeas.overallConfidence, timestamp: Date.now() }, // Approximation
-            legLength: { value: absMeas.legLength.cm, confidence: absMeas.legLength.confidence, timestamp: Date.now() },
-            torsoLength: { value: absMeas.torsoLength.cm, confidence: absMeas.torsoLength.confidence, timestamp: Date.now() },
-            armLength: { value: absMeas.armLength.cm, confidence: absMeas.armLength.confidence, timestamp: Date.now() },
-            shoulderHipRatio: { value: absMeas.shoulderWidth.cm / absMeas.hipWidth.cm, confidence: absMeas.overallConfidence, timestamp: Date.now() },
-            overallConfidence: absMeas.overallConfidence
-          },
-          quality: {
-            isUpperBodyOnly: false, isFeetMissing: false, isTooClose: false, isTooFar: false, isRotated: false, isPoorLighting: false, warnings: []
-          }
-        };
-
-      } catch (err: any) {
-        alert("Kalibrasi Gagal: " + err.message);
-        return;
-      }
-    }
+    const metadata: any = { scanMode: "quick" };
 
     setCapturedImage(frameData);
     setHasCaptured(true);
@@ -351,11 +295,11 @@ export default function BodyScanPage() {
         throw new Error(result.error);
       }
 
-      alert("Analisis berhasil disimpan!");
+      toast.success("Analisis berhasil disimpan!");
       resetSession(); // Clear persisted session after successful save
       router.push("/history");
     } catch (error: any) {
-      alert("Gagal menyimpan analisis: " + (error?.message || "Terjadi kesalahan yang tidak diketahui."));
+      toast.error(`Gagal menyimpan analisis: ${error?.message || "Terjadi kesalahan yang tidak diketahui."}`);
     } finally {
       setIsSaving(false);
     }
@@ -497,6 +441,7 @@ export default function BodyScanPage() {
                       <OutfitRecommendationCard 
                         outfits={generateOutfitRecommendations(
                           analysisProfile,
+                          analysisProfile.colorAnalysis?.isWearingHijab || false,
                           userStylePreference.preferredStyles,
                           userStylePreference.preferredOccasion
                         )}
@@ -534,27 +479,7 @@ export default function BodyScanPage() {
           </div>
         </div>
         
-        {/* Mode Selector */}
-        {!isCameraActive && (
-          <div className="flex bg-muted/50 p-1 rounded-[var(--radius-button)]">
-            <button
-              onClick={() => setScanMode("quick")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                scanMode === "quick" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <Zap className="w-4 h-4" /> Quick
-            </button>
-            <button
-              onClick={() => setScanMode("accurate")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                scanMode === "accurate" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <Target className="w-4 h-4" /> Accurate
-            </button>
-          </div>
-        )}
+        {/* Mode Selector Removed */}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -588,8 +513,8 @@ export default function BodyScanPage() {
               )}
             </div>
 
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-              <div className={`flex items-center gap-2 px-3 py-2 rounded-[var(--radius-button)] text-xs font-medium transition-all duration-500 ${
+            <div className="flex flex-col items-center gap-4 mt-2 w-full">
+              <div className={`w-full sm:w-auto flex justify-center items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium shadow-sm transition-all duration-500 ${
                 poseState.status === "tracking"
                   ? "bg-emerald-50 text-emerald-600 border border-emerald-200"
                   : poseState.status === "initializing"
@@ -614,14 +539,16 @@ export default function BodyScanPage() {
                 </div>
                 {poseState.detectedGesture === "Open_Palm" ? "Gestur Tangan Terdeteksi!" : analysisStep || poseState.statusMessage}
               </div>
-              <CameraControls
-                isCameraActive={isCameraActive}
-                isLoading={isLoading}
-                hasCaptured={hasCaptured}
-                onStartCamera={startCamera}
-                onStopCamera={stopCamera}
-                onCapture={captureFrame}
-              />
+              <div className="w-full sm:w-auto flex justify-center">
+                <CameraControls
+                  isCameraActive={isCameraActive}
+                  isLoading={isLoading}
+                  hasCaptured={hasCaptured}
+                  onStartCamera={startCamera}
+                  onStopCamera={stopCamera}
+                  onCapture={captureFrame}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -635,25 +562,6 @@ export default function BodyScanPage() {
             fps={poseState.fps}
           />
           <MeasurementPanel result={poseState.measurements} />
-          
-          <div className="rounded-[var(--radius-card)] border border-border/60 bg-card p-6 shadow-sm">
-            <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-              <Target className="w-5 h-5 text-primary" />
-              Mode: {scanMode === "accurate" ? "Accurate Scan" : "Quick Scan"}
-            </h3>
-            {scanMode === "accurate" ? (
-              <ul className="space-y-2 text-sm text-gray-600 list-disc list-inside">
-                <li>Gunakan KTP/ATM sebagai referensi ukuran.</li>
-                <li>Pegang kartu secara horizontal/vertikal di samping tubuh.</li>
-                <li>Pastikan cahaya cukup terang.</li>
-                <li>Seluruh tubuh terlihat dari ujung kepala hingga kaki.</li>
-              </ul>
-            ) : (
-              <p className="text-sm text-gray-600">
-                Mode ini mengestimasi tinggi badan berdasarkan rasio tubuh rata-rata secara instan tanpa perlu memegang kartu.
-              </p>
-            )}
-          </div>
           
           <ScanTips />
         </div>

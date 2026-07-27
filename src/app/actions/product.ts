@@ -29,6 +29,7 @@ export async function findBestMatchingProducts(profile: FashionAnalysisProfile):
       season: true,
       colors: true,
       sizes: true,
+      gender: true,
       recommendedBodyShapes: true,
       recommendedSkinTones: true,
       price: true,

@@ -85,14 +85,27 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(getRedirectUrl("/login"));
   }
 
+  // Fallback: If Supabase redirects to /?code=... due to misconfigured Redirect URIs
+  if (pathname === "/" && request.nextUrl.searchParams.has("code")) {
+    let redirectUrl;
+    if (request.cookies.has("intended_partner_login")) {
+      redirectUrl = request.nextUrl.clone();
+      redirectUrl.pathname = "/auth/partner-callback";
+    } else {
+      redirectUrl = request.nextUrl.clone();
+      redirectUrl.pathname = "/auth/callback";
+    }
+    
+    const res = NextResponse.redirect(redirectUrl);
+    if (request.cookies.has("intended_partner_login")) {
+      res.cookies.delete("intended_partner_login");
+    }
+    return res;
+  }
+
   // Redirect authenticated users away from landing and auth pages (not partner login)
   if (user && (pathname === "/" || pathname === "/login" || pathname === "/register")) {
     return NextResponse.redirect(getRedirectUrl("/dashboard"));
-  }
-
-  // Fallback: If Supabase redirects to /?code=... due to misconfigured Redirect URIs
-  if (pathname === "/" && request.nextUrl.searchParams.has("code")) {
-    return NextResponse.redirect(getRedirectUrl("/auth/callback"));
   }
 
   return supabaseResponse;

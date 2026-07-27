@@ -174,6 +174,8 @@ export async function signInWithGooglePartner() {
   }
 
   if (data.url) {
+    const cookieStore = await cookies();
+    cookieStore.set("intended_partner_login", "true", { path: "/", maxAge: 60 * 5 });
     return { url: data.url };
   }
 }

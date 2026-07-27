@@ -26,8 +26,14 @@ export function calculateCompatibilityScore(
   // If profile has a known gender, check that the product is appropriate.
   // Products with gender mismatch (not Unisex) get a heavy penalty.
   if (profile.gender && profile.gender !== "Unknown") {
-    const productGender = (product.gender || "").toLowerCase();
-    const profileGender = profile.gender.toLowerCase();
+    let productGender = (product.gender || "").toLowerCase();
+    let profileGender = profile.gender.toLowerCase();
+
+    // Normalize Indonesian/English gender terms
+    if (productGender === "wanita" || productGender === "perempuan") productGender = "female";
+    if (productGender === "pria" || productGender === "laki-laki") productGender = "male";
+    if (profileGender === "wanita" || profileGender === "perempuan") profileGender = "female";
+    if (profileGender === "pria" || profileGender === "laki-laki") profileGender = "male";
 
     if (!productGender || productGender === "unisex" || productGender === "") {
       // Unisex or unspecified — fine for everyone, give partial credit

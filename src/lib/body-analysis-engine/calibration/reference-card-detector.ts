@@ -27,7 +27,13 @@ export function detectReferenceCard(canvas: HTMLCanvasElement): CardDetectionRes
     // 1. Preprocessing
     cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY, 0);
     cv.GaussianBlur(gray, blurred, new cv.Size(5, 5), 0, 0, cv.BORDER_DEFAULT);
-    cv.Canny(blurred, edges, 50, 150, 3, false);
+    // Use more sensitive thresholds to detect edges even in low contrast
+    cv.Canny(blurred, edges, 20, 80, 3, false);
+
+    // Add morphological closing to connect broken lines around the card
+    const kernel = cv.Mat.ones(5, 5, cv.CV_8U);
+    cv.morphologyEx(edges, edges, cv.MORPH_CLOSE, kernel);
+    kernel.delete();
 
     // 2. Find Contours
     cv.findContours(edges, contours, hierarchy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE);
@@ -41,35 +47,28 @@ export function detectReferenceCard(canvas: HTMLCanvasElement): CardDetectionRes
       const cnt = contours.get(i);
       const area = cv.contourArea(cnt);
 
-      // Filter out tiny noise and massive contours (entire screen)
-      if (area > 1000 && area < (canvas.width * canvas.height * 0.5)) {
-        const approx = new cv.Mat();
-        const perimeter = cv.arcLength(cnt, true);
-        cv.approxPolyDP(cnt, approx, 0.02 * perimeter, true);
+      // Filter out tiny noise and massive contours (allow very small cards down to 500 area)
+      if (area > 500 && area < (canvas.width * canvas.height * 0.5)) {
+        // Get the bounding rotated rectangle to find width/height
+        const rotRect = cv.minAreaRect(cnt);
+        const rectArea = rotRect.size.width * rotRect.size.height;
+        
+        // Calculate extent (contour area / bounding box area)
+        // A perfect rectangle has extent 1.0. With fingers/tilt, allow down to 0.45.
+        const extent = area / rectArea;
 
-        // If it has 4 corners, it's a rectangle
-        if (approx.rows === 4) {
-          // Check if it's convex to avoid weird shapes
-          if (cv.isContourConvex(approx)) {
-            // Get the bounding rotated rectangle to find width/height
-            const rotRect = cv.minAreaRect(cnt);
-            const rectArea = rotRect.size.width * rotRect.size.height;
-            
-            // Check aspect ratio (ID-1 is 8.56 / 5.4 = ~1.58)
-            const longest = Math.max(rotRect.size.width, rotRect.size.height);
-            const shortest = Math.min(rotRect.size.width, rotRect.size.height);
-            const ratio = longest / shortest;
+        // Check aspect ratio (ID-1 is 8.56 / 5.4 = ~1.58)
+        const longest = Math.max(rotRect.size.width, rotRect.size.height);
+        const shortest = Math.min(rotRect.size.width, rotRect.size.height);
+        const ratio = longest / shortest;
 
-            // Tolerance for perspective distortion (1.3 to 1.8)
-            if (ratio > 1.3 && ratio < 1.8) {
-              if (rectArea > maxArea) {
-                maxArea = rectArea;
-                bestRect = rotRect;
-              }
-            }
+        // Tolerance for perspective distortion (1.2 to 2.0) and occlusion (extent > 0.45)
+        if (ratio > 1.2 && ratio < 2.0 && extent > 0.45) {
+          if (rectArea > maxArea) {
+            maxArea = rectArea;
+            bestRect = rotRect;
           }
         }
-        approx.delete();
       }
       cnt.delete();
     }
