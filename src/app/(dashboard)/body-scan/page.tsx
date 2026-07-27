@@ -95,7 +95,9 @@ export default function BodyScanPage() {
 
   const latestMeasurementsRef = useRef<BodyMeasurementResult | null>(null);
   useEffect(() => {
-    latestMeasurementsRef.current = poseState.measurements;
+    if (poseState.measurements) {
+      latestMeasurementsRef.current = poseState.measurements;
+    }
   }, [poseState.measurements]);
 
   useEffect(() => {
@@ -164,6 +166,7 @@ export default function BodyScanPage() {
     });
     setHasCaptured(false);
     setCountdown(null);
+    latestMeasurementsRef.current = null;
     setIsLoading(true);
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia({
@@ -249,24 +252,27 @@ export default function BodyScanPage() {
 
   // Gesture detection effect
   useEffect(() => {
-    let cancelTimer: NodeJS.Timeout;
-
-    if (!isCameraActive || hasCaptured || poseState.status !== "tracking") {
+    if (!isCameraActive || hasCaptured) {
       setCountdown(null);
       return;
     }
 
-    if (poseState.detectedGesture === "Raised_Hand") {
-      setCountdown(prev => (prev === null ? 3 : prev));
-    } else {
-      // Cancel countdown if hand is lowered for more than 500ms (debouncing flickers)
-      cancelTimer = setTimeout(() => {
-        setCountdown(null);
-      }, 500);
+    // Cancel timer if person is completely lost
+    if (poseState.status === "no-person") {
+      setCountdown(null);
+      return;
     }
 
-    return () => clearTimeout(cancelTimer);
-  }, [poseState.detectedGesture, isCameraActive, hasCaptured, poseState.status]);
+    // If countdown is already running, let it run (don't cancel just because they lowered their hand to pose!)
+    if (countdown !== null) {
+      return;
+    }
+
+    // Start countdown if hand is raised
+    if (poseState.detectedGesture === "Raised_Hand" && poseState.status === "tracking") {
+      setCountdown(3);
+    }
+  }, [poseState.detectedGesture, isCameraActive, hasCaptured, poseState.status, countdown]);
 
   const handleSave = async () => {
     if (!analysisProfile || !capturedImage || !capturedMeasurements) return;
