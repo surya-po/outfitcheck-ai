@@ -430,29 +430,7 @@ export default function BodyScanPage() {
                   <BodyShapeCard result={analysisProfile.shape} />
                   <ProportionsCard result={analysisProfile.proportion} />
 
-                  {analysisProfile.recommendation && (
-                    <div className="sm:col-span-2">
-                      <RecommendationCard 
-                        result={analysisProfile.recommendation} 
-                        products={matchedProducts} 
-                        savedProductIds={savedProductIds}
-                        onToggleFavorite={handleToggleFavorite}
-                      />
-                    </div>
-                  )}
-
-                  {analysisProfile.shape && (
-                    <div className="sm:col-span-2">
-                      <OutfitRecommendationCard 
-                        outfits={generateOutfitRecommendations(
-                          analysisProfile,
-                          analysisProfile.colorAnalysis?.isWearingHijab || false,
-                          userStylePreference.preferredStyles,
-                          userStylePreference.preferredOccasion
-                        )}
-                      />
-                    </div>
-                  )}
+                  {/* Removed recommendations from here */}
                 </div>
               ) : null}
             </div>
@@ -465,6 +443,31 @@ export default function BodyScanPage() {
             </div>
           </div>
         </div>
+
+        {/* Full-width section for Recommendations */}
+        {!isAnalyzing && analysisProfile && (
+          <div className="mt-8 space-y-6">
+            {analysisProfile.recommendation && (
+              <RecommendationCard 
+                result={analysisProfile.recommendation} 
+                products={matchedProducts} 
+                savedProductIds={savedProductIds}
+                onToggleFavorite={handleToggleFavorite}
+              />
+            )}
+
+            {analysisProfile.shape && (
+              <OutfitRecommendationCard 
+                outfits={generateOutfitRecommendations(
+                  analysisProfile,
+                  analysisProfile.colorAnalysis?.isWearingHijab || false,
+                  userStylePreference.preferredStyles,
+                  userStylePreference.preferredOccasion
+                )}
+              />
+            )}
+          </div>
+        )}
       </div>
     );
   }
