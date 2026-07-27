@@ -111,10 +111,10 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
       {/* Header and Global Edit Button & Messages */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#1E1E2D] tracking-tight flex items-center gap-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight flex items-center gap-2">
             <User className="w-6 h-6 text-[#EC4899]" /> Profil Pengguna
           </h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Ringkasan informasi akun dan statistik aktivitas Anda.
           </p>
         </div>
@@ -147,7 +147,7 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={formData.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-400">
+                <div className="w-full h-full flex items-center justify-center text-muted-foreground">
                   <User className="w-12 h-12" />
                 </div>
               )}
@@ -230,7 +230,7 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
                     <option value="Female">Perempuan (Female)</option>
                   </select>
                 ) : (
-                  <p className="text-sm font-semibold text-gray-900">{formData.gender || "-"}</p>
+                  <p className="text-sm font-semibold text-foreground">{formData.gender || "-"}</p>
                 )}
               </div>
               
@@ -239,7 +239,7 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
                 {isEditing ? (
                   <Input type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} className="rounded-[var(--radius-button)] h-10" />
                 ) : (
-                  <p className="text-sm font-semibold text-gray-900">{displayDate}</p>
+                  <p className="text-sm font-semibold text-foreground">{displayDate}</p>
                 )}
               </div>
 
@@ -251,7 +251,7 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
                     <span className="text-sm text-muted-foreground">cm</span>
                   </div>
                 ) : (
-                  <p className="text-sm font-semibold text-gray-900">{formData.heightCm ? `${formData.heightCm} cm` : "-"}</p>
+                  <p className="text-sm font-semibold text-foreground">{formData.heightCm ? `${formData.heightCm} cm` : "-"}</p>
                 )}
               </div>
 
@@ -263,7 +263,7 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
                     <span className="text-sm text-muted-foreground">kg</span>
                   </div>
                 ) : (
-                  <p className="text-sm font-semibold text-gray-900">{formData.weightKg ? `${formData.weightKg} kg` : "-"}</p>
+                  <p className="text-sm font-semibold text-foreground">{formData.weightKg ? `${formData.weightKg} kg` : "-"}</p>
                 )}
               </div>
             </div>
