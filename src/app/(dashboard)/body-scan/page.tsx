@@ -359,8 +359,8 @@ export default function BodyScanPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
-          {/* Left Column: Image and Measurements */}
-          <div className="lg:col-span-4 space-y-6">
+          {/* Left Column: Image, Measurements, and Vision AI */}
+          <div className="lg:col-span-5 space-y-6">
             <div className="rounded-[var(--radius-card)] border border-border/60 bg-card p-4 shadow-sm">
               <div className="relative w-full aspect-[3/4] max-h-[500px] rounded-[var(--radius-card)] overflow-hidden bg-muted flex items-center justify-center">
                 <img
@@ -401,13 +401,16 @@ export default function BodyScanPage() {
               </div>
             </div>
 
-            <div className="hidden lg:block">
+            <div className="hidden lg:block space-y-6">
               <MeasurementPanel result={capturedMeasurements} />
+              {!isAnalyzing && analysisProfile?.colorAnalysis && (
+                <AiVisionCard result={analysisProfile.colorAnalysis} />
+              )}
             </div>
           </div>
 
-          {/* Right Column: AI Analysis */}
-          <div className="lg:col-span-8 space-y-6">
+          {/* Right Column: AI Analysis & Recommendations */}
+          <div className="lg:col-span-7 space-y-6">
             <div className="rounded-[var(--radius-card)] bg-gradient-to-br from-card to-muted p-6 sm:p-8 shadow-sm relative overflow-hidden h-full border border-border/60">
               <div className="absolute top-0 right-0 w-80 h-80 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
               
@@ -426,10 +429,6 @@ export default function BodyScanPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <BodyShapeCard result={analysisProfile.shape} />
                   <ProportionsCard result={analysisProfile.proportion} />
-
-                  <div className="sm:col-span-2">
-                    <AiVisionCard result={analysisProfile.colorAnalysis} />
-                  </div>
 
                   {analysisProfile.recommendation && (
                     <div className="sm:col-span-2">
@@ -458,8 +457,11 @@ export default function BodyScanPage() {
               ) : null}
             </div>
 
-            <div className="block lg:hidden">
+            <div className="block lg:hidden space-y-6">
               <MeasurementPanel result={capturedMeasurements} />
+              {!isAnalyzing && analysisProfile?.colorAnalysis && (
+                <AiVisionCard result={analysisProfile.colorAnalysis} />
+              )}
             </div>
           </div>
         </div>
