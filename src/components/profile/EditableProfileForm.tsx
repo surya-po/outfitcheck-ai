@@ -141,8 +141,8 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Col: Account Info */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white border border-[#FDF2F8] rounded-[var(--radius-card)] p-6 shadow-sm flex flex-col items-center text-center">
-            <div className="relative w-32 h-32 rounded-full overflow-hidden bg-gray-100 border-4 border-[#FDF2F8] shadow-sm mb-4">
+          <div className="bg-card border border-border/60 rounded-[var(--radius-card)] p-6 shadow-sm flex flex-col items-center text-center">
+            <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-background bg-muted shadow-sm mb-4">
               {formData.avatarUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={formData.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
@@ -153,19 +153,19 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
               )}
             </div>
             
-            <h2 className="font-bold text-xl text-gray-900 truncate w-full px-2">
+            <h2 className="font-bold text-xl text-foreground truncate w-full px-2">
               {currentFullName !== "-" ? currentFullName : "Pengguna Fitcheck"}
             </h2>
-            <p className="text-sm text-gray-500 truncate w-full px-2 mb-4">{userEmail}</p>
+            <p className="text-sm text-muted-foreground truncate w-full px-2 mb-4">{userEmail}</p>
             
-            <div className="w-full pt-4 border-t border-gray-100 text-sm text-gray-500 flex justify-between items-center px-2">
+            <div className="w-full pt-4 border-t border-border/60 text-sm text-muted-foreground flex justify-between items-center px-2">
               <span className="font-medium text-xs">Bergabung</span>
-              <span className="text-gray-900 font-semibold">{memberSince}</span>
+              <span className="text-foreground font-semibold">{memberSince}</span>
             </div>
 
             {isEditing && (
               <div className="w-full mt-6 text-left">
-                <label className="block text-xs font-medium text-gray-500 mb-2 flex items-center gap-1">
+                <label className="block text-xs font-medium text-muted-foreground mb-2 flex items-center gap-1">
                   <Camera className="w-3 h-3" /> Ganti Avatar
                 </label>
                 <Input 
@@ -186,7 +186,7 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
                       reader.readAsDataURL(file);
                     }
                   }}
-                  className="file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#FDF2F8] file:text-[#EC4899] hover:file:bg-[#FCE7F3] rounded-[var(--radius-button)] h-10 cursor-pointer"
+                  className="file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 rounded-[var(--radius-button)] h-10 cursor-pointer"
                 />
               </div>
             )}
@@ -195,9 +195,9 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
 
         {/* Right Col: Personal Info & AI Summary */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white border border-[#FDF2F8] rounded-[var(--radius-card)] p-6 shadow-sm">
-            <h3 className="font-bold text-lg text-gray-900 mb-6 flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-[#EC4899]" /> Informasi Personal
+          <div className="bg-card border border-border/60 rounded-[var(--radius-card)] p-6 shadow-sm">
+            <h3 className="font-bold text-lg text-foreground mb-6 flex items-center gap-2">
+              <Calendar className="w-5 h-5 text-primary" /> Informasi Personal
             </h3>
             
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-6 gap-x-4">
@@ -205,19 +205,19 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
               {/* First Name (Only shown in edit mode explicitly since it's combined in view mode) */}
               {isEditing && (
                 <div className="space-y-1 col-span-2">
-                  <label className="text-xs text-gray-500 font-medium">Nama Depan</label>
+                  <label className="text-xs text-muted-foreground font-medium">Nama Depan</label>
                   <Input name="firstName" value={formData.firstName} onChange={handleChange} className="rounded-[var(--radius-button)] h-10" />
                 </div>
               )}
               {isEditing && (
                 <div className="space-y-1 col-span-2">
-                  <label className="text-xs text-gray-500 font-medium">Nama Belakang</label>
+                  <label className="text-xs text-muted-foreground font-medium">Nama Belakang</label>
                   <Input name="lastName" value={formData.lastName} onChange={handleChange} className="rounded-[var(--radius-button)] h-10" />
                 </div>
               )}
 
               <div className="space-y-1 col-span-2 sm:col-span-1">
-                <span className="text-xs text-gray-500 font-medium">Jenis Kelamin</span>
+                <span className="text-xs text-muted-foreground font-medium">Jenis Kelamin</span>
                 {isEditing ? (
                   <select 
                     name="gender" 
@@ -235,7 +235,7 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
               </div>
               
               <div className="space-y-1 col-span-2 sm:col-span-1">
-                <span className="text-xs text-gray-500 font-medium">Tanggal Lahir</span>
+                <span className="text-xs text-muted-foreground font-medium">Tanggal Lahir</span>
                 {isEditing ? (
                   <Input type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} className="rounded-[var(--radius-button)] h-10" />
                 ) : (
@@ -244,11 +244,11 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
               </div>
 
               <div className="space-y-1 col-span-2 sm:col-span-1">
-                <span className="text-xs text-gray-500 font-medium">Tinggi Badan</span>
+                <span className="text-xs text-muted-foreground font-medium">Tinggi Badan</span>
                 {isEditing ? (
                   <div className="flex items-center gap-2">
                     <Input type="number" name="heightCm" value={formData.heightCm} onChange={handleChange} className="rounded-[var(--radius-button)] h-10" />
-                    <span className="text-sm text-gray-500">cm</span>
+                    <span className="text-sm text-muted-foreground">cm</span>
                   </div>
                 ) : (
                   <p className="text-sm font-semibold text-gray-900">{formData.heightCm ? `${formData.heightCm} cm` : "-"}</p>
@@ -256,11 +256,11 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
               </div>
 
               <div className="space-y-1 col-span-2 sm:col-span-1">
-                <span className="text-xs text-gray-500 font-medium">Berat Badan</span>
+                <span className="text-xs text-muted-foreground font-medium">Berat Badan</span>
                 {isEditing ? (
                   <div className="flex items-center gap-2">
                     <Input type="number" name="weightKg" value={formData.weightKg} onChange={handleChange} className="rounded-[var(--radius-button)] h-10" />
-                    <span className="text-sm text-gray-500">kg</span>
+                    <span className="text-sm text-muted-foreground">kg</span>
                   </div>
                 ) : (
                   <p className="text-sm font-semibold text-gray-900">{formData.weightKg ? `${formData.weightKg} kg` : "-"}</p>
@@ -269,36 +269,36 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
             </div>
           </div>
 
-          <div className="rounded-[var(--radius-card)] bg-gradient-to-br from-[#1E1E2D] to-gray-900 p-6 shadow-xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#EC4899]/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="rounded-[var(--radius-card)] bg-primary/10 border border-primary/20 p-6 shadow-xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
             
-            <h3 className="text-white font-bold text-lg mb-6 flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-[#EC4899]" /> Ringkasan AI Terbaru
+            <h3 className="text-primary font-bold text-lg mb-6 flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-primary" /> Ringkasan AI Terbaru
             </h3>
 
             {latestScanData.latestBodyShape !== "-" ? (
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="bg-black/20 border border-white/5 rounded-[var(--radius-button)] p-4">
-                  <span className="text-[10px] uppercase tracking-wider text-[#EC4899] font-bold block mb-1">
+                <div className="bg-background/50 backdrop-blur-sm border border-primary/20 rounded-[var(--radius-button)] p-4">
+                  <span className="text-[10px] uppercase tracking-wider text-primary/80 font-bold block mb-1">
                     Bentuk Tubuh
                   </span>
-                  <span className="text-white font-bold text-lg capitalize">{latestScanData.latestBodyShape}</span>
+                  <span className="text-foreground font-bold text-lg capitalize">{latestScanData.latestBodyShape}</span>
                 </div>
-                <div className="bg-black/20 border border-white/5 rounded-[var(--radius-button)] p-4">
-                  <span className="text-[10px] uppercase tracking-wider text-[#EC4899] font-bold block mb-1">
+                <div className="bg-background/50 backdrop-blur-sm border border-primary/20 rounded-[var(--radius-button)] p-4">
+                  <span className="text-[10px] uppercase tracking-wider text-primary/80 font-bold block mb-1">
                     Skor AI
                   </span>
-                  <span className="text-white font-bold text-lg">{latestScanData.latestAiScore}</span>
+                  <span className="text-foreground font-bold text-lg">{latestScanData.latestAiScore}</span>
                 </div>
-                <div className="bg-black/20 border border-white/5 rounded-[var(--radius-button)] p-4">
-                  <span className="text-[10px] uppercase tracking-wider text-[#EC4899] font-bold block mb-1">
+                <div className="bg-background/50 backdrop-blur-sm border border-primary/20 rounded-[var(--radius-button)] p-4">
+                  <span className="text-[10px] uppercase tracking-wider text-primary/80 font-bold block mb-1">
                     Tanggal Scan
                   </span>
-                  <span className="text-white font-bold text-sm leading-tight">{latestScanData.latestScanDateStr}</span>
+                  <span className="text-foreground font-bold text-sm leading-tight">{latestScanData.latestScanDateStr}</span>
                 </div>
               </div>
             ) : (
-              <div className="text-white/60 text-sm py-4">Belum ada hasil scan.</div>
+              <div className="text-primary/70 text-sm py-4">Belum ada hasil scan.</div>
             )}
           </div>
           

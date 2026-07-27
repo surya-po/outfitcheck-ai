@@ -86,7 +86,7 @@ export default async function ProfilePage() {
 
       {/* Statistics Section */}
       <div>
-        <h3 className="text-lg font-bold text-gray-900 mb-4 px-1">Statistik Aktivitas</h3>
+        <h3 className="text-lg font-bold text-foreground mb-4 px-1">Statistik Aktivitas</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <StatisticCard
             title="Total Body Scans"
