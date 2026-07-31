@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Sparkles, Shirt, Camera } from "lucide-react";
+import { ArrowRight, Diamond, Shirt, Camera } from "lucide-react";
 
 export default function Home() {
   return (
@@ -36,7 +36,7 @@ export default function Home() {
         
         <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center gap-8">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-sm font-medium text-zinc-800 dark:text-zinc-200 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <Sparkles className="w-4 h-4 text-primary" />
+            <Diamond className="w-4 h-4 text-primary" />
             <span>Asisten Fashion AI Pribadi Anda</span>
           </div>
 
@@ -82,7 +82,7 @@ export default function Home() {
             {
               title: "Mix & Match Cerdas",
               description: "Padu padankan pakaian di lemarimu untuk gaya tanpa batas.",
-              icon: Sparkles,
+              icon: Diamond,
             },
           ].map((feature, i) => (
             <div key={i} className="flex flex-col items-center sm:items-start text-center sm:text-left p-6 rounded-[var(--radius-card)] bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-100 dark:border-zinc-800/50 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors">

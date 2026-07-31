@@ -1,5 +1,5 @@
 import { EmptyState } from "@/components/ui/EmptyState";
-import { Sparkles, ArrowRight } from "lucide-react";
+import { Diamond, ArrowRight } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import { RecommendationCard } from "@/components/body-scan/analysis-cards/RecommendationCard";
@@ -38,7 +38,7 @@ export default async function RecommendationsPage() {
       <div className="flex flex-col items-center justify-center h-[calc(100vh-10rem)] animate-in fade-in-50 duration-500">
         <div className="w-full max-w-2xl">
           <EmptyState
-            icon={Sparkles}
+            icon={Diamond}
             title="Belum Ada Rekomendasi"
             description="Lakukan Body Scan terlebih dahulu untuk mendapatkan rekomendasi gaya dan outfit personal dari AI."
             action={
@@ -58,7 +58,7 @@ export default async function RecommendationsPage() {
     <div className="max-w-7xl mx-auto pb-12 animate-in fade-in-50 duration-500">
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-heading font-bold text-foreground tracking-tight flex items-center gap-2">
-          <Sparkles className="w-6 h-6 text-primary" /> Rekomendasi Outfit Anda
+          <Diamond className="w-6 h-6 text-primary" /> Rekomendasi Outfit Anda
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
           Berdasarkan hasil analisis scan tubuh terbaru Anda.

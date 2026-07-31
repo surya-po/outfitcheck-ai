@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Sparkles } from "lucide-react";
+import { Diamond } from "lucide-react";
 import { FashionRecommendationProfile } from "@/lib/fashion-recommendation-engine/recommendation-types";
 import { ProductCard } from "../product-matching/ProductCard";
 import { ProductDetailDialog } from "../product-matching/ProductDetailDialog";
@@ -44,7 +44,7 @@ export function RecommendationCard({ result, products = [], savedProductIds = ne
     <div className="rounded-[var(--radius-card)] border border-border/60 bg-card p-4 sm:p-6 shadow-sm backdrop-blur-sm">
       <div className="flex items-center gap-3 mb-6">
         <div className="flex items-center justify-center w-10 h-10 rounded-[var(--radius-button)] bg-gradient-to-br from-primary to-[#E14D72] text-primary-foreground">
-          <Sparkles className="w-5 h-5" />
+          <Diamond className="w-5 h-5" />
         </div>
         <div>
           <h2 className="text-lg font-bold text-foreground">Rekomendasi Fashion AI</h2>

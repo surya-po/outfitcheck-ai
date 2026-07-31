@@ -2,7 +2,7 @@ import { getProduct } from "@/app/actions/boutique-product";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Check, Sparkles } from "lucide-react";
+import { ArrowLeft, Check, Diamond } from "lucide-react";
 import Link from "next/link";
 import { format } from "date-fns";
 
@@ -36,7 +36,7 @@ export default async function PreviewProductPage({ params }: Props) {
       </div>
 
       <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-[var(--radius-button)] p-4 flex gap-3 text-sm text-yellow-800 dark:text-yellow-200">
-        <Sparkles className="w-5 h-5 shrink-0" />
+        <Diamond className="w-5 h-5 shrink-0" />
         <p>Halaman ini menampilkan gambaran kasar bagaimana produk Anda akan terlihat di Marketplace. Desain akhir di Marketplace mungkin memiliki sedikit perbedaan menyesuaikan dengan tema platform.</p>
       </div>
 
@@ -111,7 +111,7 @@ export default async function PreviewProductPage({ params }: Props) {
       {/* AI Recommendation Preview */}
       <Card className="mt-8 p-6 bg-gradient-to-br from-card to-muted dark:from-[#EC4899]/5 dark:to-transparent border-border/60 border-border/60">
         <h3 className="text-lg font-semibold flex items-center gap-2 mb-4">
-          <Sparkles className="w-5 h-5 text-primary" />
+          <Diamond className="w-5 h-5 text-primary" />
           AI Matching Data
         </h3>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">

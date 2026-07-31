@@ -1,6 +1,6 @@
 import { getSavedOutfits } from "@/app/actions/wardrobe";
 import CollectionClient from "./CollectionClient";
-import { Sparkles, ArrowLeft } from "lucide-react";
+import { Diamond, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -22,7 +22,7 @@ export default async function CollectionPage() {
           </Link>
           <div className="flex items-center gap-3">
             <div className="flex items-center justify-center w-10 h-10 rounded-[var(--radius-button)] bg-gradient-to-br from-primary to-[#E14D72] text-primary-foreground shadow-sm">
-              <Sparkles className="w-5 h-5" />
+              <Diamond className="w-5 h-5" />
             </div>
             <div>
               <h1 className="text-2xl font-heading font-bold tracking-tight text-foreground">Digital Wardrobe</h1>

@@ -9,7 +9,7 @@ export function CameraOverlay({ isActive }: CameraOverlayProps) {
     <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
       <svg
         viewBox="0 0 300 500"
-        className={`w-full h-full max-w-[280px] max-h-[460px] transition-opacity duration-700 ${
+        className={`w-full h-full max-w-[85%] max-h-[90%] transition-opacity duration-700 ${
           isActive ? 'opacity-100' : 'opacity-40'
         }`}
         fill="none"

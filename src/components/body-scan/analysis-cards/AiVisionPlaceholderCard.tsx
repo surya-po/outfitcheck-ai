@@ -1,9 +1,9 @@
-import { Sparkles, Palette } from "lucide-react";
+import { Diamond, Palette } from "lucide-react";
 import { AnalysisCardBase } from "./AnalysisCardBase";
 
 export function AiVisionPlaceholderCard() {
   return (
-    <AnalysisCardBase title="AI Vision Analysis" icon={Sparkles} className="md:col-span-2">
+    <AnalysisCardBase title="AI Vision Analysis" icon={Diamond} className="md:col-span-2">
       <div className="flex flex-col items-center justify-center py-8 px-4 text-center relative overflow-hidden">
         
         {/* Glow effect */}

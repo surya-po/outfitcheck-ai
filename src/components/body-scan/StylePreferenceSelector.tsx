@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { 
-  Sparkles, ArrowRight, CheckCircle2, 
+  Diamond, ArrowRight, CheckCircle2, 
   Shirt, Coffee, Briefcase, Crown, Hexagon, 
   Glasses, Gem, Zap, Dumbbell, Radio, Flower2, 
   Moon, Layers, Palette, Users, Heart, 
@@ -19,7 +19,7 @@ const STYLE_OPTIONS = [
   { label: "Formal",           icon: Building2,  desc: "Profesional & elegan" },
   { label: "Old Money",        icon: Crown,      desc: "Klasik, timeless, berkelas" },
   { label: "Minimalist",       icon: Hexagon,    desc: "Bersih, simpel, esensial" },
-  { label: "Elegant",          icon: Sparkles,   desc: "Anggun & sophisticated" },
+  { label: "Elegant",          icon: Diamond,   desc: "Anggun & sophisticated" },
   { label: "Chic",             icon: Glasses,    desc: "Stylish & modern" },
   { label: "Luxury",           icon: Gem,        desc: "Premium & eksklusif" },
   { label: "Streetwear",       icon: Zap,        desc: "Urban & ekspresif" },
@@ -93,7 +93,7 @@ export function StylePreferenceSelector({ onComplete }: StylePreferenceSelectorP
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-4">
           <div className="flex items-center justify-center w-10 h-10 rounded-[var(--radius-button)] bg-gradient-to-br from-primary to-[#E14D72] text-primary-foreground shadow-sm">
-            <Sparkles className="w-5 h-5" />
+            <Diamond className="w-5 h-5" />
           </div>
           <div>
             <h1 className="text-xl sm:text-2xl font-heading font-bold text-foreground tracking-tight">
@@ -276,7 +276,7 @@ export function StylePreferenceSelector({ onComplete }: StylePreferenceSelectorP
               onClick={handleNext}
               className="w-full sm:w-auto rounded-xl h-14 px-8 font-bold text-base shadow-lg bg-gradient-to-r from-primary to-[#E14D72] hover:opacity-90 transition-all hover:scale-105 active:scale-95 text-white border-0"
             >
-              <Sparkles className="w-5 h-5 mr-2" />
+              <Diamond className="w-5 h-5 mr-2" />
               Mulai Body Scan
             </Button>
           </div>

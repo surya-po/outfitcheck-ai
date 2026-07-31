@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { User, Calendar, Camera, Sparkles } from "lucide-react";
+import { User, Calendar, Camera, Diamond } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { updateProfile } from "@/app/actions/profile";
@@ -273,7 +273,7 @@ export function EditableProfileForm({ profile, userEmail, memberSince, latestSca
             <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
             
             <h3 className="text-primary font-bold text-lg mb-6 flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-primary" /> Ringkasan AI Terbaru
+              <Diamond className="w-5 h-5 text-primary" /> Ringkasan AI Terbaru
             </h3>
 
             {latestScanData.latestBodyShape !== "-" ? (

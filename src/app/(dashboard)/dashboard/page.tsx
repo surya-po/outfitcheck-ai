@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   ScanFace,
-  Sparkles,
+  Diamond,
   Heart,
   Shirt,
   Calendar,
@@ -107,7 +107,7 @@ export default async function DashboardPage() {
         <StatisticCard
           title="Rekomendasi"
           value={recommendationsCount.toString()}
-          icon={<Sparkles className="h-5 w-5" />}
+          icon={<Diamond className="h-5 w-5" />}
         />
         <StatisticCard
           title="Disimpan"
@@ -170,7 +170,7 @@ export default async function DashboardPage() {
           <Card className="shadow-sm hover:shadow-sm transition-shadow">
             <CardHeader className="border-b bg-primary/5">
               <CardTitle className="text-xl flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-primary" />
+                <Diamond className="h-5 w-5 text-primary" />
                 Rekomendasi Hari Ini
               </CardTitle>
             </CardHeader>
@@ -178,13 +178,13 @@ export default async function DashboardPage() {
               {latestScan ? (
                 <>
                   <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary mb-4">
-                    <Sparkles className="h-6 w-6" />
+                    <Diamond className="h-6 w-6" />
                   </div>
                   <h3 className="text-lg font-semibold text-foreground mb-2">Belum Ada Rekomendasi</h3>
                   <p className="text-muted-foreground text-sm mb-6 text-center">
                     Cek rekomendasi pintar berdasarkan gaya personal, cuaca hari ini, dan pakaian di lemari digital Anda.
                   </p>
-                  <Link href="/recommendation" className="w-full">
+                  <Link href="/recommendations" className="w-full">
                     <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-[var(--radius-button)] px-8 h-11 shadow-sm hover:scale-105 transition-all w-full">
                       Lihat Rekomendasi
                     </Button>
@@ -193,7 +193,7 @@ export default async function DashboardPage() {
               ) : (
                 <>
                   <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-muted text-muted-foreground mb-4">
-                    <Sparkles className="h-6 w-6" />
+                    <Diamond className="h-6 w-6" />
                   </div>
                   <h3 className="text-lg font-medium text-foreground mb-2">Selesaikan scan tubuh terlebih dahulu</h3>
                   <p className="text-muted-foreground text-sm mb-6 max-w-md mx-auto">

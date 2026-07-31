@@ -1,4 +1,4 @@
-import { Sparkles, Palette, AlertCircle } from "lucide-react";
+import { Diamond, Palette, AlertCircle } from "lucide-react";
 import { AnalysisCardBase } from "./AnalysisCardBase";
 import { ColorAnalysisResult, ColorChip } from "@/lib/body-analysis-engine/analysis-types";
 
@@ -16,7 +16,7 @@ export function AiVisionCard({ result }: { result: ColorAnalysisResult }) {
   // If AI Vision failed or is not available, show error/placeholder state
   if (!result.isAvailable || result.error) {
     return (
-      <AnalysisCardBase title="Profil Fashion AI" icon={Sparkles} className="md:col-span-2">
+      <AnalysisCardBase title="Profil Fashion AI" icon={Diamond} className="md:col-span-2">
         <div className="flex flex-col items-center justify-center py-8 px-4 text-center">
           <div className="bg-red-500/10 border border-red-500/20 p-3 rounded-[var(--radius-card)] mb-4 text-red-400">
             <AlertCircle className="h-8 w-8" />
@@ -34,7 +34,7 @@ export function AiVisionCard({ result }: { result: ColorAnalysisResult }) {
   }
 
   return (
-    <AnalysisCardBase title="Profil Fashion AI" icon={Sparkles} className="md:col-span-2">
+    <AnalysisCardBase title="Profil Fashion AI" icon={Diamond} className="md:col-span-2">
       <div className="flex flex-col gap-6">
         
         {/* Attributes */}

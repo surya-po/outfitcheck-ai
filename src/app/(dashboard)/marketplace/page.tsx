@@ -3,7 +3,7 @@ import { getMarketplaceProducts, MarketplaceSearchParams } from "@/app/actions/m
 import { MarketplaceGrid } from "@/components/marketplace/MarketplaceGrid";
 import { MarketplaceFilter } from "@/components/marketplace/MarketplaceFilter";
 import { EmptyState } from "@/components/marketplace/EmptyState";
-import { ShoppingBag, Sparkles } from "lucide-react";
+import { ShoppingBag, Diamond } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 
@@ -60,7 +60,7 @@ export default async function MarketplacePage(
         <div className="relative overflow-hidden rounded-[var(--radius-card)] bg-gradient-to-br from-primary to-[#E14D72] p-8 sm:p-12 text-primary-foreground shadow-sm border border-primary/20">
           <div className="relative z-10 max-w-2xl space-y-4">
             <Badge className="bg-white/20 hover:bg-white/30 text-white border-none px-3 py-1 text-xs font-medium">
-              <Sparkles className="w-3.5 h-3.5 mr-1" />
+              <Diamond className="w-3.5 h-3.5 mr-1" />
               AI Powered Marketplace
             </Badge>
             <h1 className="text-3xl sm:text-4xl font-heading font-bold tracking-tight">
@@ -91,7 +91,7 @@ export default async function MarketplacePage(
         {isDefaultView && products.length > 0 && (
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-primary" />
+              <Diamond className="w-5 h-5 text-primary" />
               <h2 className="text-xl font-heading font-bold text-foreground">Rekomendasi Untuk Anda</h2>
             </div>
             {!viewAll && (

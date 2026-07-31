@@ -17,8 +17,7 @@ import {
   buildPreferenceExplanation,
   isStyleCompatibleWithOccasion,
 } from "./style-preference-rules";
-import { FemaleBodyShapeType, MaleBodyShapeType } from "../body-analysis-engine/analysis-types";
-
+import { BodyShapeType, FemaleBodyShapeType, MaleBodyShapeType } from "../body-analysis-engine/analysis-types";
 interface ScoredRule {
   type: string;
   style: string;
@@ -34,8 +33,8 @@ export class FashionRecommendationEngine {
     userStylePreference?: UserStylePreference
   ): FashionRecommendationProfile {
     const profileObj = profile.fashionProfile;
-    const primaryShape = profileObj?.primaryShape || profile.shape.primaryShape || "Rectangle";
-    const secondaryShape = profileObj?.secondaryShape || profile.shape.secondaryShape;
+    const primaryShape = (profileObj?.primaryShape || profile.shape.primaryShape || "Rectangle") as BodyShapeType;
+    const secondaryShape = (profileObj?.secondaryShape || profile.shape.secondaryShape) as BodyShapeType | undefined;
     const primaryConfidence = profileObj?.primaryConfidence ?? (profile.shape as any).primaryConfidence ?? profile.shape.confidence ?? 0.8;
     const secondaryConfidence = profileObj?.secondaryConfidence ?? (profile.shape as any).secondaryConfidence ?? 0;
 

@@ -122,12 +122,12 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
           {aiData ? (
             <div className="bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-100 rounded-[var(--radius-card)] p-6 relative overflow-hidden">
               <div className="absolute top-0 right-0 p-4 opacity-10">
-                <Sparkles className="w-24 h-24 text-pink-500" />
+                <Diamond className="w-24 h-24 text-pink-500" />
               </div>
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="font-semibold text-gray-900 flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-pink-500" />
+                    <Diamond className="w-4 h-4 text-pink-500" />
                     AI Compatibility Score
                   </h3>
                   <div className="text-2xl font-bold text-pink-600">{aiData.score}%</div>
@@ -316,6 +316,6 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   );
 }
 
-import { Sparkles } from "lucide-react";
+import { Diamond } from "lucide-react";
 
 

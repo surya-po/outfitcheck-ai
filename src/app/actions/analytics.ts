@@ -33,7 +33,7 @@ export async function getPartnerTotalRecommendations() {
 }
 
 /**
- * Gets recommendation counts grouped by source (e.g. BODY_SCAN, FASHION_ASSISTANT).
+ * Gets recommendation counts grouped by source (e.g. BODY_SCAN).
  */
 export async function getPartnerRecommendationsBySource() {
   const user = await requireAuth();

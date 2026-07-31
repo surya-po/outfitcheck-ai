@@ -6,7 +6,7 @@ import { generateOutfitCombinations } from "@/app/actions/mix-match";
 import { OutfitGrid } from "@/components/mix-match/OutfitGrid";
 import { Button } from "@/components/ui/button";
 import {
-  Sparkles,
+  Diamond,
   Wand2,
   RefreshCw,
   ScanFace,
@@ -109,7 +109,7 @@ export function MixMatchClient({ initialResult }: Props) {
                 </>
               ) : (
                 <>
-                  <Sparkles className="w-5 h-5 mr-2" />
+                  <Diamond className="w-5 h-5 mr-2" />
                   Generate Outfit
                 </>
               )}
@@ -176,7 +176,7 @@ export function MixMatchClient({ initialResult }: Props) {
       {!isPending && hasNoOutfits && (
         <div className="text-center py-16 space-y-4">
           <div className="w-20 h-20 rounded-full bg-yellow-50 flex items-center justify-center mx-auto">
-            <Sparkles className="w-10 h-10 text-yellow-500" />
+            <Diamond className="w-10 h-10 text-yellow-500" />
           </div>
           <h3 className="text-xl font-heading font-bold text-foreground">
             Belum Bisa Menyusun Outfit Lengkap

@@ -78,7 +78,6 @@ model User {
   notifications Notification[]
   boutiques               Boutique[]
   productRecommendations  ProductRecommendation[]
-  assistantMessages       AssistantMessage[]
 
   @@map("users")
 }
@@ -311,22 +310,4 @@ model ProductRecommendation {
   @@index([scanHistoryId])
   @@index([createdAt])
   @@map("product_recommendations")
-}
-
-// ============================================
-// CHAT HISTORY
-// ============================================
-
-model AssistantMessage {
-  id        String   @id @default(cuid())
-  userId    String   @map("user_id")
-  role      String   // "user" or "assistant"
-  content   String   @db.Text
-  timestamp DateTime @default(now())
-
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-  @@index([timestamp])
-  @@map("assistant_messages")
 }

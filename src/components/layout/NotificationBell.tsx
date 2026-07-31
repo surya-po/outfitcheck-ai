@@ -58,7 +58,6 @@ export function NotificationBell() {
       case "PRODUCT": return "👕";
       case "BOUTIQUE": return "🏬";
       case "PROMOTION": return "🎉";
-      case "FASHION_ASSISTANT": return "💬";
       default: return "🔔";
     }
   };

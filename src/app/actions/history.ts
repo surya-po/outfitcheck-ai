@@ -100,7 +100,6 @@ export async function saveScanHistory(payload: SaveScanPayload) {
     await notificationService.notifyAiAnalysis(user.id, history.id);
 
     revalidatePath("/history");
-    revalidatePath("/fashion-assistant");
     revalidatePath("/dashboard");
     return { success: true, history };
   } catch (error: any) {
@@ -119,7 +118,6 @@ export async function toggleFavorite(id: string, currentStatus: boolean) {
     data: { isFavorite: !currentStatus }
   });
   revalidatePath("/history");
-  revalidatePath("/fashion-assistant");
   revalidatePath("/dashboard");
   return true;
 }
@@ -133,7 +131,6 @@ export async function deleteScanHistory(id: string) {
     where: { id, userId: user.id }
   });
   revalidatePath("/history");
-  revalidatePath("/fashion-assistant");
   revalidatePath("/dashboard");
   return true;
 }
@@ -147,7 +144,6 @@ export async function deleteAllScanHistory() {
     where: { userId: user.id }
   });
   revalidatePath("/history");
-  revalidatePath("/fashion-assistant");
   revalidatePath("/dashboard");
   return true;
 }

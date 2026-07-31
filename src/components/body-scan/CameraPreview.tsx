@@ -73,7 +73,7 @@ export const CameraPreview = forwardRef<CameraPreviewHandle, CameraPreviewProps>
     }, [stream]);
 
     return (
-      <div className="relative w-full aspect-[3/4] sm:aspect-[4/5] max-h-[520px] rounded-[var(--radius-card)] overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800">
+      <div className="relative w-full max-w-lg mx-auto aspect-[3/4] sm:aspect-[4/5] max-h-[70vh] rounded-[var(--radius-card)] overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 shadow-lg">
         {/* Video element */}
         <video
           ref={videoRef}

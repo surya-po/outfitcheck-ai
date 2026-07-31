@@ -12,6 +12,7 @@ import { MeasurementPanel } from "@/components/body-scan/MeasurementPanel";
 import { usePoseLandmarker } from "@/hooks/usePoseLandmarker";
 import { useScanSession } from "@/hooks/useScanSession";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import Link from "next/link";
 import { BodyMeasurementResult } from "@/lib/body-measurements/types";
 import { StylePreferenceSelector } from "@/components/body-scan/StylePreferenceSelector";
@@ -71,6 +72,7 @@ export default function BodyScanPage() {
   const [analysisStep, setAnalysisStep] = useState("");
   const [savedProductIds, setSavedProductIds] = useState<Set<string>>(new Set());
   const [countdown, setCountdown] = useState<number | null>(null);
+  const [isAutoCaptureEnabled, setIsAutoCaptureEnabled] = useState(true);
 
   const router = useRouter();
 
@@ -269,10 +271,10 @@ export default function BodyScanPage() {
     }
 
     // Start countdown if hand is raised
-    if (poseState.detectedGesture === "Raised_Hand" && poseState.status === "tracking") {
+    if (isAutoCaptureEnabled && poseState.detectedGesture === "Raised_Hand" && poseState.status === "tracking") {
       setCountdown(3);
     }
-  }, [poseState.detectedGesture, isCameraActive, hasCaptured, poseState.status, countdown]);
+  }, [poseState.detectedGesture, isCameraActive, hasCaptured, poseState.status, countdown, isAutoCaptureEnabled]);
 
   const handleSave = async () => {
     if (!analysisProfile || !capturedImage || !capturedMeasurements) return;
@@ -361,8 +363,8 @@ export default function BodyScanPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
           {/* Left Column: Image and Measurements */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="rounded-[var(--radius-card)] border border-border/60 bg-card p-4 shadow-sm">
-              <div className="relative w-full aspect-[3/4] max-h-[500px] rounded-[var(--radius-card)] overflow-hidden bg-muted flex items-center justify-center">
+            <div className="rounded-[var(--radius-card)] border border-border/60 bg-card p-4 shadow-sm flex flex-col items-center">
+              <div className="relative w-full max-w-md aspect-[3/4] sm:aspect-[4/5] max-h-[60vh] rounded-[var(--radius-card)] overflow-hidden bg-muted shadow-md">
                 <img
                   src={capturedImage}
                   alt="Captured scan"
@@ -370,34 +372,26 @@ export default function BodyScanPage() {
                   style={{ transform: "scaleX(-1)" }}
                 />
               </div>
-              <div className="mt-4 flex flex-col gap-3">
+              <div className="mt-5 w-full max-w-md flex flex-col gap-3">
                 <Button 
                   onClick={handleSave} 
                   disabled={isSaving || isAnalyzing || !analysisProfile}
-                  className="w-full rounded-[var(--radius-button)] h-12 shadow-sm font-semibold"
+                  className="w-full rounded-[var(--radius-button)] h-12 shadow-sm font-semibold text-base"
                 >
-                  <Save className="w-4 h-4 mr-2" />
+                  <Save className="w-5 h-5 mr-2" />
                   {isSaving ? "Menyimpan..." : "Simpan Analisis"}
                 </Button>
-                <div className="flex gap-3">
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      // Reset session and go back to preference step for a fresh scan
-                      resetSession();
-                      setHasCaptured(false);
-                    }}
-                    className="flex-1 rounded-[var(--radius-button)] h-11 border-border/60"
-                  >
-                    <RefreshCcw className="w-4 h-4 mr-2" />
-                    Scan Baru
-                  </Button>
-                  <Link href="/history" className="flex-1">
-                    <Button variant="secondary" className="w-full rounded-[var(--radius-button)] h-11">
-                      Lanjut <ArrowRight className="w-4 h-4 ml-1" />
-                    </Button>
-                  </Link>
-                </div>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    resetSession();
+                    setHasCaptured(false);
+                  }}
+                  className="w-full rounded-[var(--radius-button)] h-12 border-border/60 font-medium"
+                >
+                  <RefreshCcw className="w-4 h-4 mr-2" />
+                  Scan Baru
+                </Button>
               </div>
             </div>
 
@@ -488,7 +482,16 @@ export default function BodyScanPage() {
           </div>
         </div>
         
-        {/* Mode Selector Removed */}
+        <div className="flex items-center gap-3 bg-muted/50 p-2 px-3 rounded-full border border-border/50">
+          <Switch 
+            id="auto-capture" 
+            checked={isAutoCaptureEnabled} 
+            onCheckedChange={setIsAutoCaptureEnabled} 
+          />
+          <label htmlFor="auto-capture" className="text-sm font-medium cursor-pointer select-none text-foreground/80 pr-1">
+            Ambil Gambar Otomatis
+          </label>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

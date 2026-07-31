@@ -7,13 +7,12 @@ import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
   ScanFace,
-  Sparkles,
+  Diamond,
   Heart,
   User,
   Settings,
   LogOut,
   History,
-  Bot,
   Wand2,
   Store
 } from "lucide-react";
@@ -24,8 +23,7 @@ const navigation = [
   { name: "Scan Tubuh", href: "/body-scan", icon: ScanFace },
   { name: "Padu Padan", href: "/mix-match", icon: Wand2 },
   { name: "Riwayat", href: "/history", icon: History },
-  { name: "Asisten Fashion", href: "/fashion-assistant", icon: Bot },
-  { name: "Rekomendasi", href: "/recommendations", icon: Sparkles },
+  { name: "Rekomendasi", href: "/recommendations", icon: Diamond },
   { name: "Lemari Digital", href: "/collection", icon: Heart },
   { name: "Toko Belanja", href: "/marketplace", icon: Store },
   { name: "Profil", href: "/profile", icon: User },

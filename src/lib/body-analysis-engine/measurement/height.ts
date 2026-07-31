@@ -21,7 +21,7 @@ export function calculateAbsoluteHeight(
 ): AbsoluteMeasurement {
   // Use the side that is more visible, or average them. Here we'll calculate both and average.
   const calculateSideHeight = (
-    heelIdx: number, ankleIdx: number, kneeIdx: number, hipIdx: number, shoulderIdx: number, earIdx: number
+    heelIdx: number, ankleIdx: number, kneeIdx: number, hipIdx: number, shoulderIdx: number, earIdx: number, eyeIdx: number
   ) => {
     const lms = landmarks;
     const p1 = getPixelDistance(lms[heelIdx], lms[ankleIdx], canvasWidth, canvasHeight);
@@ -30,9 +30,19 @@ export function calculateAbsoluteHeight(
     const p4 = getPixelDistance(lms[hipIdx], lms[shoulderIdx], canvasWidth, canvasHeight);
     const p5 = getPixelDistance(lms[shoulderIdx], lms[earIdx], canvasWidth, canvasHeight);
     
-    // Add estimated distance from Ear to Top of Head (approx 1.5x the ear-to-eye distance, but here we just add a small ratio of the torso to account for skull top)
-    // A standard human head is ~1/8 of total height. Ear to top of head is ~ 1/3 of head.
-    const topOfHeadOffsetPx = p4 * 0.15; 
+    // Estimate distance from Ear to Top of Head.
+    // Instead of using a fixed ratio of the torso (which varies by body type),
+    // we use the distance from ear to eye to establish head scale.
+    // The top of the head is typically ~1.8x to 2.2x the ear-to-eye distance above the ear.
+    const earToEyeDist = getPixelDistance(lms[earIdx], lms[eyeIdx], canvasWidth, canvasHeight);
+    
+    // Fallback to torso ratio (approx 15% of hip-to-shoulder) if facial landmarks are anomalous
+    const fallbackOffset = p4 * 0.15;
+    
+    // Use facial proportion if it seems reasonable, otherwise fallback
+    const topOfHeadOffsetPx = (earToEyeDist > 0 && earToEyeDist < p4 * 0.5) 
+      ? earToEyeDist * 2.0 
+      : fallbackOffset;
 
     const totalPx = p1 + p2 + p3 + p4 + p5 + topOfHeadOffsetPx;
     
@@ -41,7 +51,8 @@ export function calculateAbsoluteHeight(
       getJointConfidence(lms[ankleIdx], lms[kneeIdx]),
       getJointConfidence(lms[kneeIdx], lms[hipIdx]),
       getJointConfidence(lms[hipIdx], lms[shoulderIdx]),
-      getJointConfidence(lms[shoulderIdx], lms[earIdx])
+      getJointConfidence(lms[shoulderIdx], lms[earIdx]),
+      getJointConfidence(lms[earIdx], lms[eyeIdx])
     ]);
     
     return { px: totalPx, conf };
@@ -49,12 +60,12 @@ export function calculateAbsoluteHeight(
 
   const left = calculateSideHeight(
     LANDMARK_INDICES.LEFT_HEEL, LANDMARK_INDICES.LEFT_ANKLE, LANDMARK_INDICES.LEFT_KNEE, 
-    LANDMARK_INDICES.LEFT_HIP, LANDMARK_INDICES.LEFT_SHOULDER, LANDMARK_INDICES.LEFT_EAR
+    LANDMARK_INDICES.LEFT_HIP, LANDMARK_INDICES.LEFT_SHOULDER, LANDMARK_INDICES.LEFT_EAR, LANDMARK_INDICES.LEFT_EYE
   );
   
   const right = calculateSideHeight(
     LANDMARK_INDICES.RIGHT_HEEL, LANDMARK_INDICES.RIGHT_ANKLE, LANDMARK_INDICES.RIGHT_KNEE, 
-    LANDMARK_INDICES.RIGHT_HIP, LANDMARK_INDICES.RIGHT_SHOULDER, LANDMARK_INDICES.RIGHT_EAR
+    LANDMARK_INDICES.RIGHT_HIP, LANDMARK_INDICES.RIGHT_SHOULDER, LANDMARK_INDICES.RIGHT_EAR, LANDMARK_INDICES.RIGHT_EYE
   );
 
   // Take the one with better confidence, or average if both are good.

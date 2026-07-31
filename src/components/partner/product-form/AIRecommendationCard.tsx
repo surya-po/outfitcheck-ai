@@ -1,7 +1,7 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import { Sparkles } from "lucide-react";
+import { Diamond } from "lucide-react";
 
 interface Props {
   formData: any; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -16,7 +16,7 @@ export function AIRecommendationCard({ formData, onMultiSelectChange, isProcessi
   return (
     <Card className="p-6 border-blue-100 dark:border-blue-900/30 bg-blue-50/30 dark:bg-blue-900/10 space-y-6">
       <div className="flex items-center gap-2 border-b border-blue-100 dark:border-blue-900/30 pb-2">
-        <Sparkles className="w-5 h-5 text-blue-500" />
+        <Diamond className="w-5 h-5 text-blue-500" />
         <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100">
           AI Recommendation Target
         </h3>

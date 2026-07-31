@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import { id as localeId } from "date-fns/locale";
 import Link from "next/link";
-import { ArrowLeft, Sparkles, Ruler, Palette, Shirt, Zap } from "lucide-react";
+import { ArrowLeft, Diamond, Ruler, Palette, Shirt, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 import { BodyShapeCard } from "@/components/body-scan/analysis-cards/BodyShapeCard";
@@ -95,7 +95,7 @@ export default async function HistoryDetailPage(props: { params: Promise<{ id: s
             style={{ transform: "scaleX(-1)" }}
           />
           <div className="absolute top-4 left-4 bg-background/80 backdrop-blur-md text-foreground text-xs px-3 py-1.5 rounded-[var(--radius-button)] font-bold border border-border/60 shadow-sm flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-primary" />
+            <Diamond className="w-3.5 h-3.5 text-primary" />
             Skor AI: {scan.aiScore ? Math.round(scan.aiScore) : "-"}
           </div>
         </div>

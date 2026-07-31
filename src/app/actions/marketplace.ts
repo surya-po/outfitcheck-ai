@@ -138,13 +138,21 @@ export async function getMarketplaceProducts(params: MarketplaceSearchParams) {
     orderBy = { savedOutfits: { _count: "desc" } };
   }
 
+  // Determine if we need to sort by best match (explicit or default view)
+  let userProfile: NormalizedProfile | null = null;
+  if (user) {
+    userProfile = await getUserNormalizedProfile(user.id);
+  }
+  const isBestMatchSort = (!params.sort || params.sort === "best_match") && !!userProfile;
+
   // 1. Database Query: Filtering & Pagination
+  // If best_match, we fetch more items (e.g. 500) to sort in JS, then paginate.
   const [products, totalItems] = await Promise.all([
     prisma.product.findMany({
       where,
-      orderBy: params.sort === "best_match" ? { createdAt: "desc" } : orderBy,
-      skip,
-      take: limit,
+      orderBy: isBestMatchSort ? { createdAt: "desc" } : orderBy,
+      skip: isBestMatchSort ? 0 : skip,
+      take: isBestMatchSort ? 500 : limit,
       include: {
         boutique: {
           select: { id: true, name: true, verified: true, status: true }
@@ -155,10 +163,6 @@ export async function getMarketplaceProducts(params: MarketplaceSearchParams) {
   ]);
 
   // 2. AI Compatibility Calculation (Only for displayed products)
-  let userProfile: NormalizedProfile | null = null;
-  if (user) {
-    userProfile = await getUserNormalizedProfile(user.id);
-  }
 
   const enrichedProducts: MarketplaceProduct[] = products.map((p) => {
     let aiData: any = {}; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -213,7 +217,7 @@ export async function getMarketplaceProducts(params: MarketplaceSearchParams) {
 
   // 3. Post-Pagination Sort for Best Match
   // Gender-matched products always appear higher when user profile is available
-  if (params.sort === "best_match" && userProfile) {
+  if (isBestMatchSort) {
     enrichedProducts.sort((a, b) => (b.compatibilityScore || 0) - (a.compatibilityScore || 0));
   } else if (!params.gender && userProfile?.gender) {
     // Auto-sort: gender-matched products first even without explicit sort param
@@ -226,8 +230,13 @@ export async function getMarketplaceProducts(params: MarketplaceSearchParams) {
     });
   }
 
+  // 4. Apply pagination in JS if we fetched a large batch for best_match
+  const finalProducts = isBestMatchSort 
+    ? enrichedProducts.slice(skip, skip + limit) 
+    : enrichedProducts;
+
   return {
-    products: enrichedProducts,
+    products: finalProducts,
     pagination: {
       totalItems,
       totalPages: Math.ceil(totalItems / limit),

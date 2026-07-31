@@ -61,6 +61,9 @@ export function calculateCompatibilityScore(
     } else if (product.recommendedBodyShapes.includes("All Shapes")) {
       score += MATCHING_WEIGHTS.BODY_SHAPE * 0.8;
       matchedAttributes.bodyShape = true;
+    } else {
+      score -= 20; // explicit mismatch penalty
+      matchedAttributes.bodyShape = false;
     }
   } else {
     score += MATCHING_WEIGHTS.BODY_SHAPE * 0.5;
@@ -71,6 +74,9 @@ export function calculateCompatibilityScore(
     if (product.recommendedSkinTones.some((t) => new RegExp(profile.skinTone, "i").test(t))) {
       score += MATCHING_WEIGHTS.SKIN_TONE;
       matchedAttributes.skinTone = true;
+    } else {
+      score -= 15; // explicit mismatch penalty
+      matchedAttributes.skinTone = false;
     }
   } else {
     score += MATCHING_WEIGHTS.SKIN_TONE * 0.5;
@@ -78,9 +84,13 @@ export function calculateCompatibilityScore(
 
   // 3. Style Match (15%)
   if (profile.styles.length > 0 && product.style) {
-    if (profile.styles.some((s) => new RegExp(s, "i").test(product.style))) {
+    if (profile.styles.some((s) => new RegExp(s, "i").test(product.style!))) {
       score += MATCHING_WEIGHTS.STYLE;
       matchedAttributes.style = true;
+    } else {
+      // Style mismatch penalty
+      score -= 30; // heavy penalty to push mismatched styles down
+      matchedAttributes.style = false;
     }
   } else {
     score += MATCHING_WEIGHTS.STYLE * 0.5;
@@ -91,6 +101,9 @@ export function calculateCompatibilityScore(
     if (profile.seasons.some((s) => new RegExp(s, "i").test(product.season!))) {
       score += MATCHING_WEIGHTS.SEASON;
       matchedAttributes.season = true;
+    } else {
+      score -= 10; // explicit mismatch penalty
+      matchedAttributes.season = false;
     }
   } else {
     score += MATCHING_WEIGHTS.SEASON * 0.5;
@@ -108,6 +121,9 @@ export function calculateCompatibilityScore(
     if (colorMatched) {
       score += MATCHING_WEIGHTS.COLOR;
       matchedAttributes.color = true;
+    } else {
+      score -= 15; // explicit mismatch penalty
+      matchedAttributes.color = false;
     }
   } else {
     score += MATCHING_WEIGHTS.COLOR * 0.5;
@@ -118,6 +134,9 @@ export function calculateCompatibilityScore(
     if (new RegExp(profile.fit, "i").test(product.fit)) {
       score += MATCHING_WEIGHTS.FIT;
       matchedAttributes.fit = true;
+    } else {
+      score -= 10; // explicit mismatch penalty
+      matchedAttributes.fit = false;
     }
   } else {
     score += MATCHING_WEIGHTS.FIT * 0.5;

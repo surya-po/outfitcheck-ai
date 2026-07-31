@@ -10,7 +10,7 @@ import {
   Heart,
   ShoppingBag,
   Store,
-  Sparkles,
+  Diamond,
   ChevronDown,
   ChevronUp,
   Check,
@@ -209,7 +209,7 @@ export function OutfitCard({ outfit, rank }: Props) {
 
       <div className="px-4 pt-4 pb-2">
         <div className="flex items-start gap-2 p-3 bg-primary/5 border border-primary/20 rounded-[var(--radius-card)]">
-          <Sparkles className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+          <Diamond className="w-4 h-4 text-primary shrink-0 mt-0.5" />
           <p className="text-xs text-muted-foreground leading-relaxed">
             {outfit.explanation}
           </p>
