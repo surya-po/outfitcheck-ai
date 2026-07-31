@@ -43,13 +43,13 @@ export function ForgotPasswordForm() {
         <h1 className="text-2xl font-bold text-foreground font-[family-name:var(--font-poppins)] tracking-tight">
           Forgot Password
         </h1>
-        <p className="text-sm text-[#8C6B78] mt-1 tracking-wide">
+        <p className="text-sm text-[#8C6B78] dark:text-zinc-400 mt-1 tracking-wide">
           Enter your email to receive a reset link
         </p>
       </div>
 
       {/* Form Card */}
-      <div className="bg-white/80 backdrop-blur-xl rounded-[var(--radius-card)] shadow-xl shadow-[#F7A8B8]/10 border border-[#F7A8B8]/20 p-8">
+      <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-[var(--radius-card)] shadow-xl shadow-[#F7A8B8]/10 border border-[#F7A8B8]/20 dark:border-zinc-800 p-8">
         {message && (
           <div className={`mb-4 p-3 rounded-[var(--radius-button)] border text-sm animate-fade-in-up ${
             message.type === "success" 
@@ -71,7 +71,7 @@ export function ForgotPasswordForm() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1.5">
-            <label htmlFor="email" className="text-sm font-medium text-[#4A2030]">
+            <label htmlFor="email" className="text-sm font-medium text-[#4A2030] dark:text-zinc-300">
               Email Address
             </label>
             <div className="relative group">
@@ -89,7 +89,7 @@ export function ForgotPasswordForm() {
                 required
                 disabled={isPending}
                 placeholder="you@example.com"
-                className="w-full pl-12 pr-4 py-3 rounded-[var(--radius-button)] bg-background border border-border text-foreground placeholder:text-muted-foreground text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:bg-white hover:border-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full pl-12 pr-4 py-3 rounded-[var(--radius-button)] bg-background border border-border text-foreground placeholder:text-muted-foreground text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:bg-white dark:focus:bg-zinc-950 hover:border-primary disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
           </div>

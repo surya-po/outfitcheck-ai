@@ -79,17 +79,17 @@ export function LoginForm() {
             {" "}AI
           </span>
         </h1>
-        <p className="text-sm text-[#8C6B78] mt-1 tracking-wide">
+        <p className="text-sm text-[#8C6B78] dark:text-zinc-400 mt-1 tracking-wide">
           AI Personal Fashion Assistant
         </p>
       </div>
 
       {/* Card */}
-      <div className="bg-white/80 backdrop-blur-xl rounded-[var(--radius-card)] shadow-xl shadow-[#F7A8B8]/10 border border-[#F7A8B8]/20 p-8">
+      <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl rounded-[var(--radius-card)] shadow-xl shadow-[#F7A8B8]/10 border border-[#F7A8B8]/20 dark:border-zinc-800 p-8">
         <h2 className="text-xl font-semibold text-foreground font-[family-name:var(--font-poppins)] mb-1">
           Welcome back
         </h2>
-        <p className="text-sm text-[#8C6B78] mb-6">
+        <p className="text-sm text-[#8C6B78] dark:text-zinc-400 mb-6">
           Sign in to continue your style journey
         </p>
 
@@ -111,7 +111,7 @@ export function LoginForm() {
           
           {/* Email */}
           <div className="space-y-1.5">
-            <label htmlFor="email" className="text-sm font-medium text-[#4A2030]">
+            <label htmlFor="email" className="text-sm font-medium text-[#4A2030] dark:text-zinc-300">
               Email
             </label>
             <div className="relative group">
@@ -130,14 +130,14 @@ export function LoginForm() {
                 required
                 disabled={isLoading}
                 placeholder="you@example.com"
-                className="w-full pl-12 pr-4 py-3 rounded-[var(--radius-button)] bg-background border border-border text-foreground placeholder:text-muted-foreground text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:bg-white hover:border-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full pl-12 pr-4 py-3 rounded-[var(--radius-button)] bg-background border border-border text-foreground placeholder:text-muted-foreground text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:bg-white dark:focus:bg-zinc-950 hover:border-primary disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
           </div>
 
           {/* Password */}
           <div className="space-y-1.5">
-            <label htmlFor="password" className="text-sm font-medium text-[#4A2030]">
+            <label htmlFor="password" className="text-sm font-medium text-[#4A2030] dark:text-zinc-300">
               Password
             </label>
             <div className="relative group">
@@ -154,7 +154,7 @@ export function LoginForm() {
                 required
                 disabled={isLoading}
                 placeholder="••••••••"
-                className="w-full pl-12 pr-4 py-3 rounded-[var(--radius-button)] bg-background border border-border text-foreground placeholder:text-muted-foreground text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:bg-white hover:border-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full pl-12 pr-4 py-3 rounded-[var(--radius-button)] bg-background border border-border text-foreground placeholder:text-muted-foreground text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:bg-white dark:focus:bg-zinc-950 hover:border-primary disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
           </div>
@@ -193,7 +193,7 @@ export function LoginForm() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <span className="text-sm text-[#6B3A4A] select-none">Remember me</span>
+              <span className="text-sm text-[#6B3A4A] dark:text-zinc-300 select-none">Remember me</span>
             </label>
             <Link
               href="/forgot-password"
@@ -228,7 +228,7 @@ export function LoginForm() {
             <div className="w-full border-t border-border" />
           </div>
           <div className="relative flex justify-center text-xs">
-            <span className="px-3 bg-white/80 text-[#8C6B78] tracking-wider uppercase">
+            <span className="px-3 bg-white/80 dark:bg-zinc-900/80 text-[#8C6B78] dark:text-zinc-400 tracking-wider uppercase">
               or continue with
             </span>
           </div>
@@ -238,7 +238,7 @@ export function LoginForm() {
           type="button"
           onClick={handleGoogleLogin}
           disabled={isLoading}
-          className="w-full py-3 px-4 rounded-[var(--radius-button)] bg-white border border-border text-foreground font-medium text-sm transition-all duration-300 hover:border-primary hover:shadow-sm hover:shadow-[#F7A8B8]/10 hover:scale-[1.01] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-3 relative overflow-hidden"
+          className="w-full py-3 px-4 rounded-[var(--radius-button)] bg-white dark:bg-zinc-800 border border-border text-foreground font-medium text-sm transition-all duration-300 hover:border-primary hover:shadow-sm hover:shadow-[#F7A8B8]/10 hover:scale-[1.01] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-3 relative overflow-hidden"
         >
           {isGooglePending ? (
             <div className="w-5 h-5 border-2 border-primary/30 border-t-[#D86A84] rounded-full animate-spin" />
@@ -267,7 +267,7 @@ export function LoginForm() {
       </div>
 
       {/* Register Link */}
-      <p className="text-center mt-6 text-sm text-[#8C6B78]">
+      <p className="text-center mt-6 text-sm text-[#8C6B78] dark:text-zinc-400">
         Don&apos;t have an account?{" "}
         <Link
           href="/register"
@@ -278,12 +278,12 @@ export function LoginForm() {
       </p>
 
       {/* Partner Login Link */}
-      <div className="mt-4 pt-4 border-t border-[#F5D5E5]/60">
-        <p className="text-center text-xs text-[#8C6B78]">
+      <div className="mt-4 pt-4 border-t border-[#F5D5E5]/60 dark:border-zinc-800">
+        <p className="text-center text-xs text-[#8C6B78] dark:text-zinc-400">
           Admin Butik Partner?{" "}
           <Link
             href="/partner-login"
-            className="text-[#8C6B78] hover:text-[#C4506C] font-medium transition-colors underline underline-offset-2"
+            className="text-[#8C6B78] dark:text-zinc-400 hover:text-[#C4506C] dark:hover:text-[#D86A84] font-medium transition-colors underline underline-offset-2"
           >
             Masuk ke Partner Portal →
           </Link>
