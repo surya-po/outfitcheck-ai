@@ -6,7 +6,7 @@ import { headers } from "next/headers";
 export async function resetPasswordForEmail(email: string) {
   const supabase = await createClient();
   const headersList = await headers();
-  const host = headersList.get("x-forwarded-host") || headersList.get("host") || "localhost:3000";
+  const host = headersList.get("x-forwarded-host") || headersList.get("host") || "outfitcheck-ai.vercel.app";
   const proto = headersList.get("x-forwarded-proto") || "http";
   const origin = `${proto}://${host}`;
 

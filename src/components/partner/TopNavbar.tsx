@@ -114,10 +114,6 @@ export function PartnerTopNavbar({ user }: PartnerTopNavbarProps) {
                 <Link href="/partner/settings">Pengaturan</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator className="bg-border/60" />
-              <DropdownMenuItem asChild className="rounded-[var(--radius-button)] cursor-pointer focus:bg-primary/5 focus:text-primary">
-                <Link href="/dashboard">Kembali ke App Utama</Link>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator className="bg-border/60" />
               <DropdownMenuItem asChild className="rounded-[var(--radius-button)] cursor-pointer focus:bg-destructive/10 focus:text-destructive">
                 <form action={signOut} className="w-full">
                   <button type="submit" className="w-full text-left">

@@ -65,7 +65,7 @@ export function estimateClothingSize(
   const shirtSize = topSize;
   let shirtAlt: string | undefined;
   // If waist is unusually wide compared to shoulders (e.g. Oval shape), size up the shirt
-  if (shapeResult.shape === "Oval" || shapeResult.shape === "Triangle") {
+  if (shapeResult.primaryShape === "Oval" || shapeResult.primaryShape === "Triangle") {
     // Bump up one size conceptually by adjusting the string if needed.
     // For simplicity, we just recommend a looser fit alternative.
     shirtAlt = "Naik 1 ukuran (agar kancing tidak ketat di perut)";
@@ -105,16 +105,16 @@ export function estimateClothingSize(
     if (w > 44) bottomAlt = "38 (jika menyukai Relaxed Fit)";
   }
 
-  if (shapeResult.shape === "Triangle" || shapeResult.shape === "Hourglass") {
+  if (shapeResult.primaryShape === "Triangle" || shapeResult.primaryShape === "Hourglass") {
     bottomAlt = "Naik 1 ukuran (untuk menyesuaikan lebar pinggul)";
   }
 
   // 5. Fit Recommendation
   let recommendedFit: ClothingFitType = "Regular Fit";
   const ratio = s / (h || 1);
-  if (ratio > 1.2 || shapeResult.shape === "Inverted Triangle") {
+  if (ratio > 1.2 || shapeResult.primaryShape === "Inverted Triangle") {
     recommendedFit = "Slim Fit";
-  } else if (ratio < 0.9 || shapeResult.shape === "Oval" || shapeResult.shape === "Triangle") {
+  } else if (ratio < 0.9 || shapeResult.primaryShape === "Oval" || shapeResult.primaryShape === "Triangle") {
     recommendedFit = "Relaxed Fit";
   }
 

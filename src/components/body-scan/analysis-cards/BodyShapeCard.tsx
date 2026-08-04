@@ -12,7 +12,7 @@ const shapeMap: Record<string, string> = {
 };
 
 export function BodyShapeCard({ result }: { result: BodyShapeResult }) {
-  const localizedShape = shapeMap[result.shape] || result.shape;
+  const localizedShape = shapeMap[result.primaryShape] || result.primaryShape;
 
   return (
     <AnalysisCardBase title="Bentuk Tubuh" icon={Activity}>

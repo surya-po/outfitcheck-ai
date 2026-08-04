@@ -445,6 +445,8 @@ export default function BodyScanPage() {
                 products={matchedProducts} 
                 savedProductIds={savedProductIds}
                 onToggleFavorite={handleToggleFavorite}
+                analysisProfile={analysisProfile}
+                userStylePreference={userStylePreference}
               />
             )}
 

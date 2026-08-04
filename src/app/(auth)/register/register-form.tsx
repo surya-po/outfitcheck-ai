@@ -233,7 +233,7 @@ export function RegisterForm() {
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-[var(--radius-card)] shadow-sm shadow-[#F7A8B8]/30 mb-4 animate-float overflow-hidden bg-background">
           <Image 
-            src="/logo.jpg" 
+            src="/logo.jpeg" 
             alt="Fitcheck Logo" 
             width={64} 
             height={64} 

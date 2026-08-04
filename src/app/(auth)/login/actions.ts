@@ -49,7 +49,7 @@ export async function signInWithGoogle() {
   const supabase = await createClient();
   const headersList = await headers();
   // Use x-forwarded-host for Vercel/proxy environments, fallback to origin header
-  const host = headersList.get("x-forwarded-host") || headersList.get("host") || "localhost:3000";
+  const host = headersList.get("x-forwarded-host") || headersList.get("host") || "outfitcheck-ai.vercel.app";
   const proto = headersList.get("x-forwarded-proto") || "http";
   const origin = `${proto}://${host}`;
 

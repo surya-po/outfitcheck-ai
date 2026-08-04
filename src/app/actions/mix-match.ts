@@ -95,6 +95,7 @@ export async function generateOutfitCombinations(
       color: false,
       fit: false,
       gender: false,
+      persona: false,
     },
     stock: p.stock || 0,
     updatedAt: p.updatedAt,

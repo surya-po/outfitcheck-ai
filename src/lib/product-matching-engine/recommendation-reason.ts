@@ -1,49 +1,66 @@
 import { NormalizedProfile, MatchedAttributes, ConfidenceLevel } from "./types";
 
+/**
+ * Generates human-readable, persona-aware recommendation reasons.
+ * Explanations are friendly and specific — they tell the user exactly
+ * WHY this product was recommended for them.
+ */
 export function generateRecommendationReason(
-  profile: NormalizedProfile, 
-  matched: MatchedAttributes
+  profile: NormalizedProfile,
+  matched: MatchedAttributes,
+  productStyle?: string,
+  productColors?: string[]
 ): string {
   const reasons: string[] = [];
-  
-  if (matched.gender && profile.gender) {
-    reasons.push(`✓ Produk ini sesuai untuk ${profile.gender === "Female" ? "wanita" : profile.gender === "Male" ? "pria" : "Anda"}`);
+
+  // ── Persona match — show first (most important) ──
+  if (matched.persona && profile.personaStyles && profile.personaStyles.length > 0) {
+    const personaLabel = profile.personaStyles.slice(0, 2).join(" & ");
+    reasons.push(`✓ Sesuai dengan persona ${personaLabel} yang kamu pilih`);
   }
 
-  if (matched.bodyShape) {
-    reasons.push(`✓ Sangat cocok untuk bentuk tubuh ${profile.bodyShape || "Anda"}`);
-  }
-  
-  if (matched.skinTone) {
-    reasons.push(`✓ Pilihan warna sesuai dengan skin tone ${profile.skinTone || "Anda"}`);
+  // ── Occasion match ──
+  if (profile.preferredOccasion && matched.persona) {
+    reasons.push(`✓ Cocok untuk acara ${profile.preferredOccasion}`);
   }
 
-  if (matched.style && profile.styles.length > 0) {
-    reasons.push(`✓ Sesuai dengan preferensi gaya Anda`);
+  // ── Body shape ──
+  if (matched.bodyShape && profile.bodyShape) {
+    reasons.push(`✓ Cocok dengan bentuk tubuh ${profile.bodyShape}`);
   }
 
-  if (matched.season && profile.seasons.length > 0) {
-    reasons.push(`✓ Sempurna untuk palet warna ${profile.seasons[0]}`);
+  // ── Skin tone / color ──
+  if (matched.skinTone && profile.skinTone) {
+    reasons.push(`✓ Warna sesuai dengan skin tone ${profile.skinTone}`);
   }
 
-  if (matched.color && profile.colors.length > 0) {
-    reasons.push(`✓ Menggunakan warna yang direkomendasikan berdasarkan analisis Anda`);
+  // ── Specific product color mentioned ──
+  if (matched.color && productColors && productColors.length > 0) {
+    const topColor = productColors[0];
+    reasons.push(`✓ Warna ${topColor} direkomendasikan oleh AI berdasarkan analisis warna kulit kamu`);
   }
 
+  // ── Fit / proportion ──
   if (matched.fit && profile.fit) {
-    reasons.push(`✓ Potongan ${profile.fit} pas dengan proporsi tubuh Anda`);
+    reasons.push(`✓ Potongan ${profile.fit} membantu menyeimbangkan proporsi tubuh kamu`);
+  }
+
+  // ── Gender appropriate ──
+  if (matched.gender && profile.gender && profile.gender !== "Unknown") {
+    const genderLabel = profile.gender === "Female" ? "wanita" : "pria";
+    reasons.push(`✓ Dirancang untuk ${genderLabel}`);
   }
 
   if (reasons.length === 0) {
-    return "Produk ini merupakan alternatif yang baik untuk preferensi Anda secara umum.";
+    return "Produk ini merupakan alternatif yang baik untuk melengkapi wardrobe kamu.";
   }
 
-  return "Produk ini direkomendasikan karena:\n" + reasons.join("\n");
+  return reasons.join("\n");
 }
 
 export function determineConfidenceLevel(score: number): ConfidenceLevel {
-  if (score >= 95) return "Very High";
-  if (score >= 85) return "High";
-  if (score >= 70) return "Medium";
+  if (score >= 90) return "Very High";
+  if (score >= 75) return "High";
+  if (score >= 55) return "Medium";
   return "Low";
 }

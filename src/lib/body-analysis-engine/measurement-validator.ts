@@ -22,11 +22,11 @@ export function validateMeasurements(result: BodyMeasurementResult): Measurement
   }
 
   // 2. Hip cannot be zero
-  if (hipWidth.value <= 0) {
+  if ((hipWidth.value ?? 0) <= 0) {
     return { isValid: false, reason: "Hip measurement cannot be zero or negative." };
   }
   
-  if (shoulderWidth.value <= 0 || waistWidth.value <= 0) {
+  if ((shoulderWidth.value ?? 0) <= 0 || (waistWidth.value ?? 0) <= 0) {
     return { isValid: false, reason: "Measurements cannot be zero or negative." };
   }
 
@@ -38,7 +38,7 @@ export function validateMeasurements(result: BodyMeasurementResult): Measurement
   }
 
   // 4. Basic sanity check (e.g., shoulder > waist) - as requested by user spec
-  if (shoulderWidth.value <= waistWidth.value) {
+  if ((shoulderWidth.value ?? 0) <= (waistWidth.value ?? 0)) {
      return { isValid: false, reason: "Waist is larger than or equal to shoulder. This might be a measurement error." };
   }
 

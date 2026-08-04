@@ -64,88 +64,101 @@
 }
 
 :root {
-  --background: #FFF9FB;
-  --foreground: #222222;
+  --background: #FFFDFD;
+  --foreground: #6B7280;
   --card: #FFFFFF;
-  --card-foreground: #222222;
+  --card-foreground: #6B7280;
   --popover: #FFFFFF;
-  --popover-foreground: #222222;
-  --primary: #F26B8A;
+  --popover-foreground: #6B7280;
+  --primary: #EA5C87;
   --primary-foreground: #FFFFFF;
-  --secondary: #FFB8C9;
-  --secondary-foreground: #222222;
-  --muted: #FFDCE5;
-  --muted-foreground: #666666;
-  --accent: #FFDCE5;
-  --accent-foreground: #222222;
+  --secondary: #F7A8B8;
+  --secondary-foreground: #18181B;
+  --muted: #F7F7F7;
+  --muted-foreground: #6B7280;
+  --accent: #8F5CF7;
+  --accent-foreground: #FFFFFF;
   --destructive: #E24B4B;
   --destructive-foreground: #FFFFFF;
-  --border: #F2D8E1;
-  --input: #F2D8E1;
-  --ring: #F26B8A;
+  --border: #ECECEC;
+  --input: #ECECEC;
+  --ring: #EA5C87;
   --success: #2E9E68;
   --warning: #F4A524;
   
-  --chart-1: #F26B8A;
-  --chart-2: #FFB8C9;
-  --chart-3: #FFDCE5;
-  --chart-4: #E14D72;
+  --chart-1: #EA5C87;
+  --chart-2: #F7A8B8;
+  --chart-3: #8F5CF7;
+  --chart-4: #F2D8E1;
   --chart-5: #E24B4B;
   
   --radius: 1rem;
   --radius-button: 16px;
   --radius-card: 24px;
   --radius-input: 16px;
-  --radius-modal: 28px;
-  --radius-image: 20px;
+  --radius-modal: 24px;
+  --radius-image: 16px;
 
   --sidebar: #FFFFFF;
-  --sidebar-foreground: #222222;
-  --sidebar-primary: #F26B8A;
+  --sidebar-foreground: #6B7280;
+  --sidebar-primary: #EA5C87;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #FFF9FB;
-  --sidebar-accent-foreground: #F26B8A;
-  --sidebar-border: #F2D8E1;
-  --sidebar-ring: #F26B8A;
+  --sidebar-accent: #F7F7F7;
+  --sidebar-accent-foreground: #EA5C87;
+  --sidebar-border: #ECECEC;
+  --sidebar-ring: #EA5C87;
 }
 
 .dark {
-  --background: #09090b;
-  --foreground: #fafafa;
-  --card: #18181b;
-  --card-foreground: #fafafa;
-  --popover: #18181b;
-  --popover-foreground: #fafafa;
-  --primary: #F26B8A;
-  --primary-foreground: #FFFFFF;
-  --secondary: #27272a;
-  --secondary-foreground: #fafafa;
-  --muted: #27272a;
-  --muted-foreground: #a1a1aa;
-  --accent: #27272a;
-  --accent-foreground: #fafafa;
-  --destructive: #7f1d1d;
-  --destructive-foreground: #f87171;
-  --border: #27272a;
-  --input: #27272a;
-  --ring: #F26B8A;
-  --success: #2E9E68;
-  --warning: #F4A524;
+  /* ── Base ────────────────────────────────────────────── */
+  --background: #0F0F11;        /* Warm near-black, not cold pure black */
+  --foreground: #F2F2F5;        /* Bright white-ish for primary text */
+  --card: #1C1C22;              /* Clearly lifted above background */
+  --card-foreground: #F2F2F5;
+  --popover: #1C1C22;
+  --popover-foreground: #F2F2F5;
 
-  --chart-1: #F26B8A;
-  --chart-2: #FFB8C9;
-  --chart-3: #FFDCE5;
+  /* ── Brand ───────────────────────────────────────────── */
+  --primary: #F0608E;           /* Slightly brighter pink for dark bg */
+  --primary-foreground: #FFFFFF;
+
+  /* ── Surface variants ────────────────────────────────── */
+  --secondary: #26262F;         /* Hover/active surface */
+  --secondary-foreground: #F2F2F5;
+  --muted: #202028;             /* Subtle surface, e.g. disabled areas */
+  --muted-foreground: #A8A8B8;  /* Noticeably lighter than before */
+
+  /* ── Accent ──────────────────────────────────────────── */
+  --accent: #26262F;
+  --accent-foreground: #F2F2F5;
+
+  /* ── Semantic ────────────────────────────────────────── */
+  --destructive: #C0392B;
+  --destructive-foreground: #FCA5A5;
+  --success: #34C77B;
+  --warning: #F5A623;
+
+  /* ── Borders & inputs ────────────────────────────────── */
+  --border: #2E2E3A;            /* Much more visible border */
+  --input: #26262F;
+  --ring: #F0608E;
+
+  /* ── Charts ──────────────────────────────────────────── */
+  --chart-1: #F0608E;
+  --chart-2: #F7A8B8;
+  --chart-3: #A78BFA;
   --chart-4: #E14D72;
-  --chart-5: #E24B4B;
-  
-  --sidebar: #09090b;
-  --sidebar-foreground: #fafafa;
-  --sidebar-primary: #F26B8A;
+  --chart-5: #F87171;
+
+  /* ── Sidebar ─────────────────────────────────────────── */
+  --sidebar: #17171D;           /* Slightly different from bg — clear separation */
+  --sidebar-foreground: #D8D8E8;
+  --sidebar-primary: #F0608E;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #18181b;
-  --sidebar-accent-foreground: #fafafa;
-  --sidebar-border: #27272a;
-  --sidebar-ring: #F26B8A;
+  --sidebar-accent: #26262F;
+  --sidebar-accent-foreground: #F2F2F5;
+  --sidebar-border: #2E2E3A;
+  --sidebar-ring: #F0608E;
 }
 
 @layer base {
@@ -154,9 +167,28 @@
   }
   body {
     @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
   html {
     @apply font-sans;
+    /* Prevent layout shifts from scrollbar appearing */
+    scrollbar-gutter: stable;
+  }
+
+  /* Ensure images and next/image don't cause layout shift */
+  img {
+    font-style: italic;
+    max-width: 100%;
+  }
+
+  /* Respect user's motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
@@ -233,4 +265,70 @@
 
 .animate-scan-line {
   animation: scanLine 3s ease-in-out infinite;
+}
+
+/* ============================================================
+   Dark Mode — Global Color & Border Overrides
+   Fixes hardcoded Tailwind gray classes that ignore dark mode.
+   Applied as .dark overrides so light mode is unaffected.
+   ============================================================ */
+.dark {
+  /* ── Text overrides ───────────────────────────────────── */
+  /* gray-900 / gray-800 used for headings — make bright */
+  .text-gray-900, .text-gray-800 {
+    color: #F2F2F5 !important;
+  }
+  /* gray-700 used for body text — keep readable */
+  .text-gray-700 {
+    color: #D0D0DE !important;
+  }
+  /* gray-600 / gray-500 / gray-400 used for secondary text */
+  .text-gray-600, .text-gray-500 {
+    color: #A8A8B8 !important;
+  }
+  .text-gray-400 {
+    color: #8A8A9A !important;
+  }
+  /* gray-300 / gray-200 for placeholder / dim text */
+  .text-gray-300, .text-gray-200 {
+    color: #72728A !important;
+  }
+  /* gray-100 — barely visible, make light */
+  .text-gray-100 {
+    color: #E8E8F0 !important;
+  }
+
+  /* ── White background elements ───────────────────────── */
+  /* Cards, modals, panels with bg-white → lift to card surface */
+  .bg-white {
+    background-color: #1C1C22 !important;
+  }
+  /* gray-50 / gray-100 → subtle surface above bg */
+  .bg-gray-50, .bg-gray-100 {
+    background-color: #26262F !important;
+  }
+  /* gray-200 → slightly raised surface */
+  .bg-gray-200 {
+    background-color: #2E2E3A !important;
+  }
+
+  /* ── Borders ─────────────────────────────────────────── */
+  /* gray-100 / gray-200 borders → visible in dark */
+  .border-gray-100, .border-gray-200, .border-gray-50 {
+    border-color: #2E2E3A !important;
+  }
+  /* divide utils */
+  .divide-gray-100 > * + *, .divide-gray-200 > * + * {
+    border-color: #2E2E3A !important;
+  }
+
+  /* ── White frames on all card-like surfaces ──────────── */
+  /* Apply a soft white border ring to every card, rounded box */
+  .rounded-xl, .rounded-2xl, .rounded-3xl, [class*="rounded-[var(--radius-card)]"] {
+    outline: 1px solid rgba(255, 255, 255, 0.07);
+  }
+  /* Shadcn Card already uses --border, but bump it even brighter */
+  [class*="border-border"] {
+    border-color: #3A3A4A !important;
+  }
 }

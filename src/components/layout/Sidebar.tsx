@@ -39,10 +39,11 @@ export function Sidebar() {
       <div className="flex h-16 shrink-0 items-center px-6 border-b border-border">
         <Link href="/dashboard" className="flex items-center gap-2 group">
           <Image 
-            src="/logo.jpg" 
+            src="/logo.jpeg" 
             alt="Fitcheck Logo" 
             width={32} 
             height={32} 
+            priority
             className="rounded-[var(--radius-button)] shadow-sm transition-transform group-hover:scale-105" 
           />
           <span className="font-heading font-bold text-xl tracking-tight text-foreground">
@@ -60,6 +61,7 @@ export function Sidebar() {
               <Link
                 key={item.name}
                 href={item.href}
+                prefetch={true}
                 className={cn(
                   "group flex items-center gap-3 rounded-[var(--radius-button)] px-3 py-2.5 text-sm font-medium transition-all duration-200",
                   isActive

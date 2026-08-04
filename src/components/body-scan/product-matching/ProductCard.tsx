@@ -13,6 +13,13 @@ export interface ProductCardProps {
 }
 
 export function ProductCard({ product, onViewDetail, isFavorite = false, onToggleFavorite, isBestMatch = false }: ProductCardProps) {
+  const CONFIDENCE_LABEL_ID: Record<string, string> = {
+    "Very High": "Sangat Tinggi",
+    "High": "Tinggi",
+    "Medium": "Sedang",
+    "Low": "Rendah",
+  };
+
   let confidenceColor = "bg-gray-500";
   if (product.confidenceLevel === "Very High") confidenceColor = "bg-emerald-500";
   else if (product.confidenceLevel === "High") confidenceColor = "bg-blue-500";
@@ -26,7 +33,7 @@ export function ProductCard({ product, onViewDetail, isFavorite = false, onToggl
       </Badge>
       {product.confidenceLevel && (
         <Badge className={`${confidenceColor} text-white border-none shadow-sm font-bold px-2 py-0.5 text-[9px]`}>
-          {product.confidenceLevel}
+          {CONFIDENCE_LABEL_ID[product.confidenceLevel ?? ""] ?? product.confidenceLevel}
         </Badge>
       )}
     </div>
@@ -34,7 +41,7 @@ export function ProductCard({ product, onViewDetail, isFavorite = false, onToggl
 
   const overlays = isBestMatch ? (
     <Badge className="bg-gradient-to-r from-primary to-[#E14D72] hover:from-primary hover:to-[#E14D72] text-primary-foreground border-none shadow-sm font-bold px-2 py-1 text-[10px] flex items-center gap-1">
-      <CheckCircle className="w-3 h-3" /> Best Match
+      <CheckCircle className="w-3 h-3" /> Paling Cocok
     </Badge>
   ) : undefined;
 

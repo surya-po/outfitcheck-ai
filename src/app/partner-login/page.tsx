@@ -3,6 +3,7 @@
 import { useState, useTransition, useEffect, Suspense } from "react";
 import { signInAsPartner, signInWithGooglePartner } from "@/app/(partner)/partner/login/actions";
 import Link from "next/link";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { Store, Eye, EyeOff, AlertCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -73,8 +74,14 @@ function PartnerLoginForm() {
       <div className="relative w-full max-w-[440px]">
         {/* Brand Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-card border border-border rounded-[var(--radius-card)] shadow-sm mx-auto mb-4">
-            <Store className="w-8 h-8 text-primary" />
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-[var(--radius-card)] shadow-sm shadow-[#F7A8B8]/30 mx-auto mb-4 animate-float overflow-hidden bg-background">
+            <Image 
+              src="/logo.jpeg" 
+              alt="Fitcheck Logo" 
+              width={64} 
+              height={64} 
+              className="w-full h-full object-cover"
+            />
           </div>
           <h1 className="text-2xl font-bold text-foreground tracking-tight">Partner Portal</h1>
           <p className="text-muted-foreground text-sm mt-1">Masuk ke dasbor manajemen butik Anda</p>

@@ -5,12 +5,17 @@ import { NormalizedProfile } from "./types";
  * Normalization layer: Translates AI output text into standard formats
  * that can be easily matched with Boutique products.
  *
- * This also propagates gender and fashionPersona from the Fashion Profile
- * (Single Source of Truth) so all downstream matching is gender-aware.
+ * Priority:
+ * 1. userStylePreference (user-selected persona) — HIGHEST PRIORITY
+ * 2. AI-detected fashionPersona
+ * 3. Body shape, skin tone, etc.
+ *
+ * This ensures persona-aware matching: two users with identical bodies
+ * but different personas will get completely different product sets.
  */
 export function normalizeProfile(profile: FashionAnalysisProfile): NormalizedProfile {
   // ── Body Shape ──
-  const rawShape = profile.shape?.shape || "";
+  const rawShape = profile.shape?.primaryShape || "";
   let normShape = "";
   if (/rectangle/i.test(rawShape)) normShape = "Rectangle";
   else if (/hourglass/i.test(rawShape)) normShape = "Hourglass";
@@ -33,7 +38,7 @@ export function normalizeProfile(profile: FashionAnalysisProfile): NormalizedPro
   else if (/deep|gelap/i.test(rawTone)) normTone = "Deep";
   else normTone = rawTone;
 
-  // ── Styles ──
+  // ── AI-Detected Styles (lower priority than user persona) ──
   const rawPrimaryStyle = profile.recommendation?.primaryStyle || "";
   const rawAltStyles = profile.recommendation?.alternativeStyles || [];
   const stylesSet = new Set<string>();
@@ -53,10 +58,53 @@ export function normalizeProfile(profile: FashionAnalysisProfile): NormalizedPro
     else stylesSet.add(style);
   });
 
-  // Also add fashionPersona to styles for better matching
-  const persona = profile.fashionPersona || profile.recommendation?.fashionPersona;
-  if (persona && persona !== "Unknown") {
-    stylesSet.add(persona);
+  // Also add AI-detected fashionPersona to styles
+  const aiPersona = profile.fashionPersona || profile.recommendation?.fashionPersona;
+  if (aiPersona && aiPersona !== "Unknown") {
+    stylesSet.add(aiPersona);
+  }
+
+  // ── USER-SELECTED PERSONA (Highest Priority) ──
+  // Explicitly chosen by user BEFORE body scan — PRIMARY matching filter.
+  const userPref = profile.userStylePreference;
+  const rawPersonaStyles = userPref?.preferredStyles ?? [];
+  const preferredOccasion = userPref?.preferredOccasion;
+
+  // Normalize persona strings to match values in product database
+  const personaStyles: string[] = rawPersonaStyles.map((s) => {
+    const lower = s.toLowerCase();
+    if (/formal/i.test(lower)) return "Formal";
+    if (/casual/i.test(lower) && /smart/i.test(lower)) return "Smart Casual";
+    if (/business/i.test(lower)) return "Business Casual";
+    if (/casual/i.test(lower)) return "Casual";
+    if (/streetwear/i.test(lower)) return "Streetwear";
+    if (/minimal/i.test(lower)) return "Minimalist";
+    if (/korean/i.test(lower)) return "Korean Style";
+    if (/vintage/i.test(lower)) return "Vintage";
+    if (/sporty/i.test(lower)) return "Sporty";
+    if (/party/i.test(lower)) return "Party";
+    if (/elegant/i.test(lower)) return "Elegant";
+    if (/chic/i.test(lower)) return "Chic";
+    if (/luxury/i.test(lower)) return "Luxury";
+    if (/feminine/i.test(lower)) return "Feminine";
+    if (/modest/i.test(lower)) return "Modest";
+    if (/mono/i.test(lower)) return "Monochrome";
+    if (/old money/i.test(lower)) return "Old Money";
+    return s;
+  });
+
+  // Occasion-to-style mapping: occasion hints push additional styles
+  if (preferredOccasion) {
+    const occ = preferredOccasion.toLowerCase();
+    if (/office|meeting/i.test(occ) && !personaStyles.includes("Formal") && !personaStyles.includes("Business Casual")) {
+      personaStyles.push("Business Casual");
+    }
+    if (/party|wedding/i.test(occ) && !personaStyles.includes("Party")) {
+      personaStyles.push("Party");
+    }
+    if (/gym|sport/i.test(occ) && !personaStyles.includes("Sporty")) {
+      personaStyles.push("Sporty");
+    }
   }
 
   // ── Seasons ──
@@ -80,7 +128,6 @@ export function normalizeProfile(profile: FashionAnalysisProfile): NormalizedPro
   // ── Colors ──
   const rawColors = profile.colorAnalysis?.recommendedColors || [];
   const recColors = profile.recommendation?.recommendedColors || [];
-
   const colorsSet = new Set<string>();
   [...rawColors, ...recColors].forEach((c) => {
     if (c && c.name) {
@@ -101,14 +148,14 @@ export function normalizeProfile(profile: FashionAnalysisProfile): NormalizedPro
     }
   });
 
-  // ── Gender ── (from Fashion Profile — Single Source of Truth)
+  // ── Gender ──
   const rawGender = profile.gender || profile.colorAnalysis?.gender;
   let normGender: string | undefined;
   if (rawGender === "Female") normGender = "Female";
   else if (rawGender === "Male") normGender = "Male";
-  else normGender = undefined; // Unknown — don't filter
+  else normGender = undefined;
 
-  // ── Fashion Persona ──
+  // ── Fashion Persona (AI-detected) ──
   const normPersona =
     profile.fashionPersona !== "Unknown" ? profile.fashionPersona : undefined;
 
@@ -121,5 +168,7 @@ export function normalizeProfile(profile: FashionAnalysisProfile): NormalizedPro
     fit: normFit,
     gender: normGender,
     fashionPersona: normPersona,
+    personaStyles,       // User-chosen persona — PRIMARY matching factor
+    preferredOccasion,   // User-chosen occasion
   };
 }

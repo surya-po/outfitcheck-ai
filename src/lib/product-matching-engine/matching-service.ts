@@ -24,9 +24,8 @@ export class ProductMatchingService {
         dynamicReason = `✓ Sesuai dengan bentuk tubuh ${pShape} dengan sentuhan ${sShape}.\n✓ ${product.recommendationReason}`;
       }
 
-      if (profile.colorAnalysis?.skinTone) {
-        dynamicReason += `\n✓ Warna ini harmonis dengan skin tone ${profile.colorAnalysis.skinTone}.`;
-      }
+      // Note: skinTone info is available in the full FashionAnalysisProfile,
+      // but this legacy service only has FashionRecommendationProfile.
 
       if (profile.preferredStyles && profile.preferredStyles.length > 0) {
         const matchedStyle = profile.preferredStyles.find(s => s.toLowerCase() === product.style.toLowerCase()) || profile.preferredStyles[0];

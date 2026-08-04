@@ -9,7 +9,10 @@ export interface NormalizedProfile {
   fit: string;
   // Fashion Profile fields — Single Source of Truth
   gender?: string;          // "Female" | "Male" | "Unknown"
-  fashionPersona?: string;  // e.g. "Minimalist", "Elegant", etc.
+  fashionPersona?: string;  // AI-detected persona e.g. "Minimalist", "Elegant"
+  // User-selected persona (HIGHEST PRIORITY — overrides AI detected)
+  personaStyles: string[];       // e.g. ["Formal", "Minimalist"]
+  preferredOccasion?: string;    // e.g. "Office", "Party"
 }
 
 export interface MatchedAttributes {
@@ -19,8 +22,10 @@ export interface MatchedAttributes {
   season: boolean;
   color: boolean;
   fit: boolean;
-  gender: boolean;          // NEW: whether gender matched
+  gender: boolean;
+  persona: boolean; // NEW: whether product style matches user's chosen persona
 }
+
 
 export interface RecommendationReason {
   text: string;

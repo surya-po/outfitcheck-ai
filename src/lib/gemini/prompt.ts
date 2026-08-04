@@ -44,7 +44,9 @@ RULES:
 2. DO NOT estimate any numerical measurements yourself.
 3. MUST return a valid JSON object EXACTLY matching the provided schema.
 4. NO markdown formatting. NO markdown code blocks. JUST the raw JSON string.
-5. ALL string values (colors, shapes, tones, seasons, summary) MUST be in Bahasa Indonesia.
+5. ALL free-text string values (skinTone, undertone, seasonalColor, faceShape, hairColor, dominantClothingColor, summary, reason fields) MUST be written in Bahasa Indonesia.
+6. Enum values (gender, fashionPersona, fashionPreference) must use the exact English enum strings defined in the schema above — they are internal system identifiers, NOT displayed text.
+7. Color names in recommendedColors and avoidColors MUST be in Bahasa Indonesia (e.g. "Merah Marun", "Biru Navy", "Krem Hangat").
 
 JSON SCHEMA:
 {

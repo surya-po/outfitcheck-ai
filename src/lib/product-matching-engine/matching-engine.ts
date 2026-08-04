@@ -16,10 +16,15 @@ export function runMatchingEngine(
   // 2. Calculate Scores for all products
   const scoredProducts: ScoredProduct[] = products.map(product => {
     const { score, matchedAttributes } = calculateCompatibilityScore(normalizedProfile, product);
-    
+
     // 3. Generate Confidence & Reason
     const confidenceLevel = determineConfidenceLevel(score);
-    const reason = generateRecommendationReason(normalizedProfile, matchedAttributes);
+    const reason = generateRecommendationReason(
+      normalizedProfile,
+      matchedAttributes,
+      product.style || undefined,
+      product.colors || undefined
+    );
 
     return {
       id: product.id,
